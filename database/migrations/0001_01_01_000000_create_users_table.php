@@ -16,6 +16,15 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
+            $table->decimal('balance', 16, 4)->default(0);
+            $table->date('birthday')->nullable();
+            $table->string('phone')->nullable();
+            $table->boolean('is_company')->default(false);
+            $table->string('company_name')->nullable();
+            $table->string('company_code')->nullable();
+            $table->string('company_vat_code')->nullable();
+            $table->string('company_address')->nullable();
+            $table->string('company_phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

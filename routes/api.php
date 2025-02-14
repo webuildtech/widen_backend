@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\CourtController;
+use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +16,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('account')->group(function () {
         Route::get('me', [AccountController::class, 'show']);
     });
+
+    Route::apiResource('courts', CourtController::class);
+
+    Route::apiResource('intervals', IntervalController::class);
 });

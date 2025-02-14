@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Data\Admin\Courts;
+
+use App\Enums\CourtType;
+use Illuminate\Http\UploadedFile;
+use Spatie\LaravelData\Attributes\Validation\Accepted;
+use Spatie\LaravelData\Attributes\Validation\Image;
+use Spatie\LaravelData\Attributes\Validation\Max;
+use Spatie\LaravelData\Attributes\Validation\Rule;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+
+#[TypeScript]
+class UpdateCourtData extends Data
+{
+    public function __construct(
+        #[Rule(['max:255'])]
+        public string|Optional       $name,
+
+        #[Rule(['max:255'])]
+        public string|Optional|null  $inside_name,
+
+
+        public string|Optional|null  $description,
+
+        public CourtType|Optional    $type,
+
+        public bool|Optional         $active,
+
+        #[Image, Max(20480)]
+        public UploadedFile|Optional $logoFile,
+
+        #[Accepted]
+        public bool|Optional         $deleteLogo,
+    )
+    {
+    }
+}
