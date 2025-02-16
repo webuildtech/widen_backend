@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Plans\ListPlanData;
 use App\Data\Admin\Plans\PlanData;
+use App\Data\Admin\Plans\SelectPlanData;
 use App\Data\Admin\Plans\StorePlanData;
 use App\Data\Admin\Plans\UpdatePlanData;
 use App\Http\Controllers\Controller;
@@ -68,5 +69,10 @@ class PlanController extends Controller
         $this->planRepository->delete($plan);
 
         return [];
+    }
+
+    public function all()
+    {
+        return SelectPlanData::collect(Plan::all());
     }
 }

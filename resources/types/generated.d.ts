@@ -51,6 +51,30 @@ declare namespace App.Data.Admin.Courts {
         intervals_ids?: Array<number> | null;
     };
 }
+declare namespace App.Data.Admin.Groups {
+    export type GroupData = {
+        id: number;
+        name: string;
+        plan_id: number | null;
+        users_ids: Array<number>;
+    };
+    export type ListGroupData = {
+        id: number;
+        name: string;
+        plan: App.Data.Admin.Plans.SelectPlanData | null;
+        updated_at: string;
+    };
+    export type StoreGroupData = {
+        name: string;
+        plan_id?: number | null;
+        users_ids?: Array<number> | null;
+    };
+    export type UpdateGroupData = {
+        name?: string;
+        plan_id?: number | null;
+        users_ids?: Array<number> | null;
+    };
+}
 declare namespace App.Data.Admin.Intervals {
     export type IntervalData = {
         id: number;
@@ -115,6 +139,10 @@ declare namespace App.Data.Admin.Plans {
         cancel_before: number;
         price: number;
         active: boolean;
+    };
+    export type SelectPlanData = {
+        id: number;
+        name: string;
     };
     export type StorePlanData = {
         name: string;

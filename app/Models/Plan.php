@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plan extends BaseModel
 {
@@ -12,5 +13,10 @@ class Plan extends BaseModel
             'name',
             'type',
         ], 'like', "%$text%");
+    }
+
+    public function groups(): HasMany
+    {
+        return $this->hasMany(Group::class);
     }
 }
