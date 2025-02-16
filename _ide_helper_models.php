@@ -45,7 +45,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read array $intervals_ids
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Media|null $logo
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interval> $intervals
+ * @property-read int|null $intervals_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court global(string $text)
@@ -85,6 +88,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Court> $courts
+ * @property-read int|null $courts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IntervalPrice> $prices
  * @property-read int|null $prices_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval dateBetween(...$interval)

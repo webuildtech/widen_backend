@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -42,5 +43,10 @@ class Interval extends BaseModel
         }
 
         return $query;
+    }
+
+    public function courts(): BelongsToMany
+    {
+        return $this->belongsToMany(Court::class)->orderByPivot('order');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Intervals\IntervalData;
 use App\Data\Admin\Intervals\ListIntervalData;
+use App\Data\Admin\Intervals\SelectIntervalData;
 use App\Data\Admin\Intervals\StoreIntervalData;
 use App\Data\Admin\Intervals\UpdateIntervalData;
 use App\Http\Controllers\Controller;
@@ -67,5 +68,12 @@ class IntervalController extends Controller
         $this->intervalRepository->delete($interval);
 
         return [];
+    }
+
+    public function all()
+    {
+        $intervals = Interval::where('date_to', '>=', now())->get();
+
+        return SelectIntervalData::collect($intervals);
     }
 }

@@ -24,6 +24,9 @@ class CourtData extends Data
         public CourtType  $type,
 
         public ?MediaData $logo,
+
+        /** @var array<int> */
+        public array      $intervals_ids
     )
     {
     }

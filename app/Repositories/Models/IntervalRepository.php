@@ -31,7 +31,12 @@ class IntervalRepository extends BaseRepository implements IntervalRepositoryInt
 
     public function update(Model $model, Data $data): Model
     {
-        $model->update($this->getData($data, ['prices']));
+        $values = $this->getData($data, ['prices']);
+
+        isset($values['date_from']) && $values['date_from']->startOfDay();
+        isset($values['date_to']) && $values['date_to']->endOfDay();
+
+        $model->update($values);
 
         $model->prices()->delete();
         $model->prices()->createMany($data->prices->toArray());

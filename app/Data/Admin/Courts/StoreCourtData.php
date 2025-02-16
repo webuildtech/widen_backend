@@ -3,7 +3,9 @@
 namespace App\Data\Admin\Courts;
 
 use App\Enums\CourtType;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\UploadedFile;
+use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Image;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\Rule;
@@ -29,7 +31,29 @@ class StoreCourtData extends Data
 
         #[Image, Max(20480)]
         public UploadedFile|Optional $logoFile,
+
+        /** @var array<int> */
+        public array|Optional|null   $intervals_ids,
     )
     {
+        if ($this->intervals_ids === null) {
+            $this->intervals_ids = [];
+        }
+    }
+
+    public static function rules(): array
+    {
+
+        return [
+            'intervals.*' => [
+                'required',
+                new Exists(
+                    'intervals',
+                    'id',
+                    withoutTrashed: true,
+                    where: fn(Builder $builder) => $builder->where('date_to', '>=', now()),
+                )
+            ],
+        ];
     }
 }

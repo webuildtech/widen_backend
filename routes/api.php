@@ -19,5 +19,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('courts', CourtController::class);
 
+    Route::get('intervals/all', [IntervalController::class, 'all']);
     Route::apiResource('intervals', IntervalController::class);
 });
