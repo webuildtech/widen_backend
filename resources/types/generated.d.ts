@@ -96,6 +96,43 @@ declare namespace App.Data.Admin.Intervals {
         prices?: Array<App.Data.Admin.Intervals.IntervalPriceData>;
     };
 }
+declare namespace App.Data.Admin.Plans {
+    export type ListPlanData = {
+        id: number;
+        name: string;
+        type: string;
+        reservations_per_week: number;
+        cancel_before: number;
+        price: number;
+        active: boolean;
+        updated_at: string;
+    };
+    export type PlanData = {
+        id: number;
+        name: string;
+        type: string;
+        reservations_per_week: number;
+        cancel_before: number;
+        price: number;
+        active: boolean;
+    };
+    export type StorePlanData = {
+        name: string;
+        type: string;
+        reservations_per_week?: number;
+        cancel_before?: number;
+        price?: number;
+        active?: boolean;
+    };
+    export type UpdatePlanData = {
+        name?: string;
+        type?: string;
+        reservations_per_week?: number;
+        cancel_before?: number;
+        price?: number;
+        active?: boolean;
+    };
+}
 declare namespace App.Data.Auth {
     export type AuthData = {
         authUser: App.Data.AccountData;
