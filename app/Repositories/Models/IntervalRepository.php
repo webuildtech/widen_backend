@@ -24,7 +24,7 @@ class IntervalRepository extends BaseRepository implements IntervalRepositoryInt
         $interval = $this->model->create($this->getData($data, ['prices']));
 
         if ($data->prices instanceof Collection) {
-          $interval->prices()->createMany($data->prices->toArray());
+            $this->syncPrices($interval, $data->prices);
         }
 
         return $interval->refresh();
@@ -45,9 +45,27 @@ class IntervalRepository extends BaseRepository implements IntervalRepositoryInt
 
         $model->update($values);
 
-        $model->prices()->delete();
-        $model->prices()->createMany($data->prices->toArray());
+        if ($data->prices instanceof Collection) {
+            $model->prices()->delete();
+
+            $this->syncPrices($model, $data->prices);
+        }
 
         return $model->fresh();
+    }
+
+    private function syncPrices(Interval $interval, $prices)
+    {
+        foreach ($prices as $price) {
+            $priceCreate = $interval->prices()->create($this->getData($price, ['groups']));
+
+            $groupsPrices = [];
+
+            foreach ($price->groups as $group) {
+                $groupsPrices[$group->group_id] = ['price' => $group->price];
+            }
+
+            $priceCreate->groups()->sync($groupsPrices);
+        }
     }
 }

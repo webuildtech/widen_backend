@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('plans/all', [PlanController::class, 'all']);
     Route::apiResource('plans', PlanController::class);
 
+    Route::get('groups/all', [GroupController::class, 'all']);
     Route::apiResource('groups', GroupController::class);
 
     Route::get('intervals/all', [IntervalController::class, 'all']);

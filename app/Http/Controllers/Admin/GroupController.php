@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Groups\GroupData;
 use App\Data\Admin\Groups\ListGroupData;
+use App\Data\Admin\Groups\SelectGroupData;
 use App\Data\Admin\Groups\StoreGroupData;
 use App\Data\Admin\Groups\UpdateGroupData;
 use App\Http\Controllers\Controller;
@@ -63,5 +64,10 @@ class GroupController extends Controller
         $this->groupRepository->delete($group);
 
         return [];
+    }
+
+    public function all()
+    {
+        return SelectGroupData::collect(Group::all());
     }
 }

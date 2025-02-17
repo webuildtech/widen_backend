@@ -64,6 +64,10 @@ declare namespace App.Data.Admin.Groups {
         plan: App.Data.Admin.Plans.SelectPlanData | null;
         updated_at: string;
     };
+    export type SelectGroupData = {
+        id: number;
+        name: string;
+    };
     export type StoreGroupData = {
         name: string;
         plan_id?: number | null;
@@ -88,6 +92,11 @@ declare namespace App.Data.Admin.Intervals {
         day: App.Enums.Day;
         start_time: string;
         end_time: string;
+        price: number;
+        groups?: Array<App.Data.Admin.Intervals.IntervalPriceGroupData>;
+    };
+    export type IntervalPriceGroupData = {
+        group_id: number;
         price: number;
     };
     export type ListIntervalData = {
@@ -159,6 +168,12 @@ declare namespace App.Data.Admin.Plans {
         cancel_before?: number;
         price?: number;
         active?: boolean;
+    };
+}
+declare namespace App.Data.Admin.Users {
+    export type SelectUserData = {
+        id: number;
+        full_name: string;
     };
 }
 declare namespace App.Data.Auth {
