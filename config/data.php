@@ -8,14 +8,14 @@ return [
      * is an array, it will try to convert from the first format that works,
      * and will serialize dates using the first format from the array.
      */
-    'date_format' => DATE_ATOM,
+    'date_format' => [DATE_ATOM, 'Y-m-d'],
 
     /**
      * When transforming or casting dates, the following timezone will be used to
      * convert the date to the correct timezone. If set to null no timezone will
      * be passed.
      */
-    'date_timezone' => 'Europe/Vilnius',
+    'date_timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /**
      * It is possible to enable certain features of the package, these would otherwise

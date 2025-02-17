@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -49,5 +51,45 @@ class User extends Authenticatable
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    public function scopeGlobal(Builder $query, string $text): Builder
+    {
+        return $query->whereAny([
+            'first_name',
+            'last_name',
+            'email',
+            'birthday',
+            'phone',
+            'company_name',
+            'company_code',
+            'updated_at',
+        ], 'like', "%$text%");
+    }
+
+    public function scopeBirthdayBetween(Builder $query, ...$interval): Builder
+    {
+        $table = $this->getTable();
+
+        $query->whereDate("$table.birthday", '>=', Carbon::parseWithAppTimezone($interval[0]));
+
+        if (!empty($interval[1])) {
+            $query->whereDate("$table.birthday", '<=', Carbon::parseWithAppTimezone($interval[1]));
+        }
+
+        return $query;
+    }
+
+    public function scopeUpdatedAtBetween(Builder $query, ...$interval): Builder
+    {
+        $table = $this->getTable();
+
+        $query->whereDate("$table.updated_at", '>=', Carbon::parseWithAppTimezone($interval[0]));
+
+        if (!empty($interval[1])) {
+            $query->whereDate("$table.updated_at", '<=', Carbon::parseWithAppTimezone($interval[1]));
+        }
+
+        return $query;
     }
 }

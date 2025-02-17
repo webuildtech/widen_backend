@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
-            $table->decimal('balance', 16, 4)->default(0);
+            $table->decimal('balance')->default(0);
+            $table->decimal('discount_on_everything')->default(0);
             $table->date('birthday')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('is_company')->default(false);

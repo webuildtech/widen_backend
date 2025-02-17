@@ -171,9 +171,70 @@ declare namespace App.Data.Admin.Plans {
     };
 }
 declare namespace App.Data.Admin.Users {
+    export type ListUserData = {
+        id: number;
+        first_name: string;
+        last_name: string | null;
+        email: string;
+        balance: number;
+        discount_on_everything: number;
+        birthday: string | null;
+        phone: string | null;
+        is_company: boolean;
+        company_name: string | null;
+        updated_at: string;
+    };
     export type SelectUserData = {
         id: number;
         full_name: string;
+    };
+    export type StoreUserData = {
+        first_name: string;
+        last_name?: string | null;
+        email: string;
+        balance?: number;
+        discount_on_everything?: number;
+        birthday?: string | null;
+        phone?: string | null;
+        is_company?: boolean;
+        company_name?: string | null;
+        company_code?: string | null;
+        company_vat_code?: string | null;
+        company_address?: string | null;
+        company_phone?: string | null;
+        password: string;
+    };
+    export type UpdateUserData = {
+        first_name?: string;
+        last_name?: string | null;
+        email?: string;
+        balance?: number;
+        discount_on_everything?: number;
+        birthday?: string | null;
+        phone?: string | null;
+        is_company?: boolean;
+        company_name?: string | null;
+        company_code?: string | null;
+        company_vat_code?: string | null;
+        company_address?: string | null;
+        company_phone?: string | null;
+        password?: string;
+    };
+    export type UserData = {
+        id: number;
+        first_name: string;
+        last_name: string | null;
+        email: string;
+        balance: number;
+        discount_on_everything: number;
+        birthday: string | null;
+        phone: string | null;
+        is_company: boolean;
+        company_name: string | null;
+        company_code: string | null;
+        company_vat_code: string | null;
+        company_address: string | null;
+        company_phone: string | null;
     };
 }
 declare namespace App.Data.Auth {
