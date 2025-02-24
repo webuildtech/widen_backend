@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Data\Auth\AuthData;
 use App\Data\Auth\LoginData;
+use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
@@ -11,20 +13,23 @@ class AuthController extends Controller
 {
     public function login(LoginData $loginData): JsonResponse|AuthData
     {
-        $validatedData = $loginData->toArray();
-        unset($validatedData['remember']);
+        $admin = Admin::where('email', $loginData->email)->first();
 
-        if (!auth()->attempt($validatedData)) {
+        if (!$admin || !\Hash::check($loginData->password, $admin->password)) {
             return response()->json([
-                "errors" => ['email' => ['Your login data does not match the system data.']]
+                "errors" => ['email' => ['Jūsų prisijungimo duomenys nesutampa su sistemos duomenimis.']]
             ], 406);
         }
 
-        $user = auth()->user();
+        if ($admin->blocked) {
+            return response()->json([
+                "errors" => ['email' => ['Jūsų paskyrą užblokavo darbdavys.']]
+            ], 406);
+        }
 
         return AuthData::from([
-            "authUser" => $user,
-            'accessToken' => $user->createToken(
+            "authUser" => $admin,
+            'accessToken' => $admin->createToken(
                 'access_token',
                 ['*'],
                 Carbon::now()->addDays(request()->get('remember') ? 31 : 1)

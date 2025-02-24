@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Enums\AdminRole;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 
-class UsersSeeder extends BasicSeeder
+class AdminsSeeder extends BasicSeeder
 {
     public function run(): void
     {
@@ -20,12 +21,14 @@ class UsersSeeder extends BasicSeeder
             ];
 
             foreach ($users as $userData) {
-                User::create([
+                $createdUser = Admin::create([
                     'first_name' => $userData['first_name'],
                     'last_name' => $userData['last_name'],
                     'email' => $userData['email'],
                     'password' => Hash::make($userData['password'])
                 ]);
+
+                $createdUser->assignRole(AdminRole::SUPER_ADMIN);
             }
 
             $this->saveSeed();

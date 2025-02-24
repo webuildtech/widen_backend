@@ -1,24 +1,27 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourtController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('login', 'login');
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:admin'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::prefix('account')->group(function () {
         Route::get('me', [AccountController::class, 'show']);
     });
+
+    Route::apiResource('admins', AdminController::class);
 
     Route::get('users/all', [UserController::class, 'all']);
     Route::apiResource('users', UserController::class);
