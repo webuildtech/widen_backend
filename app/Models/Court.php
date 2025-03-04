@@ -42,4 +42,9 @@ class Court extends BaseModel implements HasMedia
     {
         return $this->intervals->pluck('id')->toArray();
     }
+
+    public function getIsAvailableAttribute()
+    {
+        return $this->active && $this->intervals()->exists();
+    }
 }

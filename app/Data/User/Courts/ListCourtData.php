@@ -17,6 +17,9 @@ class ListCourtData extends Data
 
         public ?string    $description,
 
+        /** @var array<int, CourtSlotData> */
+        public array      $fast_slots,
+
         public CourtType  $type,
 
         public ?MediaData $logo,
