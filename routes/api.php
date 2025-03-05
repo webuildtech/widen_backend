@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\User\AccountController;
+use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\ReservationController;
 
@@ -13,3 +15,16 @@ Route::prefix('courts')->group(function () {
 });
 
 Route::post('/reservations', [ReservationController::class, 'store']);
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+});
+
+Route::middleware(['auth:user'])->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::prefix('account')->group(function () {
+        Route::get('me', [AccountController::class, 'show']);
+    });
+});

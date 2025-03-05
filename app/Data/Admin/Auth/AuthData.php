@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Data\Auth;
+namespace App\Data\Admin\Auth;
 
-use App\Data\AccountData;
+use App\Data\Admin\AccountData;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 

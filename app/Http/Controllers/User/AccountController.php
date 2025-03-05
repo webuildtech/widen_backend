@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
-use App\Data\Admin\AccountData;
+use App\Data\User\AccountData;
 use App\Http\Controllers\Controller;
 
 class AccountController extends Controller

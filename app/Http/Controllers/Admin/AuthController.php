@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Data\Auth\AuthData;
-use App\Data\Auth\LoginData;
+use App\Data\Admin\Auth\AuthData;
+use App\Data\Admin\Auth\LoginData;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Carbon\Carbon;

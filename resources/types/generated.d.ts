@@ -1,14 +1,16 @@
 declare namespace App.Data {
+    export type MediaData = {
+        name: string;
+        size: number;
+        url: string;
+    };
+}
+declare namespace App.Data.Admin {
     export type AccountData = {
         email: string;
         first_name: string;
         last_name: string | null;
         updated_at: string;
-    };
-    export type MediaData = {
-        name: string;
-        size: number;
-        url: string;
     };
 }
 declare namespace App.Data.Admin.Admins {
@@ -44,6 +46,17 @@ declare namespace App.Data.Admin.Admins {
         role?: App.Enums.AdminRole;
         phone?: string | null;
         password?: string;
+    };
+}
+declare namespace App.Data.Admin.Auth {
+    export type AuthData = {
+        authUser: App.Data.Admin.AccountData;
+        accessToken: string;
+    };
+    export type LoginData = {
+        email: string;
+        password: string;
+        remember?: boolean;
     };
 }
 declare namespace App.Data.Admin.Courts {
@@ -272,9 +285,18 @@ declare namespace App.Data.Admin.Users {
         company_phone: string | null;
     };
 }
-declare namespace App.Data.Auth {
+declare namespace App.Data.User {
+    export type AccountData = {
+        email: string;
+        first_name: string;
+        last_name: string | null;
+        birthday: string | null;
+        phone: string | null;
+    };
+}
+declare namespace App.Data.User.Auth {
     export type AuthData = {
-        authUser: App.Data.AccountData;
+        authUser: App.Data.User.AccountData;
         accessToken: string;
     };
     export type LoginData = {
@@ -282,13 +304,23 @@ declare namespace App.Data.Auth {
         password: string;
         remember?: boolean;
     };
+    export type PasswordForgotData = {
+        email: string;
+    };
+    export type RegisterData = {
+        email: string;
+        first_name: string;
+        last_name: string;
+        birthday: string;
+        phone: string;
+        password: string;
+    };
 }
 declare namespace App.Data.User.Courts {
     export type CourtData = {
         id: number;
         name: string;
         description: string | null;
-        fast_slots: Array<App.Data.User.Courts.CourtSlotData>;
         type: App.Enums.CourtType;
         logo: App.Data.MediaData | null;
     };
