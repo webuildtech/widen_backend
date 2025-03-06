@@ -19,6 +19,8 @@ Route::post('/reservations', [ReservationController::class, 'store']);
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
+    Route::post('password-recovery', 'passwordRecovery');
+    Route::post('password-reset', 'passwordReset');
 });
 
 Route::middleware(['auth:user'])->group(function () {

@@ -304,8 +304,13 @@ declare namespace App.Data.User.Auth {
         password: string;
         remember?: boolean;
     };
-    export type PasswordForgotData = {
+    export type PasswordRecoveryData = {
         email: string;
+    };
+    export type PasswordResetData = {
+        token: string;
+        email: string;
+        password: string;
     };
     export type RegisterData = {
         email: string;

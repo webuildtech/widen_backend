@@ -8,7 +8,7 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class PasswordForgotData extends Data
+class PasswordRecoveryData extends Data
 {
     public function __construct(
         #[Email, Max(255)]

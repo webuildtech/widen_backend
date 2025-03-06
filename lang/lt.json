@@ -1,0 +1,10 @@
+{
+    "Hello!": "Sveiki!",
+    "Reset Password Notification": "Iš naujo nustatyti slaptažodį",
+    "You are receiving this email because we received a password reset request for your account.": "Gavote šį el. laišką, nes gavome jūsų paskyros slaptažodžio nustatymo iš naujo užklausą.",
+    "Reset Password": "Atstatyti slaptažodį",
+    "This password reset link will expire in :count minutes.": "Ši slaptažodžio nustatymo iš naujo nuoroda galiojimo laikas baigsis po :count minučių.",
+    "If you did not request a password reset, no further action is required.": "Jei neprašėte iš naujo nustatyti slaptažodžio, nereikia atlikti jokių veiksmų.",
+    "Regards,": "Pagarbiai,",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Jei kyla problemų spustelėjus mygtuką „:actionText“, nukopijuokite ir įklijuokite toliau esantį URL\nį savo interneto naršyklę:"
+}
