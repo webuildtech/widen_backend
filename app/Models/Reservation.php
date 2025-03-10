@@ -10,11 +10,4 @@ class Reservation extends BaseModel
     {
         return $this->hasMany(ReservationTime::class);
     }
-
-    // tut nijasna
-    public function updateTotalPrice(): void
-    {
-        $this->total_price = $this->times()->sum('price');
-        $this->save();
-    }
 }

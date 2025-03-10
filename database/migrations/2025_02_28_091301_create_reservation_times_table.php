@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('reservation_times', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('court_id')->nullable()->constrained()->nullOnDelete();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->decimal('price', 10);
+            $table->decimal('price', 10)->default(0);
+            $table->decimal('discount', 10)->default(0);
             $table->decimal('refunded_amount', 10)->default(0);
             $table->dateTime('canceled_at')->nullable();
             $table->text('cancellation_reason')->nullable();

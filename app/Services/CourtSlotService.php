@@ -23,7 +23,7 @@ class CourtSlotService
         }
 
         $prices = $this->filterPricesByDate($interval, $date);
-        $reservedSlots = $this->getReservedSlots($date);
+        $reservedSlots = $this->getReservedSlots($date, $court);
 
         return $this->calculateAvailableSlots($prices, $court, $date, $reservedSlots);
     }
@@ -39,9 +39,10 @@ class CourtSlotService
         return $query->get();
     }
 
-    private function getReservedSlots(Carbon $date): array
+    private function getReservedSlots(Carbon $date, Court $court): array
     {
         return ReservationSlot::whereDate('slot_start', $date)
+            ->where('court_id', $court->id)
             ->where('try_sell', false)
             ->where('is_refunded', false)
             ->pluck('slot_end', 'slot_start')
