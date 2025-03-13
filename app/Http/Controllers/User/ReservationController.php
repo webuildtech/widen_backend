@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Data\User\Reservations\StoreReservationData;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Repositories\Models\ReservationRepositoryInterface;
+use App\Jobs\CheckRefundSlots;
 use App\Services\ReservationSlotService;
 use Illuminate\Http\JsonResponse;
 
@@ -30,6 +31,8 @@ class ReservationController extends Controller
         }
 
         $reservation = $this->reservationRepository->create($data, $slots['free']);
+
+        CheckRefundSlots::dispatch($reservation);
 
         return response()->json(['reservation' => $reservation], 201);
     }

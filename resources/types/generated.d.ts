@@ -292,6 +292,8 @@ declare namespace App.Data.User {
         last_name: string | null;
         birthday: string | null;
         phone: string | null;
+        balance: number;
+        cancel_before: number;
     };
 }
 declare namespace App.Data.User.Auth {
@@ -347,6 +349,45 @@ declare namespace App.Data.User.Courts {
         fast_slots: Array<App.Data.User.Courts.CourtSlotData>;
         type: App.Enums.CourtType;
         logo: App.Data.MediaData | null;
+    };
+}
+declare namespace App.Data.User.ReservationTimes {
+    export type IndexReservationTimeData = {
+        type: string;
+    };
+    export type ReservationSlotData = {
+        slot_start: string;
+        slot_end: string;
+        price: number;
+        is_refunded: boolean;
+    };
+    export type ReservationTimeData = {
+        id: number;
+        courtName: string;
+        date: string;
+        start_time: string;
+        end_time: string;
+        price: number;
+        refunded_amount: number;
+        is_past: number;
+        cancelled_at: string | null;
+        slots: Array<App.Data.User.ReservationTimes.ReservationSlotData>;
+    };
+}
+declare namespace App.Data.User.Reservations {
+    export type ReservationSlotData = {
+        court_id: number;
+        date: string;
+        start_time: string;
+        end_time: string;
+    };
+    export type StoreReservationData = {
+        guest_email: string | null;
+        guest_first_name: string | null;
+        guest_last_name: string | null;
+        guest_phone: string | null;
+        user_id: number | null;
+        slots: Array<App.Data.User.Reservations.ReservationSlotData>;
     };
 }
 declare namespace App.Enums {

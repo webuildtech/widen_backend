@@ -19,6 +19,10 @@ class AccountData extends Data
         public ?Carbon $birthday,
 
         public ?string $phone,
+
+        public float   $balance,
+
+        public int     $cancel_before
     )
     {
     }

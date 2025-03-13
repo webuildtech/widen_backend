@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @mixin IdeHelperGroup
+ */
 class Group extends BaseModel
 {
     public function plan(): BelongsTo

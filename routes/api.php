@@ -5,6 +5,7 @@ use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\ReservationController;
+use App\Http\Controllers\User\ReservationTimeController;
 
 
 Route::prefix('courts')->group(function () {
@@ -28,5 +29,11 @@ Route::middleware(['auth:user'])->group(function () {
 
     Route::prefix('account')->group(function () {
         Route::get('me', [AccountController::class, 'show']);
+    });
+
+    Route::prefix('reservation-times')->group(function () {
+        Route::get('', [ReservationTimeController::class, 'index']);
+        Route::post('{reservationTime}/cancel', [ReservationTimeController::class, 'cancel'])
+            ->middleware('can:cancel,reservationTime');
     });
 });

@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Data\User\ReservationTimes;
+
+use App\Models\ReservationTime;
+use Carbon\Carbon;
+use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use Illuminate\Support\Collection;
+
+#[TypeScript]
+class ReservationTimeData extends Data
+{
+    public function __construct(
+        public int        $id,
+
+        public string     $courtName,
+
+        public string     $date,
+
+        public string     $start_time,
+
+        public string     $end_time,
+
+        public float      $price,
+
+        public float      $refunded_amount,
+
+        public float      $is_past,
+
+        public ?Carbon    $cancelled_at,
+
+        /** @var Collection<int, ReservationSlotData> */
+        public Collection $slots,
+    )
+    {
+    }
+
+    public static function fromModel(ReservationTime $time): self
+    {
+        return new self(
+            $time->id,
+            $time->court->name,
+            $time->start_time->format('Y-m-d'),
+            $time->start_time->format('H:i'),
+            $time->end_time->format('H:i'),
+            $time->price,
+            $time->refunded_amount,
+            now()->isAfter($time->end_time),
+            $time->canceled_at,
+            $time->canceled_at && $time->price !== $time->refunded_amount ? ReservationSlotData::collect($time->slots) : collect(),
+        );
+    }
+}

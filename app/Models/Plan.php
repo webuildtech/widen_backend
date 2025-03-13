@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @mixin IdeHelperPlan
+ */
 class Plan extends BaseModel
 {
     public function scopeGlobal(Builder $query, string $text): Builder

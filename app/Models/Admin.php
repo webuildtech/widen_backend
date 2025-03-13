@@ -13,6 +13,9 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @mixin IdeHelperAdmin
+ */
 class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity, HasRoles;

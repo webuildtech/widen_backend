@@ -92,4 +92,9 @@ class User extends Authenticatable
 
         return $query;
     }
+
+    public function getCancelBeforeAttribute(): int
+    {
+        return 48;
+    }
 }
