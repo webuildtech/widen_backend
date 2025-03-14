@@ -29,6 +29,8 @@ Route::middleware(['auth:user'])->group(function () {
 
     Route::prefix('account')->group(function () {
         Route::get('me', [AccountController::class, 'show']);
+        Route::put('me', [AccountController::class, 'update']);
+        Route::put('change-password', [AccountController::class, 'changePassword']);
     });
 
     Route::prefix('reservation-times')->group(function () {

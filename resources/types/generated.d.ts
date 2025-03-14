@@ -294,6 +294,31 @@ declare namespace App.Data.User {
         phone: string | null;
         balance: number;
         cancel_before: number;
+        is_company: boolean;
+        company_name: string | null;
+        company_code: string | null;
+        company_vat_code: string | null;
+        company_address: string | null;
+        company_phone: string | null;
+    };
+}
+declare namespace App.Data.User.Account {
+    export type ChangeAccountPasswordData = {
+        old_password: string;
+        password: string;
+    };
+    export type UpdateAccountData = {
+        first_name?: string;
+        last_name?: string;
+        email?: string;
+        birthday?: string;
+        phone?: string;
+        is_company?: boolean;
+        company_name?: string | null;
+        company_code?: string | null;
+        company_vat_code?: string | null;
+        company_address?: string | null;
+        company_phone?: string | null;
     };
 }
 declare namespace App.Data.User.Auth {

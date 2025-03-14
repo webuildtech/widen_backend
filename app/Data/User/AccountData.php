@@ -22,7 +22,19 @@ class AccountData extends Data
 
         public float   $balance,
 
-        public int     $cancel_before
+        public int     $cancel_before,
+
+        public bool   $is_company,
+
+        public ?string $company_name,
+
+        public ?string $company_code,
+
+        public ?string $company_vat_code,
+
+        public ?string $company_address,
+
+        public ?string $company_phone,
     )
     {
     }
