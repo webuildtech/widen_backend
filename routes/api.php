@@ -3,10 +3,10 @@
 
 use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\ReservationTimeController;
-
 
 Route::prefix('courts')->group(function () {
     Route::get('', [CourtController::class, 'index']);
@@ -16,6 +16,8 @@ Route::prefix('courts')->group(function () {
 });
 
 Route::post('/reservations', [ReservationController::class, 'store']);
+
+Route::post('contact-us', [ContactUsController::class, 'store']);
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
