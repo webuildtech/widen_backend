@@ -301,6 +301,12 @@ declare namespace App.Data.User {
         company_address: string | null;
         company_phone: string | null;
     };
+    export type ContactUsData = {
+        name: string;
+        email: string;
+        phone: string;
+        message: string;
+    };
 }
 declare namespace App.Data.User.Account {
     export type ChangeAccountPasswordData = {
@@ -374,6 +380,15 @@ declare namespace App.Data.User.Courts {
         fast_slots: Array<App.Data.User.Courts.CourtSlotData>;
         type: App.Enums.CourtType;
         logo: App.Data.MediaData | null;
+    };
+}
+declare namespace App.Data.User.Plans {
+    export type PlanData = {
+        id: number;
+        name: string;
+        type: string;
+        reservations_per_week: number;
+        price: number;
     };
 }
 declare namespace App.Data.User.ReservationTimes {
