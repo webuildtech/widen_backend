@@ -27,8 +27,6 @@ class PlanController extends Controller
             ->allowedSorts([
                 'name',
                 'type',
-                'reservations_per_week',
-                'cancel_before',
                 'price',
                 'active',
                 'updated_at'

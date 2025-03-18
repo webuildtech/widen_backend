@@ -14,21 +14,18 @@ class StorePlanData extends Data
 {
     public function __construct(
         #[Rule(['max:255'])]
-        public string         $name,
+        public string        $name,
 
         #[Rule(['max:255'])]
-        public string         $type,
+        public string        $type,
 
         #[Rule(['min:0', 'max:2147483647'])]
-        public int|Optional   $reservations_per_week,
-
-        #[Rule(['min:0', 'max:2147483647'])]
-        public int|Optional   $cancel_before,
+        public int           $reservations_per_week,
 
         #[Numeric, Min(0)]
-        public float|Optional $price,
+        public float         $price,
 
-        public bool|Optional  $active,
+        public bool|Optional $active,
     )
     {
     }

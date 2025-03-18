@@ -9,6 +9,7 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "lucasdotvin/laravel-soulbscription": "^4.2",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-data": "^4.8",
         "spatie/laravel-medialibrary": "^11.11",

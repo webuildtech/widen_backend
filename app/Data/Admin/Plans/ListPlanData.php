@@ -2,6 +2,8 @@
 
 namespace App\Data\Admin\Plans;
 
+use App\Enums\FeatureType;
+use App\Models\Plan;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -16,10 +18,6 @@ class ListPlanData extends Data
 
         public string $type,
 
-        public int    $reservations_per_week,
-
-        public int    $cancel_before,
-
         public float  $price,
 
         public bool   $active,
@@ -27,5 +25,17 @@ class ListPlanData extends Data
         public Carbon $updated_at,
     )
     {
+    }
+
+    public static function fromModel(Plan $plan): self
+    {
+        return new self(
+            $plan->id,
+            $plan->name,
+            $plan->type,
+            $plan->price,
+            $plan->active,
+            $plan->updated_at,
+        );
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\ReservationTimeController;
+use App\Http\Controllers\User\SubscriptionController;
 
 Route::prefix('courts')->group(function () {
     Route::get('', [CourtController::class, 'index']);
@@ -43,6 +44,11 @@ Route::middleware(['auth:user'])->group(function () {
     });
 
     Route::prefix('plans')->group(function () {
-       Route::get('', [PlanController::class, 'index']);
+        Route::get('', [PlanController::class, 'index']);
+    });
+
+    Route::prefix('subscriptions')->group(function () {
+        Route::get('current', [SubscriptionController::class, 'current']);
+        Route::get('subscribe/{plan}', [SubscriptionController::class, 'subscribe']);
     });
 });

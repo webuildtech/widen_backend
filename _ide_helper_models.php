@@ -248,33 +248,38 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $grace_days
  * @property string $name
  * @property string $type
- * @property int $reservations_per_week
- * @property int $cancel_before
+ * @property int|null $periodicity
+ * @property string|null $periodicity_type
  * @property string $price
  * @property int $active
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Feature> $features
+ * @property-read int|null $features_count
+ * @property-read mixed $has_grace_days
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Subscription> $subscriptions
+ * @property-read int|null $subscriptions_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan updatedAtBetween(...$interval)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCancelBefore($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereGraceDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePeriodicity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePeriodicityType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereReservationsPerWeek($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan withTrashed()
@@ -394,9 +399,9 @@ namespace App\Models{
  * @property int|null $court_id
  * @property \Illuminate\Support\Carbon $start_time
  * @property \Illuminate\Support\Carbon $end_time
- * @property string $price
+ * @property float $price
  * @property string $discount
- * @property string $refunded_amount
+ * @property float $refunded_amount
  * @property \Illuminate\Support\Carbon|null $canceled_at
  * @property string|null $cancellation_reason
  * @property int $refund_attempted

@@ -182,8 +182,6 @@ declare namespace App.Data.Admin.Plans {
         id: number;
         name: string;
         type: string;
-        reservations_per_week: number;
-        cancel_before: number;
         price: number;
         active: boolean;
         updated_at: string;
@@ -193,7 +191,6 @@ declare namespace App.Data.Admin.Plans {
         name: string;
         type: string;
         reservations_per_week: number;
-        cancel_before: number;
         price: number;
         active: boolean;
     };
@@ -204,16 +201,14 @@ declare namespace App.Data.Admin.Plans {
     export type StorePlanData = {
         name: string;
         type: string;
-        reservations_per_week?: number;
-        cancel_before?: number;
-        price?: number;
+        reservations_per_week: number;
+        price: number;
         active?: boolean;
     };
     export type UpdatePlanData = {
         name?: string;
         type?: string;
         reservations_per_week?: number;
-        cancel_before?: number;
         price?: number;
         active?: boolean;
     };
@@ -430,8 +425,18 @@ declare namespace App.Data.User.Reservations {
         slots: Array<App.Data.User.Reservations.ReservationSlotData>;
     };
 }
+declare namespace App.Data.User.Subscriptions {
+    export type SubscriptionData = {
+        started_at: string;
+        expired_at: string;
+        cancelled_at: string | null;
+        plan: App.Data.User.Plans.PlanData;
+        reservations_per_week: number;
+    };
+}
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
     export type CourtType = "indoor" | "outdoor";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+    export type FeatureType = "reservations_per_week";
 }
