@@ -38,7 +38,7 @@ class MakeCommerceService
         ];
 
         if (env('APP_ENV') === 'production') {
-            $transaction['transaction_url']['notifications_url'] = [
+            $transaction['transaction_url']['notification_url'] = [
                 'url' => env('APP_URL') . '/api/payments/callback',
                 'method' => 'post',
             ];
