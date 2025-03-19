@@ -22,12 +22,8 @@ class PaymentController extends Controller
 
     public function callback(): JsonResponse
     {
-        Log::info('callback 1111');
-
         $data = request()->get('json');
         $mac = request()->get('mac');
-
-        Log::info('callback', ['json' => $data, 'mac' => $mac]);
 
         if (!$data || !$mac || !$this->makeCommerceService->verify($data, $mac)) {
             return response()->json(['error' => 'Jūs neturite teisių.'], 403);
