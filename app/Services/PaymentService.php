@@ -57,7 +57,7 @@ class PaymentService
             return $payment;
         }
 
-        $payment->update(['status' => PaymentStatus::PAID, 'paid_at' => now()]);
+        $payment->update(['status' => PaymentStatus::PAID->value, 'paid_at' => now()]);
 
         match ($payment->paymentable_type) {
             'plan' => $this->handlePlanPayment($payment),
