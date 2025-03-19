@@ -98,4 +98,21 @@ class User extends Authenticatable
     {
         return 48;
     }
+
+    public function getDeductedAmount(float $totalPrice): float
+    {
+        return min($this->balance, $totalPrice);
+    }
+
+    public function addBalance(float $amount): void
+    {
+        $this->balance += $amount;
+        $this->save();
+    }
+
+    public function deductBalance(float $amount): void
+    {
+        $this->balance = max(0, $this->balance - $amount);
+        $this->save();
+    }
 }

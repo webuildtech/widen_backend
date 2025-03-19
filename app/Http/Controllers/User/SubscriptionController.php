@@ -7,10 +7,19 @@ use App\Data\User\Subscriptions\SubscriptionData;
 use App\Enums\FeatureType;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use App\Services\MakeCommerceService;
+use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller
 {
+    public function __construct(
+        protected MakeCommerceService $makeCommerceService,
+        protected PaymentService      $paymentService,
+    )
+    {
+    }
+
     public function current(): SubscriptionData|JsonResponse
     {
         $user = auth()->user();
@@ -30,7 +39,7 @@ class SubscriptionController extends Controller
         return response()->json([], 404);
     }
 
-    public function subscribe(Plan $plan)
+    public function subscribe(Plan $plan): JsonResponse
     {
         $user = auth()->user();
 
@@ -38,9 +47,16 @@ class SubscriptionController extends Controller
             return response()->json(['error' => 'Jau turite aktyvią prenumeratą!'], 405);
         }
 
-        $user->subscribeTo($plan);
+        $payment = $this->paymentService->createFromPlan($plan, $user);
 
-        return response()->json();
+        if ($payment->paid_amount > 0) {
+            $url = $this->makeCommerceService->createTransaction($payment, $payment->user->email, request()->ip());
 
+            return response()->json(['url' => $url], 201);
+        }
+
+        $payment = $this->paymentService->approve($payment);
+
+        return response()->json(['balance' => $payment->user->balance]);
     }
 }

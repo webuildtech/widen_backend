@@ -68,8 +68,6 @@ namespace App\Models{
 /**
  * 
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel onlyTrashed()
@@ -248,6 +246,67 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int|null $user_id
+ * @property string|null $transaction_id
+ * @property string $status
+ * @property string|null $paymentable_type
+ * @property int|null $paymentable_id
+ * @property string|null $invoice_no
+ * @property string|null $invoice_path
+ * @property string $price
+ * @property string $vat
+ * @property string $price_with_vat
+ * @property string $discount
+ * @property string $paid_amount
+ * @property string $paid_amount_from_balance
+ * @property string $refunded_amount
+ * @property string $refunded_amount_to_balance
+ * @property string|null $paid_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $paymentable
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereInvoiceNo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereInvoicePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAmountFromBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePriceWithVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmountToBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPayment {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $grace_days
  * @property string $name
  * @property string $type
@@ -264,6 +323,7 @@ namespace App\Models{
  * @property-read mixed $has_grace_days
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
+ * @property-read \App\Models\Payment|null $payment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan global(string $text)
@@ -296,6 +356,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int|null $user_id
+ * @property int $is_paid
  * @property string|null $guest_first_name
  * @property string|null $guest_last_name
  * @property string|null $guest_email
@@ -311,6 +372,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \App\Models\Payment|null $payment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationSlot> $slots
  * @property-read int|null $slots_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationTime> $times
@@ -329,6 +391,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereIsPaid($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePaidAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePaidAmountFromBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePrice($value)
@@ -467,12 +530,20 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureConsumption> $featureConsumptions
+ * @property-read int|null $feature_consumptions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $featureTickets
+ * @property-read int|null $feature_tickets_count
  * @property-read int $cancel_before
+ * @property-read \Illuminate\Database\Eloquent\Collection $features
  * @property-read string $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\SubscriptionRenewal> $renewals
+ * @property-read int|null $renewals_count
+ * @property-read \LucasDotVin\Soulbscription\Models\Subscription|null $subscription
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User birthdayBetween(...$interval)

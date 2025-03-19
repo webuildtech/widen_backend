@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use LucasDotVin\Soulbscription\Models\Plan as PlanBase;
 
 /**
@@ -32,5 +33,10 @@ class Plan extends PlanBase
     public function groups(): HasMany
     {
         return $this->hasMany(Group::class);
+    }
+
+    public function payment(): MorphOne
+    {
+        return $this->morphOne(Payment::class, 'paymentable');
     }
 }

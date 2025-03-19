@@ -5,7 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Data\User\Reservations\StoreReservationData;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Repositories\Models\ReservationRepositoryInterface;
-use App\Jobs\CheckRefundSlots;
+use App\Services\MakeCommerceService;
+use App\Services\PaymentService;
 use App\Services\ReservationSlotService;
 use Illuminate\Http\JsonResponse;
 
@@ -14,6 +15,8 @@ class ReservationController extends Controller
     public function __construct(
         protected ReservationRepositoryInterface $reservationRepository,
         protected ReservationSlotService         $reservationSlotService,
+        protected MakeCommerceService            $makeCommerceService,
+        protected PaymentService                 $paymentService,
     )
     {
     }
@@ -32,8 +35,20 @@ class ReservationController extends Controller
 
         $reservation = $this->reservationRepository->create($data, $slots['free']);
 
-        CheckRefundSlots::dispatch($reservation);
+        $payment = $this->paymentService->createFromReservation($reservation, auth()->guard('user')->user());
 
-        return response()->json(['reservation' => $reservation], 201);
+        if ($payment->paid_amount > 0) {
+            $url = $this->makeCommerceService->createTransaction(
+                $payment,
+                $reservation->user_id ? $reservation->user->email : $reservation->guest_email,
+                request()->ip()
+            );
+
+            return response()->json(['url' => $url], 201);
+        }
+
+        $payment = $this->paymentService->approve($payment);
+
+        return response()->json(['balance' => $payment->user->balance]);
     }
 }

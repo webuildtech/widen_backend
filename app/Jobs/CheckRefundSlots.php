@@ -32,9 +32,7 @@ class CheckRefundSlots implements ShouldQueue
 
                 $reservationTime->update(['refunded_amount' => $reservationTime->refunded_amount + $refundSlot->price]);
 
-                $reservationTime->reservation->user->update([
-                    'balance' => $reservationTime->reservation->user->balance + $refundSlot->price
-                ]);
+                $reservationTime->reservation->user->addBalance($refundSlot->price);
 
                 if ($reservationTime->refunded_amount === $reservationTime->price) {
                     $reservationTime->slots()->delete();

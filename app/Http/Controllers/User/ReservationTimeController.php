@@ -12,7 +12,7 @@ class ReservationTimeController extends Controller
     public function index(IndexReservationTimeData $data)
     {
         $reservationTimes = ReservationTime::with(['court'])
-            ->whereHas('reservation', fn($query) => $query->where('user_id', auth()->user()->id));
+            ->whereHas('reservation', fn($query) => $query->where('user_id', auth()->user()->id)->where('is_paid', true));
 
         switch ($data->type) {
             case 'active':
@@ -46,7 +46,7 @@ class ReservationTimeController extends Controller
             $reservationTime->update(['canceled_at' => now()]);
             $reservationTime->slots()->update(['try_sell' => true]);
         } else {
-            $user->update(['balance' => $user->balance + $reservationTime->price]);
+            $user->addBalance($reservationTime->price);
 
             $reservationTime->update([
                 'refunded_amount' => $reservationTime->price,

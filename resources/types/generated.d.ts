@@ -377,6 +377,19 @@ declare namespace App.Data.User.Courts {
         logo: App.Data.MediaData | null;
     };
 }
+declare namespace App.Data.User.Payments {
+    export type PaymentData = {
+        status: string;
+        type: string | null;
+        price: number;
+        vat: number;
+        price_with_vat: number;
+        discount: number;
+        paid_amount: number;
+        paid_amount_from_balance: number;
+        email: string;
+    };
+}
 declare namespace App.Data.User.Plans {
     export type PlanData = {
         id: number;
@@ -439,4 +452,5 @@ declare namespace App.Enums {
     export type CourtType = "indoor" | "outdoor";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type FeatureType = "reservations_per_week";
+    export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
 }

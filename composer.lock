@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49fbb50f5b9e9722c2bbebde5e801449",
+    "content-hash": "bd8271512a248f4266dd96ce945dcf9e",
     "packages": [
         {
             "name": "amphp/amp",
@@ -3295,6 +3295,56 @@
             "time": "2023-06-21T14:59:35+00:00"
         },
         {
+            "name": "maksekeskus/maksekeskus-php",
+            "version": "v1.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maksekeskus/maksekeskus-php.git",
+                "reference": "070fc86a931da718f340c37e22c5b20fc079cff9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maksekeskus/maksekeskus-php/zipball/070fc86a931da718f340c37e22c5b20fc079cff9",
+                "reference": "070fc86a931da718f340c37e22c5b20fc079cff9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "nategood/httpful": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Maksekeskus\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maksekeskus",
+                    "email": "support@maksekeskus.ee"
+                }
+            ],
+            "description": "Maksekeskus PHP SDK",
+            "homepage": "https://makecommerce.net",
+            "keywords": [
+                "api",
+                "billing",
+                "maksekeskus",
+                "payments"
+            ],
+            "support": {
+                "issues": "https://github.com/maksekeskus/maksekeskus-php/issues",
+                "source": "https://github.com/maksekeskus/maksekeskus-php/tree/v1.4.5"
+            },
+            "time": "2024-12-04T11:25:39+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.7.0",
             "source": {
@@ -3394,6 +3444,60 @@
                 }
             ],
             "time": "2024-06-28T09:40:51+00:00"
+        },
+        {
+            "name": "nategood/httpful",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nategood/httpful.git",
+                "reference": "ea02c8aedef70b9a453ce97978d9d7c413972f15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nategood/httpful/zipball/ea02c8aedef70b9a453ce97978d9d7c413972f15",
+                "reference": "ea02c8aedef70b9a453ce97978d9d7c413972f15",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Httpful": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nate Good",
+                    "email": "me@nategood.com",
+                    "homepage": "http://nategood.com"
+                }
+            ],
+            "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
+            "homepage": "http://github.com/nategood/httpful",
+            "keywords": [
+                "api",
+                "curl",
+                "http",
+                "requests",
+                "rest",
+                "restful"
+            ],
+            "support": {
+                "issues": "https://github.com/nategood/httpful/issues",
+                "source": "https://github.com/nategood/httpful/tree/v1.0.0"
+            },
+            "time": "2024-05-01T11:33:16+00:00"
         },
         {
             "name": "nesbot/carbon",

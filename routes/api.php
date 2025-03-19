@@ -5,6 +5,7 @@ use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CourtController;
+use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\ReservationTimeController;
@@ -20,6 +21,11 @@ Route::prefix('courts')->group(function () {
 Route::post('/reservations', [ReservationController::class, 'store']);
 
 Route::post('contact-us', [ContactUsController::class, 'store']);
+
+Route::prefix('payments')->group(function () {
+    Route::post('validate', [PaymentController::class, 'validate']);
+    Route::post('callback', [PaymentController::class, 'callback']);
+});
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
