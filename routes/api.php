@@ -58,4 +58,8 @@ Route::middleware(['auth:user'])->group(function () {
         Route::get('current', [SubscriptionController::class, 'current']);
         Route::get('subscribe/{plan}', [SubscriptionController::class, 'subscribe']);
     });
+
+    Route::prefix('payments')->group(function () {
+       Route::get('', [PaymentController::class, 'index']);
+    });
 });

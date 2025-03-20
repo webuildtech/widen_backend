@@ -381,6 +381,14 @@ declare namespace App.Data.User.Courts {
     };
 }
 declare namespace App.Data.User.Payments {
+    export type ListPaymentData = {
+        id: number;
+        paymentable_type: string | null;
+        paid_amount_from_balance: number;
+        paid_amount: number;
+        price_with_vat: number;
+        paid_at: string;
+    };
     export type PaymentData = {
         status: string;
         type: string | null;

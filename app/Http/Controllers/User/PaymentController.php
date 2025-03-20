@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Data\User\Payments\ListPaymentData;
 use App\Data\User\Payments\PaymentData;
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,16 @@ class PaymentController extends Controller
         protected PaymentService      $paymentService
     )
     {
+    }
+
+    public function index()
+    {
+        $payments = Payment::whereUserId(auth()->user()->id)
+            ->whereStatus(PaymentStatus::PAID)
+            ->orderBy('paid_at', 'desc')
+            ->get();
+
+        return ListPaymentData::collect($payments);
     }
 
     public function callback(): JsonResponse
