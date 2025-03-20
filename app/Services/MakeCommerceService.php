@@ -59,9 +59,9 @@ class MakeCommerceService
         return $transaction->payment_methods->other[0]->url;
     }
 
-    public function verify(string $json, string $mac): bool
+    public function verify(array $values): bool
     {
-        return $this->client->verifyMac(['json' => $json, 'mac' => $mac]);
+        return $this->client->verifyMac($values);
     }
 
     public function extractData(string $json): array

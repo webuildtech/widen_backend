@@ -5,11 +5,11 @@ namespace App\Http\Controllers\User;
 use App\Data\User\Payments\PaymentData;
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessPaymentCallback;
 use App\Models\Payment;
 use App\Services\MakeCommerceService;
 use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
-use Log;
 
 class PaymentController extends Controller
 {
@@ -22,30 +22,24 @@ class PaymentController extends Controller
 
     public function callback(): JsonResponse
     {
-        $data = request()->get('json');
-        $mac = request()->get('mac');
+        $values = request()->all(['json', 'mac']);
 
-        if (!$data || !$mac || !$this->makeCommerceService->verify($data, $mac)) {
-            return response()->json(['error' => 'Jūs neturite teisių.'], 403);
+        if ($this->makeCommerceService->verify($values)) {
+            ProcessPaymentCallback::dispatch($this->makeCommerceService->extractData($values['json']));
         }
-
-        $data = $this->makeCommerceService->extractData($data);
-        Log::info('callback validate', $data);
 
         return response()->json();
     }
 
     public function validate(): PaymentData|JsonResponse
     {
-        $data = request()->get('json');
-        $mac = request()->get('mac');
+        $values = request()->all(['json', 'mac']);
 
-        if (!$data || !$mac || !$this->makeCommerceService->verify($data, $mac)) {
+        if (!$this->makeCommerceService->verify($values)) {
             return response()->json(['error' => 'Jūs neturite teisių.'], 403);
         }
 
-        $data = $this->makeCommerceService->extractData($data);
-        Log::info('validate', $data);
+        $data = $this->makeCommerceService->extractData($values['json']);
 
         $payment = Payment::whereTransactionId($data['transaction'])->first();
 
