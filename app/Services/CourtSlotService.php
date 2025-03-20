@@ -5,12 +5,13 @@ namespace App\Services;
 use App\Models\Court;
 use App\Models\IntervalPrice;
 use App\Models\ReservationSlot;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class CourtSlotService
 {
-    public function generateFreeSlots(Court $court, Carbon $date): array
+    public function generateFreeSlots(Court $court, Carbon $date, User $user = null): array
     {
         $interval = $court->intervals()
             ->whereDate('date_from', '<=', $date)
@@ -25,7 +26,7 @@ class CourtSlotService
         $prices = $this->filterPricesByDate($interval, $date);
         $reservedSlots = $this->getReservedSlots($date, $court);
 
-        return $this->calculateAvailableSlots($prices, $court, $date, $reservedSlots);
+        return $this->calculateAvailableSlots($prices, $court, $date, $reservedSlots, $user);
     }
 
     private function filterPricesByDate($interval, Carbon $date): Collection
@@ -49,18 +50,36 @@ class CourtSlotService
             ->toArray();
     }
 
-    private function calculateAvailableSlots(Collection $prices, Court $court, Carbon $date, array $reservedSlots): array
+    private function calculateAvailableSlots(Collection $prices, Court $court, Carbon $date, array $reservedSlots, User $user = null): array
     {
-        return $prices->flatMap(function (IntervalPrice $price) use ($court, $date, $reservedSlots) {
+        return $prices->flatMap(function (IntervalPrice $price) use ($user, $court, $date, $reservedSlots) {
             $startTime = Carbon::parse("{$date->format('Y-m-d')} {$price->start_time}");
             $endTime = Carbon::parse("{$date->format('Y-m-d')} {$price->end_time}");
 
-            return $this->generateTimeSlots($startTime, $endTime, $price, $court, $reservedSlots);
+            return $this->generateTimeSlots($startTime, $endTime, $price, $court, $reservedSlots, $user);
         })->toArray();
     }
 
-    private function generateTimeSlots(Carbon $startTime, Carbon $endTime, IntervalPrice $price, Court $court, array $reservedSlots): Collection
+    private function findPrice(IntervalPrice $price, User $user = null): array
     {
+        $specialPrice = $user ? $price->groups()
+            ->where(function ($query) use ($user) {
+                $query->whereHas('users', fn($query) => $query->where('users.id', $user->id));
+
+                if ($user->subscription) {
+                    $query->orWhereHas('plan', fn($query) => $query->where('plans.id', $user->subscription->plan_id));
+                }
+            })
+            ->pluck('price')
+            ->min() : null;
+
+        return ['price' => floatval($specialPrice ?? $price->price), 'original_price' => floatval($price->price)];
+    }
+
+    private function generateTimeSlots(Carbon $startTime, Carbon $endTime, IntervalPrice $price, Court $court, array $reservedSlots, User $user = null): Collection
+    {
+        $prices = $this->findPrice($price, $user);
+
         $slots = collect();
 
         while ($startTime < $endTime) {
@@ -73,7 +92,7 @@ class CourtSlotService
                     'day' => $price->day,
                     'start_time' => $startTime->format('H:i'),
                     'end_time' => $slotEnd->format('H:i'),
-                    'price' => floatval($price->price),
+                    ...$prices
                 ]);
             }
 
@@ -83,9 +102,9 @@ class CourtSlotService
         return $slots;
     }
 
-    public function getBestSlots(Court $court, Carbon $date): array
+    public function getBestSlots(Court $court, Carbon $date, User $user = null): array
     {
-        $allSlots = $this->generateFreeSlots($court, $date);
+        $allSlots = $this->generateFreeSlots($court, $date, $user);
 
         if (count($allSlots) < 3) {
             return $allSlots;
@@ -115,6 +134,7 @@ class CourtSlotService
                         'start_time' => $start->format('H:i'),
                         'end_time' => $nextEnd->format('H:i'),
                         'price' => $slots[$i]['price'] + $slots[$i + 1]['price'],
+                        'original_price' => $slots[$i]['original_price'] + $slots[$i + 1]['original_price'],
                     ];
                     $i += 2;
                     continue;

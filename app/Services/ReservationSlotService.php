@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Data\User\Reservations\ReservationSlotData;
 use App\Models\Court;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -15,22 +16,22 @@ class ReservationSlotService
     }
 
     /** @var $slots Collection<int, ReservationSlotData> */
-    public function isAllFree(Collection $slots): array
+    public function isAllFree(Collection $slots, User $user = null): array
     {
         $occupySlots = [];
         $freeSlots = [];
         $index = 0;
 
-        $slots->groupBy('court_id')->each(function (Collection $slots, $courtId) use (&$occupySlots, &$freeSlots, &$index) {
+        $slots->groupBy('court_id')->each(function (Collection $slots, $courtId) use ($user, &$occupySlots, &$freeSlots, &$index) {
            $court = Court::findOrFail($courtId);
 
-           $slots->each(function (ReservationSlotData $slot) use ($court, &$occupySlots, &$freeSlots, &$index) {
+           $slots->each(function (ReservationSlotData $slot) use ($user, $court, &$occupySlots, &$freeSlots, &$index) {
                $freeSlots[$index] = [...$slot->toArray(), 'slots' => []];
 
                $startTime = Carbon::parse($slot->date . ' ' . $slot->start_time);
                $endTime = Carbon::parse($slot->date . ' ' . $slot->end_time);
 
-               $availableSlots = collect($this->courtSlotService->generateFreeSlots($court, $startTime));
+               $availableSlots = collect($this->courtSlotService->generateFreeSlots($court, $startTime, $user));
 
                $currentTime = $startTime->copy();
 

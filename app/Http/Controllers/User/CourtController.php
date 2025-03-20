@@ -24,7 +24,7 @@ class CourtController extends Controller
             ->whereHas('intervals')
             ->get()
             ->map(function (Court $court) {
-               $court->fast_slots = $this->courtSlotService->getBestSlots($court, now());
+               $court->fast_slots = $this->courtSlotService->getBestSlots($court, now(), auth()->guard('user')->user());
 
                return $court;
             });
@@ -47,6 +47,10 @@ class CourtController extends Controller
             return response()->json([], 403);
         }
 
-        return CourtSlotData::collect($this->courtSlotService->generateFreeSlots($court, $data->date));
+        return CourtSlotData::collect($this->courtSlotService->generateFreeSlots(
+            $court,
+            $data->date,
+            auth()->guard('user')->user()
+        ));
     }
 }

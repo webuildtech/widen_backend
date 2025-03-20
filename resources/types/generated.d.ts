@@ -367,6 +367,7 @@ declare namespace App.Data.User.Courts {
         start_time: string;
         end_time: string;
         price: number;
+        original_price: number;
     };
     export type CourtTimesData = {
         date: string;

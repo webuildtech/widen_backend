@@ -27,7 +27,7 @@ class ReservationController extends Controller
             return response()->json(['error' => 'Įvyko klaida, bandykite dar kartą!'], 424);
         }
 
-        $slots = $this->reservationSlotService->isAllFree($data->slots);
+        $slots = $this->reservationSlotService->isAllFree($data->slots, auth()->guard('user')->user());
 
         if (count($slots['occupy']) > 0) {
             return response()->json(['slots' => $slots['occupy']], 423);

@@ -21,6 +21,8 @@ class CourtSlotData extends Data
         public string $end_time,
 
         public float  $price,
+
+        public float  $original_price,
     )
     {
     }
