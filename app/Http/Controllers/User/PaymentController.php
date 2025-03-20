@@ -25,7 +25,10 @@ class PaymentController extends Controller
         $values = request()->all(['json', 'mac']);
 
         if ($this->makeCommerceService->verify($values)) {
-            ProcessPaymentCallback::dispatch($this->makeCommerceService->extractData($values['json']));
+            $values = $this->makeCommerceService->extractData($values['json']);
+            \Log::info('callback', $values);
+
+            ProcessPaymentCallback::dispatch($values);
         }
 
         return response()->json();

@@ -3,17 +3,22 @@
 namespace App\Http\Controllers\User;
 
 use App\Data\User\Account\ChangeAccountPasswordData;
+use App\Data\User\Account\TopUpAccountBalanceData;
 use App\Data\User\Account\UpdateAccountData;
 use App\Data\User\AccountData;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Repositories\Models\UserRepositoryInterface;
+use App\Services\MakeCommerceService;
+use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected UserRepositoryInterface $userRepository,
+        protected MakeCommerceService     $makeCommerceService,
+        protected PaymentService          $paymentService,
     )
     {
     }
@@ -25,7 +30,6 @@ class AccountController extends Controller
 
     public function update(UpdateAccountData $data): AccountData
     {
-        \Log::info('aaa', $data->toArray());
         $user = $this->userRepository->update(auth()->user(), $data);
 
         return AccountData::from($user);
@@ -38,5 +42,16 @@ class AccountController extends Controller
         $user->update(['password' => Hash::make($data->password)]);
 
         return response()->json();
+    }
+
+    public function topUpBalance(TopUpAccountBalanceData $data): JsonResponse
+    {
+        $user = auth()->user();
+
+        $payment = $this->paymentService->createFromAmount($data->amount, $user);
+
+        $url = $this->makeCommerceService->createTransaction($payment, $user->email, request()->ip());
+
+        return response()->json(['url' => $url], 201);
     }
 }

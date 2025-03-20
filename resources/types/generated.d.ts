@@ -308,6 +308,9 @@ declare namespace App.Data.User.Account {
         old_password: string;
         password: string;
     };
+    export type TopUpAccountBalanceData = {
+        amount: number;
+    };
     export type UpdateAccountData = {
         first_name?: string;
         last_name?: string;
@@ -381,13 +384,8 @@ declare namespace App.Data.User.Payments {
     export type PaymentData = {
         status: string;
         type: string | null;
-        price: number;
-        vat: number;
-        price_with_vat: number;
-        discount: number;
-        paid_amount: number;
-        paid_amount_from_balance: number;
         email: string;
+        balance: number | null;
     };
 }
 declare namespace App.Data.User.Plans {

@@ -41,6 +41,7 @@ Route::middleware(['auth:user'])->group(function () {
         Route::get('me', [AccountController::class, 'show']);
         Route::put('me', [AccountController::class, 'update']);
         Route::put('change-password', [AccountController::class, 'changePassword']);
+        Route::post('top-up-balance', [AccountController::class, 'topUpBalance']);
     });
 
     Route::prefix('reservation-times')->group(function () {

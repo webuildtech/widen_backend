@@ -51,6 +51,21 @@ class PaymentService
         return $payment;
     }
 
+    public function createFromAmount(float $amount, User $user): Payment
+    {
+        $vat = round($amount - ($amount / 1.21), 2);
+
+        $payment = Payment::create([
+            'user_id' => $user->id,
+            'price' => $amount - $vat,
+            'vat' => $vat,
+            'price_with_vat' => $amount,
+            'paid_amount' => $amount,
+        ]);
+
+        return $payment;
+    }
+
     public function approve(Payment $payment): Payment
     {
         if ($payment->status === PaymentStatus::PAID->value) {
