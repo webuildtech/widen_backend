@@ -20,46 +20,27 @@ class ReservationSlotService
     {
         $occupySlots = [];
         $freeSlots = [];
-        $index = 0;
 
-        $slots->groupBy('court_id')->each(function (Collection $slots, $courtId) use ($user, &$occupySlots, &$freeSlots, &$index) {
-           $court = Court::findOrFail($courtId);
+        $slotsByDates = $slots->sortBy([['date', 'asc'], ['start_time', 'asc']])
+            ->groupBy('court_id')
+            ->map(fn ($dates) => $dates->groupBy('date'))
+            ->all();
 
-           $slots->each(function (ReservationSlotData $slot) use ($user, $court, &$occupySlots, &$freeSlots, &$index) {
-               $freeSlots[$index] = [...$slot->toArray(), 'slots' => []];
+        foreach ($slotsByDates as $courtId => $slotsByDate) {
+            $court = Court::findOrFail($courtId);
 
-               $startTime = Carbon::parse($slot->date . ' ' . $slot->start_time);
-               $endTime = Carbon::parse($slot->date . ' ' . $slot->end_time);
+            foreach ($slotsByDate as $date => $slots) {
+                $availableSlots = collect($this->courtSlotService->generateFreeSlots($court, Carbon::parse($date), $user));
 
-               $availableSlots = collect($this->courtSlotService->generateFreeSlots($court, $startTime, $user));
+                foreach ($slots as $slot) {
+                    $availableSlot = $availableSlots->filter(fn($available) =>
+                        $available['start_time'] === $slot->start_time && $available['end_time'] === $slot->end_time
+                    )->first();
 
-               $currentTime = $startTime->copy();
-
-               while ($currentTime < $endTime) {
-                   $availableSlot = $availableSlots->filter(fn($available) =>
-                       $available['start_time'] === $currentTime->format('H:i') &&
-                       $available['end_time'] === $currentTime->copy()->addMinutes(30)->format('H:i')
-                   )->first();
-
-                   if ($availableSlot) {
-                       $freeSlots[$index]['slots'][] = $availableSlot;
-                   } else {
-                       $occupySlots[] = [
-                           'court_id' => $court->id,
-                           'date' => $slot->date,
-                           'start_time' => $slot->start_time,
-                           'end_time' => $slot->end_time,
-                       ];
-
-                       break;
-                   }
-
-                   $currentTime->addMinutes(30);
-               }
-
-               $index++;
-           });
-        });
+                    $availableSlot ? $freeSlots[] = $availableSlot : $occupySlots[] = $slot;
+                }
+            }
+        }
 
         return ['occupy' => $occupySlots, 'free' => $freeSlots];
     }
@@ -67,14 +48,14 @@ class ReservationSlotService
     /** @var $slots Collection<int, ReservationSlotData> */
     public function isAllAvailable(Collection $slots): bool
     {
-        $grouped = $slots->groupBy('court_id')->map(fn ($dates) => $dates->groupBy('date'))->toArray();
+        $slotsByDates = $slots->groupBy('court_id')->map(fn ($dates) => $dates->groupBy('date'))->toArray();
 
-        foreach ($grouped as $dates) {
-            foreach ($dates as $slots) {
+        foreach ($slotsByDates as $slotsByDate) {
+            foreach ($slotsByDate as $slots) {
                 $filteredSlots = collect();
 
                 foreach ($slots as $slot) {
-                    if (!$this->isOverlapping($filteredSlots, $slot)) {
+                    if (!$this->haveDuplicate($filteredSlots, $slot)) {
                         $filteredSlots->push($slot);
                     } else {
                         return false;
@@ -86,10 +67,10 @@ class ReservationSlotService
         return true;
     }
 
-    private function isOverlapping($slots, $newSlot): bool
+    private function haveDuplicate($slots, $newSlot): bool
     {
         foreach ($slots as $slot) {
-            if ($newSlot['start_time'] <= $slot['end_time'] && $newSlot['end_time'] >= $slot['start_time']) {
+            if ($newSlot['start_time'] === $slot['start_time'] && $newSlot['end_time'] === $slot['end_time']) {
                 return true;
             }
         }

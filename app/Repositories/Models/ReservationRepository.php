@@ -14,7 +14,7 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
         parent::__construct($model);
     }
 
-    public function create(Data $data, array $timeSlots = []): Reservation
+    public function create(Data $data, array $slots = []): Reservation
     {
         $reservation = Reservation::create([
             'guest_first_name' => $data->guest_first_name,
@@ -24,14 +24,17 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
             'user_id' => $data->user_id,
         ]);
 
-        foreach ($timeSlots as $timeSlot) {
+        $mergedSlots = $this->mergeSlots($slots);
+
+        foreach ($mergedSlots as $mergedSlot) {
             $reservationTime = $reservation->times()->create([
-                'start_time' => Carbon::parse($timeSlot['date'] . ' ' . $timeSlot['start_time']),
-                'end_time' => Carbon::parse($timeSlot['date'] . ' ' . $timeSlot['end_time']),
-                'court_id' => $timeSlot['court_id'],
+                'start_time' => Carbon::parse($mergedSlot['date'] . ' ' . $mergedSlot['start_time']),
+                'end_time' => Carbon::parse($mergedSlot['date'] . ' ' . $mergedSlot['end_time']),
+                'court_id' => $mergedSlot['court_id'],
+                'price' => $mergedSlot['price'],
             ]);
 
-            foreach ($timeSlot['slots'] as $slot) {
+            foreach ($mergedSlot['related'] as $slot) {
                 $reservationTime->slots()->create([
                     'reservation_id' => $reservation->id,
                     'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
@@ -39,17 +42,41 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
                     'court_id' => $slot['court_id'],
                     'price' => $slot['price'],
                 ]);
-
-                $reservationTime->price += $slot['price'];
-                $reservation->price += $slot['price'];
             }
 
-            $reservationTime->save();
+            $reservation->price += $mergedSlot['price'];
         }
 
         $reservation->vat = round($reservation->price - ($reservation->price / 1.21), 2);
         $reservation->save();
 
         return $reservation->refresh();
+    }
+
+    private function mergeSlots(array $slots): array
+    {
+        $mergedSlots = [];
+
+        collect($slots)->sortBy([['date', 'asc'], ['court_id', 'asc'], ['start_time', 'asc']])
+            ->each(function ($slot) use (&$mergedSlots) {
+                $found = false;
+
+                foreach ($mergedSlots as &$mSlot) {
+                    if ($mSlot['date'] === $slot['date'] && $mSlot['court_id'] === $slot['court_id'] && $mSlot['end_time'] === $slot['start_time']) {
+                        $mSlot['end_time'] = $slot['end_time'];
+                        $mSlot['price'] += $slot['price'];
+                        $mSlot['related'][] = $slot;
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $slot['related'] = [$slot];
+                    $mergedSlots[] = $slot;
+                }
+            });
+
+        return $mergedSlots;
     }
 }

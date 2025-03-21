@@ -104,48 +104,7 @@ class CourtSlotService
 
     public function getBestSlots(Court $court, Carbon $date, User $user = null): array
     {
-        $allSlots = $this->generateFreeSlots($court, $date, $user);
-
-        if (count($allSlots) < 3) {
-            return $allSlots;
-        }
-
-        return $this->mergeAdjacentSlots($allSlots);
-    }
-
-    private function mergeAdjacentSlots(array $slots): array
-    {
-        $mergedSlots = [];
-        $i = 0;
-
-        while ($i < count($slots) && count($mergedSlots) < 3) {
-            $start = Carbon::parse($slots[$i]['start_time']);
-            $end = Carbon::parse($slots[$i]['end_time']);
-
-            if ($i + 1 < count($slots)) {
-                $nextStart = Carbon::parse($slots[$i + 1]['start_time']);
-                $nextEnd = Carbon::parse($slots[$i + 1]['end_time']);
-
-                if ($end->equalTo($nextStart)) {
-                    $mergedSlots[] = [
-                        'court_id' => $slots[$i]['court_id'],
-                        'date' => $slots[$i]['date'],
-                        'day' => $slots[$i]['day'],
-                        'start_time' => $start->format('H:i'),
-                        'end_time' => $nextEnd->format('H:i'),
-                        'price' => $slots[$i]['price'] + $slots[$i + 1]['price'],
-                        'original_price' => $slots[$i]['original_price'] + $slots[$i + 1]['original_price'],
-                    ];
-                    $i += 2;
-                    continue;
-                }
-            }
-
-            $mergedSlots[] = $slots[$i];
-            $i++;
-        }
-
-        return $mergedSlots;
+        return collect($this->generateFreeSlots($court, $date, $user))->take(6)->toArray();
     }
 }
 
