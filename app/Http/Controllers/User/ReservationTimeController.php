@@ -6,6 +6,7 @@ use App\Data\User\ReservationTimes\IndexReservationTimeData;
 use App\Data\User\ReservationTimes\ReservationTimeData;
 use App\Http\Controllers\Controller;
 use App\Models\ReservationTime;
+use LucasDotVin\Soulbscription\Models\FeatureConsumption;
 
 class ReservationTimeController extends Controller
 {
@@ -48,14 +49,19 @@ class ReservationTimeController extends Controller
         } else {
             $user->addBalance($reservationTime->price);
 
-            $reservationTime->update([
-                'refunded_amount' => $reservationTime->price,
-                'canceled_at' => now(),
-            ]);
+            $reservationTime->update(['refunded_amount' => $reservationTime->price, 'canceled_at' => now()]);
+
+            if ($reservationTime->used_free_slots > 0) {
+                $feature = FeatureConsumption::where('id', $reservationTime->reservation->feature_consumption_id)->first();
+                $feature->consumption === $reservationTime->used_free_slots ?
+                    $feature->delete() : $feature->update(['consumption' => $feature->consumption - $reservationTime->used_free_slots]);
+
+                $reservationTime->update(['refunded_free_slots' => $reservationTime->used_free_slots]);
+            }
 
             $reservationTime->slots()->delete();
         }
 
-        return response()->json(['balance' => $user->balance]);
+        return response()->json(['balance' => $user->balance, 'free_reservations_per_week' => $user->free_reservations_per_week]);
     }
 }

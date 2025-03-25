@@ -289,6 +289,7 @@ declare namespace App.Data.User {
         phone: string | null;
         balance: number;
         cancel_before: number;
+        free_reservations_per_week: number;
         is_company: boolean;
         company_name: string | null;
         company_code: string | null;
@@ -415,6 +416,7 @@ declare namespace App.Data.User.ReservationTimes {
         slot_end: string;
         price: number;
         is_refunded: boolean;
+        is_free_from_plan: boolean;
     };
     export type ReservationTimeData = {
         id: number;
@@ -424,6 +426,8 @@ declare namespace App.Data.User.ReservationTimes {
         end_time: string;
         price: number;
         refunded_amount: number;
+        used_free_slots: number;
+        refunded_free_slots: number;
         is_past: number;
         cancelled_at: string | null;
         slots: Array<App.Data.User.ReservationTimes.ReservationSlotData>;
@@ -442,6 +446,7 @@ declare namespace App.Data.User.Reservations {
         guest_last_name: string | null;
         guest_phone: string | null;
         user_id: number | null;
+        usedFreeSlots: number;
         slots: Array<App.Data.User.Reservations.ReservationSlotData>;
     };
 }

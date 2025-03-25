@@ -14,7 +14,7 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
         parent::__construct($model);
     }
 
-    public function create(Data $data, array $slots = []): Reservation
+    public function create(Data $data, array $slots = [], int $useFreeSlots = 0): Reservation
     {
         $reservation = Reservation::create([
             'guest_first_name' => $data->guest_first_name,
@@ -31,20 +31,31 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
                 'start_time' => Carbon::parse($mergedSlot['date'] . ' ' . $mergedSlot['start_time']),
                 'end_time' => Carbon::parse($mergedSlot['date'] . ' ' . $mergedSlot['end_time']),
                 'court_id' => $mergedSlot['court_id'],
-                'price' => $mergedSlot['price'],
             ]);
 
             foreach ($mergedSlot['related'] as $slot) {
+                $isFreeFromPlan = false;
+
+                if ($useFreeSlots > 0) {
+                    $isFreeFromPlan = true;
+                    $reservationTime->used_free_slots += 1;
+                    $useFreeSlots--;
+                }
+
                 $reservationTime->slots()->create([
                     'reservation_id' => $reservation->id,
                     'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
                     'slot_end' => Carbon::parse($slot['date'] . ' ' . $slot['end_time']),
                     'court_id' => $slot['court_id'],
-                    'price' => $slot['price'],
+                    'price' => $isFreeFromPlan ? 0 : $slot['price'],
+                    'is_free_from_plan' => $isFreeFromPlan
                 ]);
+
+                $reservationTime->price += $isFreeFromPlan ? 0 : $slot['price'];
             }
 
-            $reservation->price += $mergedSlot['price'];
+            $reservationTime->save();
+            $reservation->price += $reservationTime->price;
         }
 
         $reservation->vat = round($reservation->price - ($reservation->price / 1.21), 2);
@@ -64,7 +75,6 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
                 foreach ($mergedSlots as &$mSlot) {
                     if ($mSlot['date'] === $slot['date'] && $mSlot['court_id'] === $slot['court_id'] && $mSlot['end_time'] === $slot['start_time']) {
                         $mSlot['end_time'] = $slot['end_time'];
-                        $mSlot['price'] += $slot['price'];
                         $mSlot['related'][] = $slot;
                         $found = true;
                         break;

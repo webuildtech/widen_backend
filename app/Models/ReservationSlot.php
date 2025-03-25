@@ -14,6 +14,11 @@ class ReservationSlot extends BaseModel
         'slot_end' => 'datetime',
     ];
 
+    public function reservation(): BelongsTo
+    {
+        return $this->belongsTo(Reservation::class);
+    }
+
     public function reservationTime(): BelongsTo
     {
         return $this->belongsTo(ReservationTime::class);

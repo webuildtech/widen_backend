@@ -25,6 +25,8 @@ class StoreReservationData extends Data
 
         public ?int       $user_id,
 
+        public int        $usedFreeSlots,
+
         /** @var Collection<int, ReservationSlotData> */
         #[Min(1)]
         public Collection $slots

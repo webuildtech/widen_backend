@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_paid')->default(false);
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('feature_consumption_id')->nullable()->constrained()->nullOnDelete();
             $table->string('guest_first_name')->nullable();
             $table->string('guest_last_name')->nullable();
             $table->string('guest_email')->nullable();

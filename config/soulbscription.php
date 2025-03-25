@@ -9,7 +9,7 @@ return [
 
     'models' => [
 
-        'feature' => \LucasDotVin\Soulbscription\Models\Feature::class,
+        'feature' => \App\Models\Feature::class,
 
         'feature_consumption' => \LucasDotVin\Soulbscription\Models\FeatureConsumption::class,
 

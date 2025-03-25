@@ -132,6 +132,47 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
+ * @property int $consumable
+ * @property int $quota
+ * @property int $postpaid
+ * @property int|null $periodicity
+ * @property string|null $periodicity_type
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Plan> $plans
+ * @property-read int|null $plans_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $tickets
+ * @property-read int|null $tickets_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereConsumable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature wherePeriodicity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature wherePeriodicityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature wherePostpaid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereQuota($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperFeature {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name
  * @property int|null $plan_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -261,7 +302,7 @@ namespace App\Models{
  * @property string $paid_amount_from_balance
  * @property string $refunded_amount
  * @property string $refunded_amount_to_balance
- * @property string|null $paid_at
+ * @property \Illuminate\Support\Carbon|null $paid_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -318,7 +359,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Feature> $features
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
  * @property-read int|null $features_count
  * @property-read mixed $has_grace_days
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
@@ -356,6 +397,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int|null $user_id
+ * @property int|null $feature_consumption_id
  * @property int $is_paid
  * @property string|null $guest_first_name
  * @property string|null $guest_last_name
@@ -386,6 +428,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereFeatureConsumptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestLastName($value)
@@ -419,6 +462,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $slot_end
  * @property string $price
  * @property string $discount
+ * @property int $is_free_from_plan
  * @property int $try_sell
  * @property int $is_refunded
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -426,6 +470,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \App\Models\Reservation $reservation
  * @property-read \App\Models\ReservationTime $reservationTime
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newQuery()
@@ -437,6 +482,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereDiscount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereIsFreeFromPlan($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereIsRefunded($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereReservationId($value)
@@ -464,7 +510,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $end_time
  * @property float $price
  * @property string $discount
+ * @property int $used_free_slots
  * @property float $refunded_amount
+ * @property int $refunded_free_slots
  * @property \Illuminate\Support\Carbon|null $canceled_at
  * @property string|null $cancellation_reason
  * @property int $refund_attempted
@@ -493,9 +541,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundAttempted($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedFreeSlots($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereReservationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUsedFreeSlots($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withoutTrashed()
  * @mixin \Eloquent
@@ -536,6 +586,7 @@ namespace App\Models{
  * @property-read int|null $feature_tickets_count
  * @property-read int $cancel_before
  * @property-read \Illuminate\Database\Eloquent\Collection $features
+ * @property-read int $free_reservations_per_week
  * @property-read string $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count

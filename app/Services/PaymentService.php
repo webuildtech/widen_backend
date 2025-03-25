@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\Reservation;
 use App\Models\User;
+use LucasDotVin\Soulbscription\Models\FeatureConsumption;
 
 class PaymentService
 {
@@ -95,6 +96,10 @@ class PaymentService
 
         if ($payment->paymentable_type === 'reservation') {
             $reservation = $payment->paymentable;
+
+            if ($reservation->feature_consumption_id) {
+               FeatureConsumption::where('id', $reservation->feature_consumption_id)->delete();
+            }
 
             $reservation->slots()->delete();
             $reservation->times()->delete();
