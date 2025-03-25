@@ -14,7 +14,7 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
         parent::__construct($model);
     }
 
-    public function create(Data $data, array $slots = [], int $useFreeSlots = 0): Reservation
+    public function create(Data $data, array $slots = [], int $useFreeSlots = 0, float $discount = 0): Reservation
     {
         $reservation = Reservation::create([
             'guest_first_name' => $data->guest_first_name,
@@ -42,23 +42,28 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
                     $useFreeSlots--;
                 }
 
+                $priceDetails = applyDiscountAndCalculatePriceDetails($slot['price'], $discount);
+
                 $reservationTime->slots()->create([
                     'reservation_id' => $reservation->id,
                     'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
                     'slot_end' => Carbon::parse($slot['date'] . ' ' . $slot['end_time']),
                     'court_id' => $slot['court_id'],
-                    'price' => $isFreeFromPlan ? 0 : $slot['price'],
+                    'price' => $isFreeFromPlan ? 0 : $priceDetails->priceWithVat,
+                    'discount' => $priceDetails->discount,
                     'is_free_from_plan' => $isFreeFromPlan
                 ]);
 
-                $reservationTime->price += $isFreeFromPlan ? 0 : $slot['price'];
+                $reservationTime->price += $isFreeFromPlan ? 0 : $priceDetails->priceWithVat;
+                $reservationTime->discount += $priceDetails->discount;
+                $reservation->vat += $priceDetails->vat;
             }
 
             $reservationTime->save();
             $reservation->price += $reservationTime->price;
+            $reservation->discount += $reservationTime->discount;
         }
 
-        $reservation->vat = round($reservation->price - ($reservation->price / 1.21), 2);
         $reservation->save();
 
         return $reservation->refresh();

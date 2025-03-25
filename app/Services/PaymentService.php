@@ -14,17 +14,18 @@ class PaymentService
 {
     public function createFromPlan(Plan $plan, User $user): Payment
     {
-        $vat = round($plan->price - ($plan->price / 1.21), 2);
+        $priceDetails = applyDiscountAndCalculatePriceDetails($plan->price, $user->discount_on_everything);
 
-        $paidAmountFromBalance = $user->getDeductedAmount($plan->price);
+        $paidAmountFromBalance = $user->getDeductedAmount($priceDetails->priceWithVat);
         $user->deductBalance($paidAmountFromBalance);
 
         $payment = $plan->payment()->create([
             'user_id' => $user->id,
-            'price' => $plan->price - $vat,
-            'vat' => $vat,
-            'price_with_vat' => $plan->price,
-            'paid_amount' => $plan->price - $paidAmountFromBalance,
+            'price' => $priceDetails->price,
+            'vat' => $priceDetails->vat,
+            'discount' => $priceDetails->discount,
+            'price_with_vat' => $priceDetails->priceWithVat,
+            'paid_amount' => $priceDetails->priceWithVat - $paidAmountFromBalance,
             'paid_amount_from_balance' => $paidAmountFromBalance
         ]);
 
@@ -42,6 +43,7 @@ class PaymentService
 
         $payment = $reservation->payment()->create([
             'user_id' => $reservation->user_id,
+            'discount' => $reservation->discount,
             'price' => $reservation->price - $reservation->vat,
             'vat' => $reservation->vat,
             'price_with_vat' => $reservation->price,

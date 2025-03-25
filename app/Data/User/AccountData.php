@@ -22,6 +22,8 @@ class AccountData extends Data
 
         public float   $balance,
 
+        public float   $discount_on_everything,
+
         public int     $cancel_before,
 
         public int     $free_reservations_per_week,

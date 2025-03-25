@@ -36,11 +36,15 @@ class ReservationController extends Controller
             return response()->json(['slots' => $slots['occupy']], 423);
         }
 
-        if (($user && $user->cantConsume(FeatureType::RESERVATION_PER_WEEK->value, $data->usedFreeSlots)) || $data->usedFreeSlots > $data->slots->count()) {
-            return response()->json(['error' => 'Įvyko klaida, bandykite dar kartą!'], 424);
+        if ($data->usedFreeSlots > 0) {
+            if (($user && $user->cantConsume(FeatureType::RESERVATION_PER_WEEK->value, $data->usedFreeSlots)) || $data->usedFreeSlots > $data->slots->count()) {
+                return response()->json(['error' => 'Įvyko klaida, bandykite dar kartą!'], 424);
+            }
         }
 
-        $reservation = $this->reservationRepository->create($data, $slots['free'], $user ? $data->usedFreeSlots : 0);
+        $reservation = $this->reservationRepository->create(
+            $data, $slots['free'], $user ? $data->usedFreeSlots : 0, $user ? $user->discount_on_everything : 0
+        );
 
         if ($user && $data->usedFreeSlots > 0) {
             $user->consume(FeatureType::RESERVATION_PER_WEEK->value, $data->usedFreeSlots);

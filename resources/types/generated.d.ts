@@ -288,6 +288,7 @@ declare namespace App.Data.User {
         birthday: string | null;
         phone: string | null;
         balance: number;
+        discount_on_everything: number;
         cancel_before: number;
         free_reservations_per_week: number;
         is_company: boolean;
