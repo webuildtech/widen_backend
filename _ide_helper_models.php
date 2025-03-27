@@ -20,6 +20,7 @@ namespace App\Models{
  * @property string $last_name
  * @property string $email
  * @property string|null $phone
+ * @property int $blocked
  * @property string $password
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -44,6 +45,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin role($roles, $guard = null, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereBlocked($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereEmail($value)
@@ -396,9 +398,9 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $is_paid
  * @property int|null $user_id
  * @property int|null $feature_consumption_id
- * @property int $is_paid
  * @property string|null $guest_first_name
  * @property string|null $guest_last_name
  * @property string|null $guest_email
@@ -406,9 +408,7 @@ namespace App\Models{
  * @property string $price
  * @property string $vat
  * @property string $discount
- * @property string $paid_amount
- * @property string $paid_amount_from_balance
- * @property string $refunded_amount
+ * @property string $price_with_vat
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -435,10 +435,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereIsPaid($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePaidAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePaidAmountFromBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePriceWithVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereVat($value)
@@ -461,7 +459,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $slot_start
  * @property \Illuminate\Support\Carbon $slot_end
  * @property string $price
+ * @property string $vat
  * @property string $discount
+ * @property string $price_with_vat
  * @property int $is_free_from_plan
  * @property int $try_sell
  * @property int $is_refunded
@@ -485,12 +485,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereIsFreeFromPlan($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereIsRefunded($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePriceWithVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereReservationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereReservationTimeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereSlotEnd($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereSlotStart($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereTrySell($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot withoutTrashed()
  * @mixin \Eloquent
@@ -509,7 +511,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $start_time
  * @property \Illuminate\Support\Carbon $end_time
  * @property float $price
+ * @property string $vat
  * @property string $discount
+ * @property string $price_with_vat
  * @property int $used_free_slots
  * @property float $refunded_amount
  * @property int $refunded_free_slots
@@ -539,6 +543,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereEndTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePriceWithVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundAttempted($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedFreeSlots($value)
@@ -546,6 +551,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUsedFreeSlots($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withoutTrashed()
  * @mixin \Eloquent

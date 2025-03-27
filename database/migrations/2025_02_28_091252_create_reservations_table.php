@@ -23,9 +23,7 @@ return new class extends Migration
             $table->decimal('price', 10)->default(0);
             $table->decimal('vat', 10)->default(0);
             $table->decimal('discount', 10)->default(0);
-            $table->decimal('paid_amount', 10)->default(0);
-            $table->decimal('paid_amount_from_balance', 10)->default(0);
-            $table->decimal('refunded_amount', 10)->default(0);
+            $table->decimal('price_with_vat', 10)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

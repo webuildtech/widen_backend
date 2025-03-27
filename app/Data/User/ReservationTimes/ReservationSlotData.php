@@ -14,7 +14,7 @@ class ReservationSlotData extends Data
 
         public string $slot_end,
 
-        public float  $price,
+        public float  $price_with_vat,
 
         public bool   $is_refunded,
 

@@ -4,11 +4,14 @@ namespace App\Services;
 
 use App\Enums\PaymentStatus;
 use App\Jobs\CheckRefundSlots;
+use App\Jobs\GenerateInvoice;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\Reservation;
 use App\Models\User;
 use LucasDotVin\Soulbscription\Models\FeatureConsumption;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class PaymentService
 {
@@ -16,7 +19,7 @@ class PaymentService
     {
         $priceDetails = applyDiscountAndCalculatePriceDetails($plan->price, $user->discount_on_everything);
 
-        $paidAmountFromBalance = $user->getDeductedAmount($priceDetails->priceWithVat);
+        $paidAmountFromBalance = $user->getDeductedAmount($priceDetails->price_with_vat);
         $user->deductBalance($paidAmountFromBalance);
 
         $payment = $plan->payment()->create([
@@ -24,8 +27,8 @@ class PaymentService
             'price' => $priceDetails->price,
             'vat' => $priceDetails->vat,
             'discount' => $priceDetails->discount,
-            'price_with_vat' => $priceDetails->priceWithVat,
-            'paid_amount' => $priceDetails->priceWithVat - $paidAmountFromBalance,
+            'price_with_vat' => $priceDetails->price_with_vat,
+            'paid_amount' => $priceDetails->price_with_vat - $paidAmountFromBalance,
             'paid_amount_from_balance' => $paidAmountFromBalance
         ]);
 
@@ -37,17 +40,17 @@ class PaymentService
         $paidAmountFromBalance = 0;
 
         if ($user) {
-            $paidAmountFromBalance = $user->getDeductedAmount($reservation->price);
+            $paidAmountFromBalance = $user->getDeductedAmount($reservation->price_with_vat);
             $user->deductBalance($paidAmountFromBalance);
         }
 
         $payment = $reservation->payment()->create([
             'user_id' => $reservation->user_id,
             'discount' => $reservation->discount,
-            'price' => $reservation->price - $reservation->vat,
+            'price' => $reservation->price,
             'vat' => $reservation->vat,
-            'price_with_vat' => $reservation->price,
-            'paid_amount' => $reservation->price - $paidAmountFromBalance,
+            'price_with_vat' => $reservation->price_with_vat,
+            'paid_amount' => $reservation->price_with_vat - $paidAmountFromBalance,
             'paid_amount_from_balance' => $paidAmountFromBalance
         ]);
 
@@ -82,6 +85,8 @@ class PaymentService
             'reservation' => $this->handleReservationPayment($payment),
             default => $this->handleDefaultPayment($payment),
         };
+
+        GenerateInvoice::dispatch($payment);
 
         return $payment;
     }
@@ -126,5 +131,30 @@ class PaymentService
     private function handleDefaultPayment(Payment $payment): void
     {
         $payment->user->addBalance($payment->paid_amount);
+    }
+
+    public function generateInvoice(Payment $payment): Payment
+    {
+        if ($payment->invoice_path) {
+            return $payment;
+        }
+
+        if (!$payment->invoice_no) {
+            $payment->update(['invoice_no' => Payment::whereNotNull('invoice_no')->max('invoice_no') + 1]);
+        }
+
+        $path = "/invoices/Septyni Sesi SF - " . $payment->invoice_no . ".pdf";
+
+        Pdf::view('pdfs.invoice', ['payment' => $payment])->disk('local')
+            ->withBrowsershot(function (Browsershot $browsershot) {
+                $browsershot->setNodeBinary(env('LOCAL_NODE_PATH'))
+                    ->setNpmBinary(env('LOCAL_NPM_PATH'))
+                    ->noSandbox();
+            })
+            ->save($path);
+
+        $payment->update(['invoice_path' => $path]);
+
+        return $payment;
     }
 }

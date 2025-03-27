@@ -42,26 +42,31 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
                     $useFreeSlots--;
                 }
 
-                $priceDetails = applyDiscountAndCalculatePriceDetails($slot['price'], $discount);
+                $priceDetails = applyDiscountAndCalculatePriceDetails($slot['price'], $discount, $isFreeFromPlan);
 
                 $reservationTime->slots()->create([
                     'reservation_id' => $reservation->id,
                     'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
                     'slot_end' => Carbon::parse($slot['date'] . ' ' . $slot['end_time']),
                     'court_id' => $slot['court_id'],
-                    'price' => $isFreeFromPlan ? 0 : $priceDetails->priceWithVat,
+                    'price' => $priceDetails->price,
+                    'vat' => $priceDetails->vat,
                     'discount' => $priceDetails->discount,
+                    'price_with_vat' => $priceDetails->price_with_vat,
                     'is_free_from_plan' => $isFreeFromPlan
                 ]);
 
-                $reservationTime->price += $isFreeFromPlan ? 0 : $priceDetails->priceWithVat;
+                $reservationTime->price += $priceDetails->price;
+                $reservationTime->vat += $priceDetails->vat;
                 $reservationTime->discount += $priceDetails->discount;
-                $reservation->vat += $priceDetails->vat;
+                $reservationTime->price_with_vat += $priceDetails->price_with_vat;
             }
 
             $reservationTime->save();
             $reservation->price += $reservationTime->price;
+            $reservation->vat += $reservationTime->vat;
             $reservation->discount += $reservationTime->discount;
+            $reservation->price_with_vat += $reservationTime->price_with_vat;
         }
 
         $reservation->save();

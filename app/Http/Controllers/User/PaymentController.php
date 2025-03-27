@@ -66,4 +66,17 @@ class PaymentController extends Controller
 
         return PaymentData::from($payment);
     }
+
+    public function downloadInvoice(Payment $payment)
+    {
+        if (auth()->user()->id !== $payment->user_id) {
+            return response()->json(['error' => 'Veiksmas negalimas!'], 403);
+        }
+
+        if (!$payment->invoice_path) {
+            $payment = $this->paymentService->generateInvoice($payment);
+        }
+
+        return response()->download(storage_path('app' . $payment->invoice_path));
+    }
 }

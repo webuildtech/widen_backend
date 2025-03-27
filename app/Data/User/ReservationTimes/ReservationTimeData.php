@@ -22,7 +22,7 @@ class ReservationTimeData extends Data
 
         public string     $end_time,
 
-        public float      $price,
+        public float      $price_with_vat,
 
         public float      $refunded_amount,
 
@@ -48,7 +48,7 @@ class ReservationTimeData extends Data
             $time->start_time->format('Y-m-d'),
             $time->start_time->format('H:i'),
             $time->end_time->format('H:i'),
-            $time->price,
+            $time->price_with_vat,
             $time->refunded_amount,
             $time->used_free_slots,
             $time->refunded_free_slots,

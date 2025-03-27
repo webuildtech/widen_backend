@@ -19,7 +19,9 @@ return new class extends Migration
             $table->dateTime('slot_start');
             $table->dateTime('slot_end');
             $table->decimal('price', 10)->default(0);
+            $table->decimal('vat', 10)->default(0);
             $table->decimal('discount', 10)->default(0);
+            $table->decimal('price_with_vat', 10)->default(0);
             $table->boolean('is_free_from_plan')->default(false);
             $table->boolean('try_sell')->default(false);
             $table->boolean('is_refunded')->default(false);

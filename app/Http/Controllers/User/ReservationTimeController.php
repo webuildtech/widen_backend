@@ -37,19 +37,19 @@ class ReservationTimeController extends Controller
 
     public function cancel(ReservationTime $reservationTime)
     {
-        if ($reservationTime->canceled_at) {
+        $user = auth()->user();
+
+        if ($reservationTime->canceled_at || $user->id !== $reservationTime->reservation->user_id) {
             return response()->json(['error' => 'Veiksmas negalimas!'], 406);
         }
-
-        $user = auth()->user();
 
         if ($reservationTime->start_time->isBefore(now()->addHours($user->cancel_before))) {
             $reservationTime->update(['canceled_at' => now()]);
             $reservationTime->slots()->update(['try_sell' => true]);
         } else {
-            $user->addBalance($reservationTime->price);
+            $user->addBalance($reservationTime->price_with_vat);
 
-            $reservationTime->update(['refunded_amount' => $reservationTime->price, 'canceled_at' => now()]);
+            $reservationTime->update(['refunded_amount' => $reservationTime->price_with_vat, 'canceled_at' => now()]);
 
             if ($reservationTime->used_free_slots > 0) {
                 $feature = FeatureConsumption::where('id', $reservationTime->reservation->feature_consumption_id)->first();

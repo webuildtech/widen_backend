@@ -38,9 +38,9 @@ class CheckRefundSlots implements ShouldQueue
 
                     $reservationTime->update(['refunded_free_slots' => $reservationTime->refunded_free_slots + 1]);
                 } else {
-                    $reservationTime->update(['refunded_amount' => $reservationTime->refunded_amount + $refundSlot->price]);
+                    $reservationTime->update(['refunded_amount' => $reservationTime->refunded_amount + $refundSlot->price_with_vat]);
 
-                    $reservationTime->reservation->user->addBalance($refundSlot->price);
+                    $reservationTime->reservation->user->addBalance($refundSlot->price_with_vat);
                 }
 
                 if (!$reservationTime->slots()->where('is_refunded', true)->exists()) {

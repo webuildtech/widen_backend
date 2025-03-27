@@ -18,13 +18,14 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->decimal('price', 10)->default(0);
+            $table->decimal('vat', 10)->default(0);
             $table->decimal('discount', 10)->default(0);
+            $table->decimal('price_with_vat', 10)->default(0);
             $table->integer('used_free_slots')->default(0);
             $table->decimal('refunded_amount', 10)->default(0);
             $table->integer('refunded_free_slots')->default(0);
             $table->dateTime('canceled_at')->nullable();
             $table->text('cancellation_reason')->nullable();
-            $table->boolean('refund_attempted')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
