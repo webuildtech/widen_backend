@@ -118,7 +118,31 @@ class PaymentService
 
     private function handlePlanPayment(Payment $payment): void
     {
-        $payment->user->subscribeTo($payment->paymentable);
+        $user = $payment->user;
+
+        $subscription = $user->subscription ?? $user->lastSubscription();
+
+        if (!$subscription || ($subscription->is_overdue && $subscription->canceled_at)) {
+            $user->subscribeTo($payment->paymentable);
+        } else {
+            if ($payment->paymentable_id === $subscription->plan_id) {
+                $subscription->renew();
+            } else {
+                $user->addBalance($payment->price_with_vat);
+
+                $priceDetails = applyDiscountAndCalculatePriceDetails($payment->paid_amount, 0);
+
+                $payment->update([
+                    'paymentable_id' => null,
+                    'paymentable_type' => null,
+                    'discount' => 0,
+                    'paid_amount_from_balance' => 0,
+                    'price' => $priceDetails->price,
+                    'vat' => $priceDetails->vat,
+                    'price_with_vat' => $priceDetails->price_with_vat,
+                ]);
+            }
+        }
     }
 
     private function handleReservationPayment(Payment $payment): void

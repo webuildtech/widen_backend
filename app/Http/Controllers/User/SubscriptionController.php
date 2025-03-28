@@ -32,7 +32,7 @@ class SubscriptionController extends Controller
                 'expired_at' => $subscription->expired_at,
                 'cancelled_at' => $subscription->cancelled_at,
                 'plan' => PlanData::from($subscription->plan),
-                FeatureType::RESERVATION_PER_WEEK->value => $user->getCurrentConsumption(FeatureType::RESERVATION_PER_WEEK->value)
+                FeatureType::RESERVATION_PER_WEEK->value => $user->balance(FeatureType::RESERVATION_PER_WEEK->value)
             ]);
         }
 
@@ -43,8 +43,12 @@ class SubscriptionController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->subscription) {
-            return response()->json(['error' => 'Jau turite aktyvią prenumeratą!'], 405);
+        $subscription = $user->subscription ?? $user->lastSubscription();
+
+        if ($subscription && $subscription->plan_id !== $plan->id) {
+            if (!$subscription->is_overdue || ($subscription->is_overdue && !$subscription->canceled_at)) {
+                return response()->json(['error' => 'Jau turite kita aktyvią prenumeratą!'], 405);
+            }
         }
 
         $payment = $this->paymentService->createFromPlan($plan, $user);
