@@ -15,7 +15,7 @@ use Spatie\LaravelPdf\Facades\Pdf;
 
 class PaymentService
 {
-    public function createFromPlan(Plan $plan, User $user): Payment
+    public function createFromPlan(Plan $plan, User $user, bool $renew = false): Payment
     {
         $priceDetails = applyDiscountAndCalculatePriceDetails($plan->price, $user->discount_on_everything);
 
@@ -24,6 +24,7 @@ class PaymentService
 
         $payment = $plan->payment()->create([
             'user_id' => $user->id,
+            'renew' => $renew,
             'price' => $priceDetails->price,
             'vat' => $priceDetails->vat,
             'discount' => $priceDetails->discount,

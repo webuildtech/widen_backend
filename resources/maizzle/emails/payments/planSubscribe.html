@@ -1,0 +1,29 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+      Sveiki, @{{ $payment->user->first_name }},
+    </h1>
+
+    <p class="m-0 text-base/6 text-slate-600">
+      Džiaugiamės galėdami pranešti, kad Jūsų pasirinktas planas buvo sėkmingai @{{$renew ? 'pratęstas' : 'aktyvuotas'}}.
+    </p>
+
+    <h3 class="text-lg/7 text-slate-900 font-semibold">
+      Plano informacija:
+    </h3>
+
+    <ul class="list-disc">
+      <li>
+        <strong>Pavadinimas:</strong> @{{ $payment->paymentable->name }}
+      </li>
+
+      <li>
+        <strong>Kaina:</strong> @{{ $payment->price_with_vat }} €
+      </li>
+    </ul>
+
+    <x-button href="@{{ $appUrl }}/dashboard/plan" class="bg-green-700 hover:bg-green-800">
+      Jūsų planas
+    </x-button>
+  </div>
+</x-main>

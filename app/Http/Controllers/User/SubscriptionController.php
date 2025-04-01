@@ -51,7 +51,7 @@ class SubscriptionController extends Controller
             }
         }
 
-        $payment = $this->paymentService->createFromPlan($plan, $user);
+        $payment = $this->paymentService->createFromPlan($plan, $user, $subscription && !$subscription->canceled_at);
 
         if ($payment->paid_amount > 0) {
             $url = $this->makeCommerceService->createTransaction($payment, $payment->user->email, request()->ip());

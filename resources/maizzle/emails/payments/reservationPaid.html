@@ -1,0 +1,53 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+      Sveiki, @{{ $payment->user->first_name ?? $payment->paymentable->guest_first_name }},
+    </h1>
+
+    <p class="m-0 text-base/6 text-slate-600">
+      Dėkojame už Jūsų apmokėjimą! Jūsų rezervacija sėkmingai patvirtinta.
+    </p>
+
+    <h2 class="font-semibold text-gray-800 text-lg/7">
+      📅 Rezervacijos informacija:
+    </h2>
+
+    <table class="w-full border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="text-left p-2 border-b border-gray-200">Data</th>
+          <th class="text-left p-2 border-b border-gray-200">Laikas</th>
+          <th class="text-left p-2 border-b border-gray-200">Kortas</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @foreach ($payment->paymentable->times as $time)
+          <tr>
+            <td class="p-2 border-b border-gray-200">
+              @{{ $time->start_time->format('Y-m-d') }}
+            </td>
+
+            <td class="p-2 border-b border-gray-200">
+              @{{ $time->start_time->format('H:i') }} - @{{ $time->end_time->format('H:i') }}
+            </td>
+
+            <td class="p-2 border-b border-gray-200">
+              @{{ $time->court->name }}
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
+
+    <p class="mt-4">
+      💰 <strong>Suma:</strong> @{{ $payment->price_with_vat }} €
+    </p>
+
+    @if ($payment->user_id)
+      <x-button href="@{{ $appUrl }}/dashboard" class="bg-green-700 hover:bg-green-800">
+        Prietaisų skydelis
+      </x-button>
+    @endif
+  </div>
+</x-main>

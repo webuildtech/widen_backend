@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('transaction_id')->nullable();
             $table->enum('status', array_column(PaymentStatus::cases(), 'value'))->default(PaymentStatus::PENDING->value);
             $table->nullableMorphs('paymentable');
+            $table->boolean('renew')->default(false);
             $table->string('invoice_no')->nullable();
             $table->string('invoice_path')->nullable();
             $table->decimal('price', 10)->default(0);

@@ -1,0 +1,25 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+      Sveiki, @{{ $payment->user->first_name }},
+    </h1>
+
+    <p class="m-0 text-base/6 text-slate-600">
+      Informuojame, kad jūsų paskyros balansas buvo sėkmingai papildytas.
+    </p>
+
+    <ul class="list-disc">
+      <li>
+        <strong>Suma:</strong> @{{ $payment->price_with_vat }} €
+      </li>
+
+      <li>
+        <strong>Data:</strong> @{{ $payment->paid_at }}
+      </li>
+    </ul>
+
+    <x-button href="@{{ $appUrl }}/dashboard" class="bg-green-700 hover:bg-green-800">
+      Prietaisų skydelis
+    </x-button>
+  </div>
+</x-main>
