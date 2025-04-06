@@ -294,6 +294,7 @@ namespace App\Models{
  * @property string $status
  * @property string|null $paymentable_type
  * @property int|null $paymentable_id
+ * @property int $renew
  * @property string|null $invoice_no
  * @property string|null $invoice_path
  * @property string $price
@@ -332,6 +333,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePriceWithVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmountToBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRenew($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)

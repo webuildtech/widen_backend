@@ -415,7 +415,7 @@ declare namespace App.Data.User.ReservationTimes {
     export type ReservationSlotData = {
         slot_start: string;
         slot_end: string;
-        price: number;
+        price_with_vat: number;
         is_refunded: boolean;
         is_free_from_plan: boolean;
     };
@@ -425,7 +425,7 @@ declare namespace App.Data.User.ReservationTimes {
         date: string;
         start_time: string;
         end_time: string;
-        price: number;
+        price_with_vat: number;
         refunded_amount: number;
         used_free_slots: number;
         refunded_free_slots: number;

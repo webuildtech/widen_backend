@@ -28,7 +28,7 @@ class ReservationSlotData extends Data
         return new self(
             $slot->slot_start->format('H:i'),
             $slot->slot_end->format('H:i'),
-            $slot->price,
+            $slot->price_with_vat,
             $slot->is_refunded,
             $slot->is_free_from_plan,
         );

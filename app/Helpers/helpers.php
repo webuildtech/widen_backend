@@ -7,7 +7,7 @@ if (!function_exists('applyDiscountAndCalculatePriceDetails')) {
     function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount, bool $isFreeFromPlan = false): stdClass
     {
         if ($isFreeFromPlan) {
-            return (object)['price' => 0, 'discount' => 0, 'vat' => 0, 'priceWithVat' => 0];
+            return (object)['price' => 0, 'discount' => 0, 'vat' => 0, 'price_with_vat' => 0];
         }
 
         $priceWithoutVAT = $priceWithVat / 1.21;
