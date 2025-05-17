@@ -19,6 +19,8 @@ class PlanData extends Data
 
         public int        $reservations_per_week,
 
+        public int        $cancel_before,
+
         public float      $price,
 
         public bool       $active,
@@ -33,6 +35,7 @@ class PlanData extends Data
             $plan->name,
             $plan->type,
             $plan->features()->where('name', FeatureType::RESERVATION_PER_WEEK->value)->first()->pivot->charges,
+            $plan->cancel_before,
             $plan->price,
             $plan->active,
         );

@@ -20,6 +20,7 @@ class Plan extends PlanBase
         'type',
         'active',
         'price',
+        'cancel_before',
         'periodicity_type',
         'periodicity',
     ];

@@ -22,6 +22,9 @@ class StorePlanData extends Data
         #[Rule(['min:0', 'max:2147483647'])]
         public int           $reservations_per_week,
 
+        #[Rule(['min:0', 'max:2147483647'])]
+        public int           $cancel_before,
+
         #[Numeric, Min(0)]
         public float         $price,
 

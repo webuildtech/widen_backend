@@ -97,7 +97,7 @@ class User extends Authenticatable
 
     public function getCancelBeforeAttribute(): int
     {
-        return 48;
+        return $this->subscription ? $this->subscription->plan->cancel_before : 48;
     }
 
     public function getDeductedAmount(float $totalPrice): float

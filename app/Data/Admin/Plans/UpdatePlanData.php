@@ -22,6 +22,9 @@ class UpdatePlanData extends Data
         #[Rule(['min:0', 'max:2147483647'])]
         public int|Optional    $reservations_per_week,
 
+        #[Rule(['min:0', 'max:2147483647'])]
+        public int|Optional    $cancel_before,
+
         #[Numeric, Min(0)]
         public float|Optional  $price,
 

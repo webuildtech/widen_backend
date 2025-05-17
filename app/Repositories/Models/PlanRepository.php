@@ -25,6 +25,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
             'name' => $values['name'],
             'type' => $values['type'],
             'price' => $values['price'],
+            'cancel_before' => $values['cancel_before'],
             'periodicity' => 1,
             'periodicity_type' => PeriodicityType::Month,
             'active' => $values['active'] ?? 0,
