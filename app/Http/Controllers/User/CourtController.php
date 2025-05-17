@@ -18,13 +18,13 @@ class CourtController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(CourtTimesData $data)
     {
         $courts = Court::whereActive(true)
             ->whereHas('intervals')
             ->get()
-            ->map(function (Court $court) {
-               $court->fast_slots = $this->courtSlotService->getBestSlots($court, now(), auth()->guard('user')->user());
+            ->map(function (Court $court) use ($data) {
+               $court->slots = $this->courtSlotService->generateFreeSlots($court, $data->date, auth()->guard('user')->user());
 
                return $court;
             });
