@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Court;
+use App\Models\Downtime;
 use App\Models\IntervalPrice;
 use App\Models\ReservationSlot;
 use App\Models\User;
@@ -25,8 +26,9 @@ class CourtSlotService
 
         $prices = $this->filterPricesByDate($interval, $date);
         $reservedSlots = $this->getReservedSlots($date, $court);
+        $downtimeSlots = $this->getDowntimeSlots($date, $court);
 
-        return $this->calculateAvailableSlots($prices, $court, $date, $reservedSlots, $user);
+        return $this->calculateAvailableSlots($prices, $court, $date, $reservedSlots, $downtimeSlots, $user);
     }
 
     private function filterPricesByDate($interval, Carbon $date): Collection
@@ -50,13 +52,36 @@ class CourtSlotService
             ->toArray();
     }
 
-    private function calculateAvailableSlots(Collection $prices, Court $court, Carbon $date, array $reservedSlots, User $user = null): array
+    private function getDowntimeSlots(Carbon $date, Court $court): array
     {
-        return $prices->flatMap(function (IntervalPrice $price) use ($user, $court, $date, $reservedSlots) {
+        $slots = [];
+
+        $court->downtimes()->whereDate('date_from', '<=', $date)
+            ->whereDate('date_to', '>=', $date)
+            ->get()
+            ->map(function (Downtime $downtime) use ($date, &$slots) {
+                $startTime = Carbon::parse("{$date->format('Y-m-d')} {$downtime->start_time}");
+                $endTime = Carbon::parse("{$date->format('Y-m-d')} {$downtime->end_time}");
+
+                while ($startTime < $endTime) {
+                    $slotEnd = $startTime->copy()->addMinutes(30);
+
+                    $slots[$startTime->format('H:i')] = $slotEnd->format('H:i');
+
+                    $startTime = $slotEnd;
+                }
+            });
+
+        return $slots;
+    }
+
+    private function calculateAvailableSlots(Collection $prices, Court $court, Carbon $date, array $reservedSlots, array $downtimeSlots, User $user = null): array
+    {
+        return $prices->flatMap(function (IntervalPrice $price) use ($user, $court, $date, $reservedSlots, $downtimeSlots) {
             $startTime = Carbon::parse("{$date->format('Y-m-d')} {$price->start_time}");
             $endTime = Carbon::parse("{$date->format('Y-m-d')} {$price->end_time}");
 
-            return $this->generateTimeSlots($startTime, $endTime, $price, $court, $reservedSlots, $user);
+            return $this->generateTimeSlots($startTime, $endTime, $price, $court, $reservedSlots, $downtimeSlots, $user);
         })->toArray();
     }
 
@@ -76,7 +101,7 @@ class CourtSlotService
         return ['price' => floatval($specialPrice ?? $price->price), 'original_price' => floatval($price->price)];
     }
 
-    private function generateTimeSlots(Carbon $startTime, Carbon $endTime, IntervalPrice $price, Court $court, array $reservedSlots, User $user = null): Collection
+    private function generateTimeSlots(Carbon $startTime, Carbon $endTime, IntervalPrice $price, Court $court, array $reservedSlots, array $downtimeSlots, User $user = null): Collection
     {
         $prices = $this->findPrice($price, $user);
 
@@ -85,7 +110,7 @@ class CourtSlotService
         while ($startTime < $endTime) {
             $slotEnd = $startTime->copy()->addMinutes(30);
 
-            if ($startTime->gt(now()) && !isset($reservedSlots[$startTime->format('Y-m-d H:i:s')])) {
+            if ($startTime->gt(now()) && !isset($reservedSlots[$startTime->format('Y-m-d H:i:s')]) && !isset($downtimeSlots[$startTime->format('H:i')])) {
                 $slots->push([
                     'court_id' => $court->id,
                     'date' => $startTime->format('Y-m-d'),

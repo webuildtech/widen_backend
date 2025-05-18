@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourtController;
+use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
@@ -36,6 +37,9 @@ Route::prefix('admin')->group(function () {
         Route::get('intervals/all', [IntervalController::class, 'all']);
         Route::apiResource('intervals', IntervalController::class);
 
+        Route::get('courts/all', [CourtController::class, 'all']);
         Route::apiResource('courts', CourtController::class);
+
+        Route::apiResource('downtimes', DowntimeController::class);
     });
 });

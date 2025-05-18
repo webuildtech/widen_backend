@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Courts\CourtData;
 use App\Data\Admin\Courts\ListCourtData;
+use App\Data\Admin\Courts\SelectCourtData;
 use App\Data\Admin\Courts\StoreCourtData;
 use App\Data\Admin\Courts\UpdateCourtData;
 use App\Http\Controllers\Controller;
@@ -67,5 +68,12 @@ class CourtController extends Controller
         $this->courtRepository->delete($court);
 
         return [];
+    }
+
+    public function all()
+    {
+        $courts = Court::all();
+
+        return SelectCourtData::collect($courts);
     }
 }

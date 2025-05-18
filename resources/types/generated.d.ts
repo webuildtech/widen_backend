@@ -79,6 +79,10 @@ declare namespace App.Data.Admin.Courts {
         logo: App.Data.MediaData | null;
         updated_at: string;
     };
+    export type SelectCourtData = {
+        id: number;
+        name: string;
+    };
     export type StoreCourtData = {
         name: string;
         inside_name: string | null;
@@ -97,6 +101,35 @@ declare namespace App.Data.Admin.Courts {
         logoFile?: any;
         deleteLogo?: boolean;
         intervals_ids?: Array<number> | null;
+    };
+}
+declare namespace App.Data.Admin.Downtimes {
+    export type DowntimeData = {
+        id: number;
+        court_id: number;
+        date_from: string;
+        date_to: string;
+        start_time: string;
+        end_time: string;
+        comment: string | null;
+    };
+    export type ListDowntimeData = {
+        id: number;
+        court: App.Data.Admin.Courts.SelectCourtData;
+        date_from: string;
+        date_to: string;
+        start_time: string;
+        end_time: string;
+        comment: string | null;
+        updated_at: string;
+    };
+    export type StoreUpdateDowntimeData = {
+        court_id: number;
+        date_from: string;
+        date_to: string;
+        start_time: string;
+        end_time: string;
+        comment?: string | null;
     };
 }
 declare namespace App.Data.Admin.Groups {
@@ -191,6 +224,7 @@ declare namespace App.Data.Admin.Plans {
         name: string;
         type: string;
         reservations_per_week: number;
+        cancel_before: number;
         price: number;
         active: boolean;
     };
@@ -202,6 +236,7 @@ declare namespace App.Data.Admin.Plans {
         name: string;
         type: string;
         reservations_per_week: number;
+        cancel_before: number;
         price: number;
         active?: boolean;
     };
@@ -209,6 +244,7 @@ declare namespace App.Data.Admin.Plans {
         name?: string;
         type?: string;
         reservations_per_week?: number;
+        cancel_before?: number;
         price?: number;
         active?: boolean;
     };
@@ -378,7 +414,7 @@ declare namespace App.Data.User.Courts {
         id: number;
         name: string;
         description: string | null;
-        fast_slots: Array<App.Data.User.Courts.CourtSlotData>;
+        slots: Array<App.Data.User.Courts.CourtSlotData>;
         type: App.Enums.CourtType;
         logo: App.Data.MediaData | null;
     };
@@ -406,6 +442,7 @@ declare namespace App.Data.User.Plans {
         type: string;
         reservations_per_week: number;
         price: number;
+        cancel_before: number;
     };
 }
 declare namespace App.Data.User.ReservationTimes {

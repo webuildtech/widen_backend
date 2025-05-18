@@ -133,6 +133,47 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $court_id
+ * @property string $date_from
+ * @property string $date_to
+ * @property string $start_time
+ * @property string $end_time
+ * @property string|null $comment
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\Court $court
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime dateBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereCourtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereDateFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereDateTo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperDowntime {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $name
  * @property int $consumable
  * @property int $quota
@@ -358,6 +399,7 @@ namespace App\Models{
  * @property int|null $periodicity
  * @property string|null $periodicity_type
  * @property string $price
+ * @property int $cancel_before
  * @property int $active
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -377,6 +419,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCancelBefore($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereGraceDays($value)

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Court;
+use App\Models\Downtime;
 use App\Models\Group;
 use App\Models\Interval;
 use App\Models\IntervalPrice;
@@ -42,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
             'reservationSlot' => ReservationSlot::class,
             'reservationTime' => ReservationTime::class,
             'user' => User::class,
+            'downtime' => Downtime::class,
         ]);
 
         Carbon::macro('parseWithAppTimezone', fn ($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));

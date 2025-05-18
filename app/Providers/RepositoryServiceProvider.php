@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Interfaces\Repositories\Models\AdminRepositoryInterface;
 use App\Interfaces\Repositories\Models\CourtRepositoryInterface;
+use App\Interfaces\Repositories\Models\DowntimeRepositoryInterface;
 use App\Interfaces\Repositories\Models\GroupRepositoryInterface;
 use App\Interfaces\Repositories\Models\IntervalRepositoryInterface;
 use App\Interfaces\Repositories\Models\PlanRepositoryInterface;
@@ -11,6 +12,7 @@ use App\Interfaces\Repositories\Models\ReservationRepositoryInterface;
 use App\Interfaces\Repositories\Models\UserRepositoryInterface;
 use App\Repositories\Models\AdminRepository;
 use App\Repositories\Models\CourtRepository;
+use App\Repositories\Models\DowntimeRepository;
 use App\Repositories\Models\GroupRepository;
 use App\Repositories\Models\IntervalRepository;
 use App\Repositories\Models\PlanRepository;
@@ -29,5 +31,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PlanRepositoryInterface::class, PlanRepository::class);
         $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
         $this->app->bind(ReservationRepositoryInterface::class, ReservationRepository::class);
+        $this->app->bind(DowntimeRepositoryInterface::class, DowntimeRepository::class);
     }
 }
