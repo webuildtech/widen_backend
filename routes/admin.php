@@ -4,10 +4,12 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourtController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,5 +43,12 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('courts', CourtController::class);
 
         Route::apiResource('downtimes', DowntimeController::class);
+
+        Route::get('subscriptions', [SubscriptionController::class, 'index']);
+
+        Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
+            Route::get('metrics', 'metrics');
+            Route::get('incomes', 'incomes');
+        });
     });
 });
