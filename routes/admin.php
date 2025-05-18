@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\ReservationTimeController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -50,5 +51,7 @@ Route::prefix('admin')->group(function () {
             Route::get('metrics', 'metrics');
             Route::get('incomes', 'incomes');
         });
+
+        Route::get('reservation-times', [ReservationTimeController::class, 'index']);
     });
 });

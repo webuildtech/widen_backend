@@ -249,6 +249,29 @@ declare namespace App.Data.Admin.Plans {
         active?: boolean;
     };
 }
+declare namespace App.Data.Admin.ReservationTimes {
+    export type IndexReservationTimeData = {
+        start_time: string;
+        end_time: string;
+        court: string;
+        user: string;
+    };
+    export type SearchReservationTimeData = {
+        courts_ids?: Array<number>;
+        date_from: string;
+        date_to: string;
+    };
+}
+declare namespace App.Data.Admin.Subscriptions {
+    export type ListSubscriptionData = {
+        id: number;
+        plan: App.Data.Admin.Plans.SelectPlanData | null;
+        subscriber: App.Data.Admin.Users.SelectUserData | null;
+        started_at: string;
+        expired_at: string;
+        is_overdue: boolean;
+    };
+}
 declare namespace App.Data.Admin.Users {
     export type ListUserData = {
         id: number;
