@@ -69,7 +69,7 @@ $appUrl = env('APP_FRONTEND_URL');
                         <tr style="background-color: #f3f4f6">
                           <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Data</th>
                           <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Laikas</th>
-                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Kortas</th>
+                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Aikštelė</th>
                         </tr>
                       </thead>
                       <tbody>
