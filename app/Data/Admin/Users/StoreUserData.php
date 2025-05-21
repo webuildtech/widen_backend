@@ -24,8 +24,8 @@ class StoreUserData extends Data
 
         public string               $email,
 
-        #[Min(-999999.99), Max(999999.99)]
-        public float|Optional       $balance,
+//        #[Min(-999999.99), Max(999999.99)]
+//        public float|Optional       $balance,
 
         #[Min(0), Max(100)]
         public float|Optional       $discount_on_everything,

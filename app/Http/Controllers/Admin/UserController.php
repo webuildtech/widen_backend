@@ -28,7 +28,7 @@ class UserController extends Controller
                 'first_name',
                 'last_name',
                 'email',
-                'balance',
+//                'balance',
                 'discount_on_everything',
                 'birthday',
                 'phone',

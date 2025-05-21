@@ -18,7 +18,7 @@ class UserData extends Data
 
         public string  $email,
 
-        public float   $balance,
+//        public float   $balance,
 
         public float   $discount_on_everything,
 

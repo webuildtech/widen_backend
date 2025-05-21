@@ -29,8 +29,8 @@ class UpdateUserData extends Data
         #[Unique(User::class, ignore: new RouteParameterReference('user', 'id'), withoutTrashed: true), Email, Max(255)]
         public string|Optional      $email,
 
-        #[Min(-999999.99), Max(999999.99)]
-        public float|Optional       $balance,
+//        #[Min(-999999.99), Max(999999.99)]
+//        public float|Optional       $balance,
 
         #[Min(0), Max(100)]
         public float|Optional       $discount_on_everything,
