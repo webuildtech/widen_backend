@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\ReservationTimes\IndexReservationTimeData;
 use App\Data\Admin\ReservationTimes\SearchReservationTimeData;
+use App\Enums\CourtType;
 use App\Http\Controllers\Controller;
 use App\Models\ReservationTime;
 
@@ -18,6 +19,10 @@ class ReservationTimeController extends Controller
 
         if (is_array($data->courts_ids)) {
             $reservationTimes->whereIn('court_id', $data->courts_ids);
+        }
+
+        if ($data->court_type instanceof CourtType) {
+            $reservationTimes->whereHas('court', fn ($query) => $query->where('type', $data->court_type));
         }
 
         return IndexReservationTimeData::collect($reservationTimes->get());
