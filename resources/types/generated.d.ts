@@ -522,7 +522,7 @@ declare namespace App.Data.User.Subscriptions {
 }
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
-    export type CourtType = "indoor" | "outdoor";
+    export type CourtType = "tennis" | "table_tennis";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type FeatureType = "reservations_per_week";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";

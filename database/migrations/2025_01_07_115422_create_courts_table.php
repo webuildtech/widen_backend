@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('inside_name')->nullable();
             $table->boolean('active')->default(false);
             $table->text('description')->nullable();
-            $table->enum('type', array_column(CourtType::cases(), 'value'))->default(CourtType::INDOOR);
+            $table->enum('type', array_column(CourtType::cases(), 'value'))->default(CourtType::TENNIS);
             $table->timestamps();
             $table->softDeletes();
         });

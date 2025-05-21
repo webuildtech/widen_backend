@@ -7,7 +7,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[TypeScript]
 enum CourtType: string
 {
-    case INDOOR = 'indoor';
+    case TENNIS = 'tennis';
 
-    case OUTDOOR = 'outdoor';
+    case TABLE_TENNIS = 'table_tennis';
 }
