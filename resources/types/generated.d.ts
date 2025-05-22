@@ -254,12 +254,16 @@ declare namespace App.Data.Admin.ReservationTimes {
         start_time: string;
         end_time: string;
         court: string;
-        user: string;
+        full_name: string;
+        email: string | null;
+        phone: string | null;
+        price_with_vat: number;
     };
     export type SearchReservationTimeData = {
         courts_ids?: Array<number>;
         date_from: string;
         date_to: string;
+        court_type?: App.Enums.CourtType;
     };
 }
 declare namespace App.Data.Admin.Subscriptions {
@@ -294,7 +298,6 @@ declare namespace App.Data.Admin.Users {
         first_name: string;
         last_name?: string | null;
         email: string;
-        balance?: number;
         discount_on_everything?: number;
         birthday?: string | null;
         phone?: string | null;
@@ -310,7 +313,6 @@ declare namespace App.Data.Admin.Users {
         first_name?: string;
         last_name?: string | null;
         email?: string;
-        balance?: number;
         discount_on_everything?: number;
         birthday?: string | null;
         phone?: string | null;
@@ -327,7 +329,6 @@ declare namespace App.Data.Admin.Users {
         first_name: string;
         last_name: string | null;
         email: string;
-        balance: number;
         discount_on_everything: number;
         birthday: string | null;
         phone: string | null;
