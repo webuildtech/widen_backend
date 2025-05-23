@@ -160,7 +160,7 @@ class PaymentService
 
     public function generateInvoice(Payment $payment): Payment
     {
-        if ($payment->invoice_path) {
+        if ($payment->invoice_path || floatval($payment->paid_amount) === 0.0) {
             return $payment;
         }
 

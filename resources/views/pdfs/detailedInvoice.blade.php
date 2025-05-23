@@ -91,32 +91,40 @@
     </div>
 
     <div class="grid grid-cols-8 gap-1 font-semibold text-xs border-b-2 {!! $borderColor !!} mb-2">
-        <div class="col-span-5">PREKĖS / PASLAUGOS PAVADINIMAS</div>
+        <div class="col-span-3">PREKĖS / PASLAUGOS PAVADINIMAS</div>
         <div class="text-center">Kaina</div>
+        <div class="text-center">Nuolaida</div>
+        <div class="text-center">Suma be PVM</div>
         <div class="text-center">PVM (21%)</div>
         <div class="text-right">Suma su PVM</div>
     </div>
 
-    @php
-        if ($payment->paid_amount_from_balance > 0) {
-            $prices = applyDiscountAndCalculatePriceDetails($payment->paid_amount, 0);
-
-            $price = $prices->price;
-            $vat = $prices->vat;
-            $price_with_vat = $prices->price_with_vat;
-        } else {
-            $price = $payment->price;
-            $vat = $payment->vat;
-            $price_with_vat = $payment->price_with_vat;
-        }
-    @endphp
     <div class="grid grid-cols-8 gap-1 text-xs border-b border-black mb-2">
-        <div class="col-span-5">
-            Teniso paslaugos
-        </div>
-        <div class="text-center">{{formatPrice($price)}}</div>
-        <div class="text-center">{{formatPrice($vat)}}</div>
-        <div class="text-right">{{formatPrice($price_with_vat)}}</div>
+        @if($payment->paymentable_type === 'reservation')
+            @foreach($payment->paymentable->times as $time)
+                <div class="col-span-3">
+                   {{$time->court->name}} | {{$time->start_time->format('Y-m-d H:i')}} - {{$time->end_time->format('H:i')}}
+                </div>
+                <div class="text-center">{{formatPrice($time->price + $time->discount)}} x 1</div>
+                <div class="text-center">{{$time->discount > 0 ? formatPrice($time->discount) : '-'}}</div>
+                <div class="text-center">{{formatPrice($time->price)}}</div>
+                <div class="text-center">{{formatPrice($time->vat)}}</div>
+                <div class="text-right">{{formatPrice($time->price_with_vat)}}</div>
+            @endforeach
+        @else
+            <div class="col-span-3">
+                @if(!$payment->paymentable_type)
+                    Balanso papildymas
+                @else
+                    Planas: {{$payment->paymentable->name}}
+                @endif
+            </div>
+            <div class="text-center">{{formatPrice($payment->price + $payment->discount)}} x 1</div>
+            <div class="text-center">{{$payment->discount > 0 ? formatPrice($payment->discount) : '-'}}</div>
+            <div class="text-center">{{formatPrice($payment->price)}}</div>
+            <div class="text-center">{{formatPrice($payment->vat)}}</div>
+            <div class="text-right">{{formatPrice($payment->price_with_vat)}}</div>
+        @endif
     </div>
 
     <div class="flex justify-end text-xs">
@@ -126,16 +134,36 @@
                     <p>Iš viso suma be PVM:</p>
                 </div>
                 <div class="w-1/4 text-right">
-                    <p>{{formatPrice($price)}}</p>
+                    <p>{{formatPrice($payment->price + $payment->discount)}}</p>
                 </div>
             </div>
+
+            @if($payment->discount > 0)
+                <div class="flex justify-between">
+                    <div class="w-3/4 text-right">
+                        <p>Nuolaida:</p>
+                    </div>
+                    <div class="w-1/4 text-right">
+                        <p>{{formatPrice($payment->discount)}}</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <div class="w-3/4 text-right">
+                        <p>Suma su nuolaida:</p>
+                    </div>
+                    <div class="w-1/4 text-right">
+                        <p>{{formatPrice($payment->price)}}</p>
+                    </div>
+                </div>
+            @endif
 
             <div class="flex justify-between">
                 <div class="w-3/4 text-right">
                     <p>PVM 21%:</p>
                 </div>
                 <div class="w-1/4 text-right">
-                    <p>{{formatPrice($vat)}}</p>
+                    <p>{{formatPrice($payment->vat)}}</p>
                 </div>
             </div>
         </div>
@@ -149,7 +177,29 @@
                 </div>
 
                 <div class="w-1/4 text-right">
-                    <p>{{formatPrice($price_with_vat)}}</p>
+                    <p>{{formatPrice($payment->price_with_vat)}}</p>
+                </div>
+            </div>
+
+            @if ($payment->paid_amount_from_balance > 0)
+                <div class="flex justify-between">
+                    <div class="w-3/4 text-right">
+                        <p>Nurašoma nuo balanso:</p>
+                    </div>
+
+                    <div class="w-1/4 text-right">
+                        <p>{{formatPrice($payment->paid_amount_from_balance)}}</p>
+                    </div>
+                </div>
+            @endif
+
+            <div class="flex justify-between font-semibold text-base border-b border-black">
+                <div class="w-3/4 text-right">
+                    <p>Sumokėta suma:</p>
+                </div>
+
+                <div class="w-1/4 text-right">
+                    <p>{{formatPrice($payment->paid_amount)}}</p>
                 </div>
             </div>
         </div>

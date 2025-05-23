@@ -69,7 +69,7 @@ class PaymentController extends Controller
 
     public function downloadInvoice(Payment $payment)
     {
-        if (auth()->user()->id !== $payment->user_id) {
+        if (auth()->user()->id !== $payment->user_id || floatval($payment->paid_amount) === 0.0) {
             return response()->json(['error' => 'Veiksmas negalimas!'], 403);
         }
 
