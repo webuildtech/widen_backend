@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Data\Admin\Dashboard\SearchIncomesByIntervalData;
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
@@ -15,7 +16,7 @@ use LucasDotVin\Soulbscription\Models\Subscription;
 
 class DashboardController extends Controller
 {
-    public function metrics()
+    public function metrics(): array
     {
         return [
             'users' => User::count(),
@@ -27,7 +28,7 @@ class DashboardController extends Controller
         ];
     }
 
-    public function incomes()
+    public function incomes(): array
     {
         $payments = Payment::whereStatus(PaymentStatus::PAID);
 
@@ -39,6 +40,21 @@ class DashboardController extends Controller
             'last_30_days' => $payments->clone()->where('paid_at', '>=', now()->subDays(30))->sum('paid_amount'),
             'year' => $payments->clone()->where('paid_at', '>=', now()->startOfYear())->sum('paid_amount'),
             'total' => $payments->clone()->sum('paid_amount'),
+        ];
+    }
+
+    public function incomesByInterval(SearchIncomesByIntervalData $data): array
+    {
+        $payments = Payment::whereStatus(PaymentStatus::PAID);
+
+        $payments->whereDate('paid_at', '>=', $data->date_from);
+
+        if ($data->date_to instanceof Carbon) {
+            $payments->whereDate('paid_at', '<=', $data->date_to);
+        }
+
+        return [
+            'interval' => $payments->sum('paid_amount')
         ];
     }
 }

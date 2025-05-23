@@ -50,6 +50,7 @@ Route::prefix('admin')->group(function () {
         Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
             Route::get('metrics', 'metrics');
             Route::get('incomes', 'incomes');
+            Route::get('incomes-by-interval', 'incomesByInterval');
         });
 
         Route::get('reservation-times', [ReservationTimeController::class, 'index']);
