@@ -20,9 +20,6 @@ class StorePlanData extends Data
         public string        $type,
 
         #[Rule(['min:0', 'max:2147483647'])]
-        public int           $reservations_per_week,
-
-        #[Rule(['min:0', 'max:2147483647'])]
         public int           $cancel_before,
 
         #[Numeric, Min(0)]

@@ -26,8 +26,6 @@ class AccountData extends Data
 
         public int     $cancel_before,
 
-        public int     $free_reservations_per_week,
-
         public bool    $is_company,
 
         public ?string $company_name,

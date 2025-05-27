@@ -18,8 +18,6 @@ class SubscriptionData extends Data
         public ?Carbon  $cancelled_at,
 
         public PlanData $plan,
-
-        public int      $reservations_per_week,
     )
     {
     }

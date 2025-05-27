@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Data\User\Reservations\StoreReservationData;
-use App\Enums\FeatureType;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Repositories\Models\ReservationRepositoryInterface;
 use App\Services\MakeCommerceService;
@@ -36,20 +35,9 @@ class ReservationController extends Controller
             return response()->json(['slots' => $slots['occupy']], 423);
         }
 
-        if ($data->usedFreeSlots > 0) {
-            if (($user && $user->cantConsume(FeatureType::RESERVATION_PER_WEEK->value, $data->usedFreeSlots)) || $data->usedFreeSlots > $data->slots->count()) {
-                return response()->json(['error' => 'Įvyko klaida, bandykite dar kartą!'], 424);
-            }
-        }
-
         $reservation = $this->reservationRepository->create(
-            $data, $slots['free'], $user ? $data->usedFreeSlots : 0, $user ? $user->discount_on_everything : 0
+            $data, $slots['free'], $user ? $user->discount_on_everything : 0
         );
-
-        if ($user && $data->usedFreeSlots > 0) {
-            $user->consume(FeatureType::RESERVATION_PER_WEEK->value, $data->usedFreeSlots);
-            $reservation->update(['feature_consumption_id' => $reservation->user->featureConsumptions()->latest()->pluck('id')->first()]);
-        }
 
         if ($reservation->price > 0) {
             $payment = $this->paymentService->createFromReservation($reservation, $user);
@@ -67,9 +55,6 @@ class ReservationController extends Controller
             $this->paymentService->approve($payment);
         }
 
-        return response()->json([
-            'balance' => $user->balance,
-            'free_reservations_per_week' => $user->free_reservations_per_week
-        ]);
+        return response()->json(['balance' => $user->balance]);
     }
 }

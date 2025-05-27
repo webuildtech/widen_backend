@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\FeatureType;
 use Illuminate\Support\Carbon;
 use LucasDotVin\Soulbscription\Enums\PeriodicityType;
 use LucasDotVin\Soulbscription\Models\Feature as FeatureBase;
@@ -20,10 +19,6 @@ class Feature extends FeatureBase
 
         if (is_string($start)) {
             $start = Carbon::parse($start);
-        }
-
-        if ($this->name === FeatureType::RESERVATION_PER_WEEK->value) {
-            return now()->endOfWeek();
         }
 
         $recurrences = PeriodicityType::getDateDifference(from: $start, to: now(), unit: $this->periodicity_type);

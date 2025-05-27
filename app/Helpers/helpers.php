@@ -4,12 +4,8 @@ if (!function_exists('applyDiscountAndCalculatePriceDetails')) {
     /**
      * @return stdClass{price: float, discount: float, vat: float, priceWithVat: float}
      */
-    function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount, bool $isFreeFromPlan = false): stdClass
+    function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount): stdClass
     {
-        if ($isFreeFromPlan) {
-            return (object)['price' => 0, 'discount' => 0, 'vat' => 0, 'price_with_vat' => 0];
-        }
-
         $priceWithoutVAT = $priceWithVat / 1.21;
 
         $discountAmount = $priceWithoutVAT * ($discount / 100);

@@ -17,8 +17,6 @@ class ReservationSlotData extends Data
         public float  $price_with_vat,
 
         public bool   $is_refunded,
-
-        public bool   $is_free_from_plan,
     )
     {
     }
@@ -30,7 +28,6 @@ class ReservationSlotData extends Data
             $slot->slot_end->format('H:i'),
             $slot->price_with_vat,
             $slot->is_refunded,
-            $slot->is_free_from_plan,
         );
     }
 

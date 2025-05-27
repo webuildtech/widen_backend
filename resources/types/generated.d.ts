@@ -103,6 +103,12 @@ declare namespace App.Data.Admin.Courts {
         intervals_ids?: Array<number> | null;
     };
 }
+declare namespace App.Data.Admin.Dashboard {
+    export type SearchIncomesByIntervalData = {
+        date_from: string;
+        date_to?: string;
+    };
+}
 declare namespace App.Data.Admin.Downtimes {
     export type DowntimeData = {
         id: number;
@@ -223,7 +229,6 @@ declare namespace App.Data.Admin.Plans {
         id: number;
         name: string;
         type: string;
-        reservations_per_week: number;
         cancel_before: number;
         price: number;
         active: boolean;
@@ -235,7 +240,6 @@ declare namespace App.Data.Admin.Plans {
     export type StorePlanData = {
         name: string;
         type: string;
-        reservations_per_week: number;
         cancel_before: number;
         price: number;
         active?: boolean;
@@ -243,7 +247,6 @@ declare namespace App.Data.Admin.Plans {
     export type UpdatePlanData = {
         name?: string;
         type?: string;
-        reservations_per_week?: number;
         cancel_before?: number;
         price?: number;
         active?: boolean;
@@ -350,7 +353,6 @@ declare namespace App.Data.User {
         balance: number;
         discount_on_everything: number;
         cancel_before: number;
-        free_reservations_per_week: number;
         is_company: boolean;
         company_name: string | null;
         company_code: string | null;
@@ -464,7 +466,6 @@ declare namespace App.Data.User.Plans {
         id: number;
         name: string;
         type: string;
-        reservations_per_week: number;
         price: number;
         cancel_before: number;
     };
@@ -478,7 +479,6 @@ declare namespace App.Data.User.ReservationTimes {
         slot_end: string;
         price_with_vat: number;
         is_refunded: boolean;
-        is_free_from_plan: boolean;
     };
     export type ReservationTimeData = {
         id: number;
@@ -488,8 +488,6 @@ declare namespace App.Data.User.ReservationTimes {
         end_time: string;
         price_with_vat: number;
         refunded_amount: number;
-        used_free_slots: number;
-        refunded_free_slots: number;
         is_past: number;
         cancelled_at: string | null;
         slots: Array<App.Data.User.ReservationTimes.ReservationSlotData>;
@@ -508,7 +506,6 @@ declare namespace App.Data.User.Reservations {
         guest_last_name: string | null;
         guest_phone: string | null;
         user_id: number | null;
-        usedFreeSlots: number;
         slots: Array<App.Data.User.Reservations.ReservationSlotData>;
     };
 }
@@ -518,13 +515,11 @@ declare namespace App.Data.User.Subscriptions {
         expired_at: string;
         cancelled_at: string | null;
         plan: App.Data.User.Plans.PlanData;
-        reservations_per_week: number;
     };
 }
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
     export type CourtType = "tennis" | "table_tennis";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
-    export type FeatureType = "reservations_per_week";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
 }

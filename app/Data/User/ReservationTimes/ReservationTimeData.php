@@ -26,10 +26,6 @@ class ReservationTimeData extends Data
 
         public float      $refunded_amount,
 
-        public int        $used_free_slots,
-
-        public int        $refunded_free_slots,
-
         public float      $is_past,
 
         public ?Carbon    $cancelled_at,
@@ -50,8 +46,6 @@ class ReservationTimeData extends Data
             $time->end_time->format('H:i'),
             $time->price_with_vat,
             $time->refunded_amount,
-            $time->used_free_slots,
-            $time->refunded_free_slots,
             now()->isAfter($time->end_time),
             $time->canceled_at,
             $time->canceled_at && $time->slots()->where('try_sell', true)->exists()

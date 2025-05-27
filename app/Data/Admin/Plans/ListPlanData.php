@@ -2,7 +2,6 @@
 
 namespace App\Data\Admin\Plans;
 
-use App\Enums\FeatureType;
 use App\Models\Plan;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;

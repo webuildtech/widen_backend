@@ -2,7 +2,6 @@
 
 namespace App\Data\Admin\Plans;
 
-use App\Enums\FeatureType;
 use App\Models\Plan;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -16,8 +15,6 @@ class PlanData extends Data
         public string     $name,
 
         public string     $type,
-
-        public int        $reservations_per_week,
 
         public int        $cancel_before,
 
@@ -34,7 +31,6 @@ class PlanData extends Data
             $plan->id,
             $plan->name,
             $plan->type,
-            $plan->features()->where('name', FeatureType::RESERVATION_PER_WEEK->value)->first()->pivot->charges,
             $plan->cancel_before,
             $plan->price,
             $plan->active,

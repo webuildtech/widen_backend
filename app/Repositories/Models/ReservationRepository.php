@@ -14,7 +14,7 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
         parent::__construct($model);
     }
 
-    public function create(Data $data, array $slots = [], int $useFreeSlots = 0, float $discount = 0): Reservation
+    public function create(Data $data, array $slots = [], float $discount = 0): Reservation
     {
         $reservation = Reservation::create([
             'guest_first_name' => $data->guest_first_name,
@@ -34,15 +34,7 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
             ]);
 
             foreach ($mergedSlot['related'] as $slot) {
-                $isFreeFromPlan = false;
-
-                if ($useFreeSlots > 0) {
-                    $isFreeFromPlan = true;
-                    $reservationTime->used_free_slots += 1;
-                    $useFreeSlots--;
-                }
-
-                $priceDetails = applyDiscountAndCalculatePriceDetails($slot['price'], $discount, $isFreeFromPlan);
+                $priceDetails = applyDiscountAndCalculatePriceDetails($slot['price'], $discount);
 
                 $reservationTime->slots()->create([
                     'reservation_id' => $reservation->id,
@@ -53,7 +45,6 @@ class ReservationRepository extends BaseRepository implements ReservationReposit
                     'vat' => $priceDetails->vat,
                     'discount' => $priceDetails->discount,
                     'price_with_vat' => $priceDetails->price_with_vat,
-                    'is_free_from_plan' => $isFreeFromPlan
                 ]);
 
                 $reservationTime->price += $priceDetails->price;

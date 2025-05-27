@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Data\User\Plans\PlanData;
 use App\Data\User\Subscriptions\SubscriptionData;
-use App\Enums\FeatureType;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Services\MakeCommerceService;
@@ -32,7 +31,6 @@ class SubscriptionController extends Controller
                 'expired_at' => $subscription->expired_at,
                 'cancelled_at' => $subscription->cancelled_at,
                 'plan' => PlanData::from($subscription->plan),
-                FeatureType::RESERVATION_PER_WEEK->value => $user->balance(FeatureType::RESERVATION_PER_WEEK->value)
             ]);
         }
 

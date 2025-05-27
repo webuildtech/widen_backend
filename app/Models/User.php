@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\FeatureType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -103,11 +102,6 @@ class User extends Authenticatable
     public function getDeductedAmount(float $totalPrice): float
     {
         return min($this->balance, $totalPrice);
-    }
-
-    public function getFreeReservationsPerWeekAttribute(): int
-    {
-        return intval($this->balance(FeatureType::RESERVATION_PER_WEEK->value));
     }
 
     public function addBalance(float $amount): void

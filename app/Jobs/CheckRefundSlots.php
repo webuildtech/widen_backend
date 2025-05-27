@@ -31,17 +31,9 @@ class CheckRefundSlots implements ShouldQueue
 
                 $reservationTime = $refundSlot->reservationTime;
 
-                if ($refundSlot->is_free_from_plan) {
-                    $feature = FeatureConsumption::where('id', $refundSlot->reservation->feature_consumption_id)->first();
+                $reservationTime->update(['refunded_amount' => $reservationTime->refunded_amount + $refundSlot->price_with_vat]);
 
-                    $feature->consumption === 1 ? $feature->delete() : $feature->update(['consumption' => $feature->consumption - 1]);
-
-                    $reservationTime->update(['refunded_free_slots' => $reservationTime->refunded_free_slots + 1]);
-                } else {
-                    $reservationTime->update(['refunded_amount' => $reservationTime->refunded_amount + $refundSlot->price_with_vat]);
-
-                    $reservationTime->reservation->user->addBalance($refundSlot->price_with_vat);
-                }
+                $reservationTime->reservation->user->addBalance($refundSlot->price_with_vat);
 
                 if (!$reservationTime->slots()->where('is_refunded', true)->exists()) {
                     $reservationTime->slots()->delete();

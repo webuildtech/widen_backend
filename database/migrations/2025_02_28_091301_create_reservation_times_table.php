@@ -21,9 +21,7 @@ return new class extends Migration
             $table->decimal('vat', 10)->default(0);
             $table->decimal('discount', 10)->default(0);
             $table->decimal('price_with_vat', 10)->default(0);
-            $table->integer('used_free_slots')->default(0);
             $table->decimal('refunded_amount', 10)->default(0);
-            $table->integer('refunded_free_slots')->default(0);
             $table->dateTime('canceled_at')->nullable();
             $table->text('cancellation_reason')->nullable();
             $table->timestamps();

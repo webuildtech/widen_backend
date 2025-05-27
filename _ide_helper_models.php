@@ -98,6 +98,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Downtime> $downtimes
+ * @property-read int|null $downtimes_count
  * @property-read array $intervals_ids
  * @property-read mixed $is_available
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Media|null $logo
@@ -507,7 +509,6 @@ namespace App\Models{
  * @property string $vat
  * @property string $discount
  * @property string $price_with_vat
- * @property int $is_free_from_plan
  * @property int $try_sell
  * @property int $is_refunded
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -515,6 +516,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \App\Models\Court|null $court
  * @property-read \App\Models\Reservation $reservation
  * @property-read \App\Models\ReservationTime $reservationTime
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newModelQuery()
@@ -527,7 +529,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereDiscount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereIsFreeFromPlan($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereIsRefunded($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePriceWithVat($value)
@@ -559,12 +560,9 @@ namespace App\Models{
  * @property string $vat
  * @property string $discount
  * @property string $price_with_vat
- * @property int $used_free_slots
  * @property float $refunded_amount
- * @property int $refunded_free_slots
  * @property \Illuminate\Support\Carbon|null $canceled_at
  * @property string|null $cancellation_reason
- * @property int $refund_attempted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -589,13 +587,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePriceWithVat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundAttempted($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedFreeSlots($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereReservationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUsedFreeSlots($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withoutTrashed()
@@ -637,7 +632,6 @@ namespace App\Models{
  * @property-read int|null $feature_tickets_count
  * @property-read int $cancel_before
  * @property-read \Illuminate\Database\Eloquent\Collection $features
- * @property-read int $free_reservations_per_week
  * @property-read string $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
