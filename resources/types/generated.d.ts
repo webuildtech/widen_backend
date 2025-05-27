@@ -415,6 +415,10 @@ declare namespace App.Data.User.Auth {
         phone: string;
         password: string;
     };
+    export type SocialData = {
+        accessToken: string;
+        social: App.Enums.Social;
+    };
 }
 declare namespace App.Data.User.Courts {
     export type CourtData = {
@@ -522,4 +526,5 @@ declare namespace App.Enums {
     export type CourtType = "tennis" | "table_tennis";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
+    export type Social = "google";
 }

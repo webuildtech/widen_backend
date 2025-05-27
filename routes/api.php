@@ -9,6 +9,7 @@ use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\ReservationTimeController;
+use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
 
 Route::prefix('courts')->group(function () {
@@ -32,6 +33,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('password-recovery', 'passwordRecovery');
     Route::post('password-reset', 'passwordReset');
+
+    Route::post('social', SocialAuthController::class);
 });
 
 Route::middleware(['auth:user'])->group(function () {

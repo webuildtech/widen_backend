@@ -6,6 +6,7 @@ use App\Interfaces\Repositories\Models\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\LaravelData\Data;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
@@ -22,6 +23,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $values['password'] = Hash::make($values['password']);
 
         $user = $this->model->create($values);
+
+        return $user->fresh();
+    }
+
+    public function createFromSocial(array $data): User
+    {
+        $data['password'] = Hash::make(Str::password());
+
+        $user = $this->model->create($data);
 
         return $user->fresh();
     }
