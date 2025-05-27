@@ -4,7 +4,8 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\Models\UserRepository;
-use Laravel\Socialite\One\User as SocialUser;
+use Laravel\Socialite\One\User as SocialUserOne;
+use Laravel\Socialite\Two\User as SocialUserTwo;
 
 class SocialService
 {
@@ -13,7 +14,7 @@ class SocialService
     ) {
     }
 
-    public function createUser(SocialUser $user): User
+    public function createUser(SocialUserOne|SocialUserTwo $user): User
     {
         $userData = [
             'email' => $user->getEmail(),
