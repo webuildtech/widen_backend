@@ -107,6 +107,8 @@ namespace App\Models{
  * @property-read int|null $intervals_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationSlot> $reservationSlots
+ * @property-read int|null $reservation_slots_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court newQuery()
@@ -252,6 +254,48 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $uuid
+ * @property string $email
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read mixed $full_name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
+ * @property-read int|null $reservations_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGuest {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $name
  * @property string|null $inside_name
  * @property \Illuminate\Support\Carbon $date_from
@@ -332,30 +376,31 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property int|null $user_id
- * @property string|null $transaction_id
- * @property string $status
+ * @property string $owner_type
+ * @property int $owner_id
  * @property string|null $paymentable_type
  * @property int|null $paymentable_id
- * @property int $renew
+ * @property string|null $transaction_id
+ * @property \App\Enums\PaymentStatus $status
+ * @property bool $renew
  * @property string|null $invoice_no
  * @property string|null $invoice_path
- * @property string $price
- * @property string $vat
- * @property string $price_with_vat
- * @property string $discount
- * @property string $paid_amount
- * @property string $paid_amount_from_balance
- * @property string $refunded_amount
- * @property string $refunded_amount_to_balance
+ * @property numeric $price
+ * @property numeric $vat
+ * @property numeric $price_with_vat
+ * @property numeric $discount
+ * @property numeric $paid_amount
+ * @property numeric $paid_amount_from_balance
+ * @property numeric $refunded_amount
+ * @property numeric $refunded_amount_to_balance
  * @property \Illuminate\Support\Carbon|null $paid_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $paymentable
- * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment onlyTrashed()
@@ -367,6 +412,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereInvoiceNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereInvoicePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereOwnerType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAmountFromBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAt($value)
@@ -380,7 +427,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment withoutTrashed()
@@ -445,47 +491,58 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property int $is_paid
- * @property int|null $user_id
- * @property int|null $feature_consumption_id
- * @property string|null $guest_first_name
- * @property string|null $guest_last_name
- * @property string|null $guest_email
- * @property string|null $guest_phone
+ * @property string $owner_type
+ * @property int $owner_id
+ * @property int|null $reservation_group_id
+ * @property int $delete_after_failed_payment
+ * @property int|null $court_id
+ * @property \Illuminate\Support\Carbon $start_time
+ * @property \Illuminate\Support\Carbon $end_time
  * @property string $price
  * @property string $vat
  * @property string $discount
  * @property string $price_with_vat
+ * @property bool $is_paid
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_source
+ * @property string $refunded_amount
+ * @property \Illuminate\Support\Carbon|null $canceled_at
+ * @property string|null $cancellation_reason
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\Payment|null $payment
+ * @property-read \App\Models\Court|null $court
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
+ * @property-read \App\Models\ReservationGroup|null $reservationGroup
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationSlot> $slots
  * @property-read int|null $slots_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationTime> $times
- * @property-read int|null $times_count
- * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCanceledAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCancellationReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCourtId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereDeleteAfterFailedPayment($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereDiscount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereFeatureConsumptionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereGuestPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereEndTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereIsPaid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereOwnerType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePaidAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePaymentSource($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation wherePriceWithVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereReservationGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation withoutTrashed()
@@ -500,8 +557,38 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string|null $label
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
+ * @property-read int|null $reservations_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperReservationGroup {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $reservation_id
- * @property int $reservation_time_id
  * @property int|null $court_id
  * @property \Illuminate\Support\Carbon $slot_start
  * @property \Illuminate\Support\Carbon $slot_end
@@ -509,8 +596,8 @@ namespace App\Models{
  * @property string $vat
  * @property string $discount
  * @property string $price_with_vat
- * @property int $try_sell
- * @property int $is_refunded
+ * @property bool $try_sell
+ * @property bool $is_refunded
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -518,7 +605,7 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \App\Models\Court|null $court
  * @property-read \App\Models\Reservation $reservation
- * @property-read \App\Models\ReservationTime $reservationTime
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot active()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot onlyTrashed()
@@ -533,7 +620,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot wherePriceWithVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereReservationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereReservationTimeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereSlotEnd($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereSlotStart($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereTrySell($value)
@@ -545,59 +631,6 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperReservationSlot {}
-}
-
-namespace App\Models{
-/**
- * 
- *
- * @property int $id
- * @property int $reservation_id
- * @property int|null $court_id
- * @property \Illuminate\Support\Carbon $start_time
- * @property \Illuminate\Support\Carbon $end_time
- * @property float $price
- * @property string $vat
- * @property string $discount
- * @property string $price_with_vat
- * @property float $refunded_amount
- * @property \Illuminate\Support\Carbon|null $canceled_at
- * @property string|null $cancellation_reason
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
- * @property-read \App\Models\Court|null $court
- * @property-read \App\Models\Reservation $reservation
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationSlot> $slots
- * @property-read int|null $slots_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime updatedAtBetween(...$interval)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereCanceledAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereCancellationReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereCourtId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereDiscount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereEndTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime wherePriceWithVat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereRefundedAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereReservationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereStartTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime whereVat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationTime withoutTrashed()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	class IdeHelperReservationTime {}
 }
 
 namespace App\Models{
@@ -630,15 +663,19 @@ namespace App\Models{
  * @property-read int|null $feature_consumptions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $featureTickets
  * @property-read int|null $feature_tickets_count
+ * @property-read mixed $full_name
  * @property-read int $cancel_before
  * @property-read \Illuminate\Database\Eloquent\Collection $features
- * @property-read string $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\SubscriptionRenewal> $renewals
  * @property-read int|null $renewals_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
+ * @property-read int|null $reservations_count
  * @property-read \LucasDotVin\Soulbscription\Models\Subscription|null $subscription
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
