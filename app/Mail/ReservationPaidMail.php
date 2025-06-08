@@ -23,7 +23,7 @@ class ReservationPaidMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            to: $this->payment->user->email ?? $this->payment->paymentable->guest_email,
+            to: $this->payment->owner->email,
             subject: 'Nauja rezervacija',
         );
     }
@@ -37,6 +37,8 @@ class ReservationPaidMail extends Mailable implements ShouldQueue
 
     public function attachments(): array
     {
-        return [Storage::disk('local')->path($this->payment->invoice_path)];
+        return $this->payment->invoice_path
+            ? [Storage::disk('local')->path($this->payment->invoice_path)]
+            : [];
     }
 }

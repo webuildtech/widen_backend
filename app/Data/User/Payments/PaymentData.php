@@ -2,6 +2,8 @@
 
 namespace App\Data\User\Payments;
 
+use App\Data\User\Owners\OwnerData;
+use App\Enums\PaymentStatus;
 use App\Models\Payment;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -10,11 +12,11 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class PaymentData extends Data
 {
     public function __construct(
-        public string $status,
+        public PaymentStatus $status,
 
         public ?string $type,
 
-        public string $email,
+        public OwnerData $owner,
 
         public ?float $balance
     )
@@ -23,17 +25,11 @@ class PaymentData extends Data
 
     public static function fromModel(Payment $payment): self
     {
-        $balance = null;
-
-        if (!$payment->paymentable_type && auth()->guard('user')->user()->id === $payment->user_id) {
-            $balance = $payment->user->balance;
-        }
-
         return new self(
             $payment->status,
             $payment->paymentable_type,
-            $payment->user ? $payment->user->email : $payment->paymentable->guest_email,
-            $balance
+            OwnerData::fromModel($payment->owner),
+            $payment->owner->balance ?? null,
         );
     }
 }

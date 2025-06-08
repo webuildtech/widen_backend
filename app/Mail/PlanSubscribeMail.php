@@ -17,14 +17,15 @@ class PlanSubscribeMail extends Mailable implements ShouldQueue
 
     public function __construct(
         public Payment $payment,
-        public bool $renew = false
-    ) {
+        public bool    $renew = false
+    )
+    {
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            to: $this->payment->user->email,
+            to: $this->payment->owner->email,
             subject: 'Planas suaktyvintas',
         );
     }
@@ -38,6 +39,8 @@ class PlanSubscribeMail extends Mailable implements ShouldQueue
 
     public function attachments(): array
     {
-        return [Storage::disk('local')->path($this->payment->invoice_path)];
+        return $this->payment->invoice_path
+            ? [Storage::disk('local')->path($this->payment->invoice_path)]
+            : [];
     }
 }

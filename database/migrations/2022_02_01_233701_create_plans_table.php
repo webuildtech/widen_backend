@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->integer('periodicity')->unsigned()->nullable();
             $table->string('periodicity_type')->nullable();
             $table->decimal('price')->default(0);
+            $table->integer('cancel_before')->default(0);
             $table->boolean('active')->default(true);
             $table->softDeletes();
             $table->timestamps();

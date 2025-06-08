@@ -8,22 +8,24 @@ use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPaymentCallback;
 use App\Models\Payment;
-use App\Services\MakeCommerceService;
-use App\Services\PaymentService;
+use App\Services\Payments\InvoiceService;
+use App\Services\Payments\MakeCommerceService;
+use App\Services\Payments\PaymentService;
 use Illuminate\Http\JsonResponse;
 
 class PaymentController extends Controller
 {
     public function __construct(
         protected MakeCommerceService $makeCommerceService,
-        protected PaymentService      $paymentService
+        protected PaymentService      $paymentService,
+        protected InvoiceService      $invoiceService
     )
     {
     }
 
     public function index()
     {
-        $payments = Payment::whereUserId(auth()->user()->id)
+        $payments = auth()->user()->payments()
             ->whereStatus(PaymentStatus::PAID)
             ->orderBy('paid_at', 'desc')
             ->get();
@@ -69,12 +71,14 @@ class PaymentController extends Controller
 
     public function downloadInvoice(Payment $payment)
     {
-        if (auth()->user()->id !== $payment->user_id || floatval($payment->paid_amount) === 0.0) {
+        $user = auth()->user();
+
+        if ($user->id !== $payment->owner_id || $payment->owner_type !== 'user' || floatval($payment->paid_amount) === 0.0) {
             return response()->json(['error' => 'Veiksmas negalimas!'], 403);
         }
 
         if (!$payment->invoice_path) {
-            $payment = $this->paymentService->generateInvoice($payment);
+            $this->invoiceService->generate($payment);
         }
 
         return response()->download(storage_path('app' . $payment->invoice_path));

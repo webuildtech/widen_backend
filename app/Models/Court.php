@@ -44,6 +44,11 @@ class Court extends BaseModel implements HasMedia
         return $this->hasMany(Downtime::class);
     }
 
+    public function reservationSlots(): HasMany
+    {
+        return $this->hasMany(ReservationSlot::class);
+    }
+
     public function getIntervalsIdsAttribute(): array
     {
         return $this->intervals->pluck('id')->toArray();

@@ -2,6 +2,7 @@
 
 namespace App\Data\Admin\Courts;
 
+use App\Enums\CourtType;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -9,9 +10,11 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class SelectCourtData extends Data
 {
     public function __construct(
-        public int    $id,
+        public int       $id,
 
-        public string $name,
+        public string    $name,
+
+        public CourtType $type,
     )
     {
     }

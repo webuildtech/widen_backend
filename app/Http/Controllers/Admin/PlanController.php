@@ -8,15 +8,15 @@ use App\Data\Admin\Plans\SelectPlanData;
 use App\Data\Admin\Plans\StorePlanData;
 use App\Data\Admin\Plans\UpdatePlanData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\PlanRepositoryInterface;
 use App\Models\Plan;
+use App\Services\PlanService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PlanController extends Controller
 {
     public function __construct(
-        protected PlanRepositoryInterface $planRepository
+        protected PlanService $planService
     )
     {
     }
@@ -45,7 +45,7 @@ class PlanController extends Controller
 
     public function store(StorePlanData $data): PlanData
     {
-        $plan = $this->planRepository->create($data);
+        $plan = $this->planService->create($data->all());
 
         return PlanData::from($plan);
     }
@@ -57,14 +57,14 @@ class PlanController extends Controller
 
     public function update(UpdatePlanData $data, Plan $plan): PlanData
     {
-        $plan = $this->planRepository->update($plan, $data);
+        $plan->update($data->all());
 
         return PlanData::from($plan);
     }
 
     public function destroy(Plan $plan): array
     {
-        $this->planRepository->delete($plan);
+        $plan->delete();
 
         return [];
     }

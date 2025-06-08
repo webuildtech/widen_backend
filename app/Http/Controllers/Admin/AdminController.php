@@ -7,15 +7,15 @@ use App\Data\Admin\Admins\ListAdminData;
 use App\Data\Admin\Admins\StoreAdminData;
 use App\Data\Admin\Admins\UpdateAdminData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\AdminRepositoryInterface;
 use App\Models\Admin;
+use App\Services\AdminService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminController extends Controller
 {
     public function __construct(
-        protected AdminRepositoryInterface $adminRepository
+        protected AdminService $adminService
     )
     {
     }
@@ -46,7 +46,7 @@ class AdminController extends Controller
 
     public function store(StoreAdminData $data): AdminData
     {
-        $admin = $this->adminRepository->create($data);
+        $admin = $this->adminService->create($data);
 
         return AdminData::from($admin);
     }
@@ -58,14 +58,14 @@ class AdminController extends Controller
 
     public function update(UpdateAdminData $data, Admin $admin): AdminData
     {
-        $admin = $this->adminRepository->update($admin, $data);
+        $admin = $this->adminService->update($admin, $data);
 
         return AdminData::from($admin);
     }
 
     public function destroy(Admin $admin): array
     {
-        $this->adminRepository->delete($admin);
+        $admin->delete();
 
         return [];
     }

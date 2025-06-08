@@ -47,10 +47,11 @@ Route::middleware(['auth:user'])->group(function () {
         Route::post('top-up-balance', [AccountController::class, 'topUpBalance']);
     });
 
-    Route::prefix('reservation-times')->group(function () {
-        Route::get('', [ReservationTimeController::class, 'index']);
-        Route::post('{reservationTime}/cancel', [ReservationTimeController::class, 'cancel'])
-            ->middleware('can:cancel,reservationTime');
+    Route::prefix('reservations')->group(function () {
+        Route::get('', [ReservationController::class, 'index']);
+        Route::post('pay', [ReservationController::class, 'pay']);
+        Route::post('{reservation}/cancel', [ReservationController::class, 'cancel'])
+            ->middleware('can:cancel,reservation');
     });
 
     Route::prefix('plans')->group(function () {

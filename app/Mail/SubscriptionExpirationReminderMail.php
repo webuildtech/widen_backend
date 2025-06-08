@@ -16,8 +16,9 @@ class SubscriptionExpirationReminderMail extends Mailable implements ShouldQueue
 
     public function __construct(
         public User $user,
-        public int $days
-    ) {
+        public int  $days
+    )
+    {
     }
 
     public function envelope(): Envelope

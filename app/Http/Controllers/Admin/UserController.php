@@ -8,15 +8,15 @@ use App\Data\Admin\Users\StoreUserData;
 use App\Data\Admin\Users\UpdateUserData;
 use App\Data\Admin\Users\UserData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\UserRepositoryInterface;
 use App\Models\User;
+use App\Services\UserService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected UserService $userService
     )
     {
     }
@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function store(StoreUserData $data): UserData
     {
-        $user = $this->userRepository->create($data);
+        $user = $this->userService->create($data->all());
 
         return UserData::from($user);
     }
@@ -66,14 +66,14 @@ class UserController extends Controller
 
     public function update(UpdateUserData $data, User $user): UserData
     {
-        $user = $this->userRepository->update($user, $data);
+        $user = $this->userService->update($user, $data->all());
 
         return UserData::from($user);
     }
 
     public function destroy(User $user): array
     {
-        $this->userRepository->delete($user);
+        $user->delete();
 
         return [];
     }

@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Enums\PaymentStatus;
 use App\Models\Payment;
-use App\Services\PaymentService;
+use App\Services\Payments\PaymentService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 

@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
-use App\Http\Controllers\Admin\ReservationTimeController;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +53,7 @@ Route::prefix('admin')->group(function () {
             Route::get('incomes-by-interval', 'incomesByInterval');
         });
 
-        Route::get('reservation-times', [ReservationTimeController::class, 'index']);
+        Route::get('reservations/calendar', [ReservationController::class, 'calendar']);
+        Route::apiResource('reservations', ReservationController::class)->except(['show', 'update']);
     });
 });

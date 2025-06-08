@@ -8,15 +8,15 @@ use App\Data\Admin\Intervals\SelectIntervalData;
 use App\Data\Admin\Intervals\StoreIntervalData;
 use App\Data\Admin\Intervals\UpdateIntervalData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\IntervalRepositoryInterface;
 use App\Models\Interval;
+use App\Services\IntervalService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class IntervalController extends Controller
 {
     public function __construct(
-        protected IntervalRepositoryInterface $intervalRepository
+        protected IntervalService $intervalService
     )
     {
     }
@@ -46,7 +46,7 @@ class IntervalController extends Controller
 
     public function store(StoreIntervalData $data): IntervalData
     {
-        $interval = $this->intervalRepository->create($data);
+        $interval = $this->intervalService->create($data);
 
         return IntervalData::from($interval);
     }
@@ -58,14 +58,14 @@ class IntervalController extends Controller
 
     public function update(UpdateIntervalData $data, Interval $interval): IntervalData
     {
-        $interval = $this->intervalRepository->update($interval, $data);
+        $interval = $this->intervalService->update($interval, $data);
 
         return IntervalData::from($interval);
     }
 
     public function destroy(Interval $interval): array
     {
-        $this->intervalRepository->delete($interval);
+        $interval->delete();
 
         return [];
     }

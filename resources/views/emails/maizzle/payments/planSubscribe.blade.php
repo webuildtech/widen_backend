@@ -56,7 +56,7 @@ $appUrl = env('APP_FRONTEND_URL');
                   <div role="separator" style="line-height: 24px">&zwj;</div>
                   <div>
                     <h1 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600; color: #0f172a">
-                      Sveiki, {{ $payment->user->first_name }},
+                      Sveiki, {{ $payment->owner->first_name }},
                     </h1>
                     <p style="font-size: 16px; line-height: 24px; color: #475569; margin: 24px 0 0">
                       Džiaugiamės galėdami pranešti, kad Jūsų pasirinktas planas buvo sėkmingai {{$renew ? 'pratęstas' : 'aktyvuotas'}}.

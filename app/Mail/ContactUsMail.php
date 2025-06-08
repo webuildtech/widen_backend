@@ -15,7 +15,8 @@ class ContactUsMail extends Mailable
 
     public function __construct(
         public ContactUsData $data,
-    ) {
+    )
+    {
     }
 
     public function envelope()

@@ -9,9 +9,8 @@ use App\Data\User\Auth\PasswordResetData;
 use App\Data\User\Auth\RegisterData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Repositories\Models\UserRepository;
+use App\Services\UserService;
 use Carbon\Carbon;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Password;
 class AuthController extends Controller
 {
     public function __construct(
-        protected UserRepository $userRepository,
+        protected UserService $userService,
     ) {
     }
 
@@ -43,7 +42,7 @@ class AuthController extends Controller
 
     public function register(RegisterData $data)
     {
-        $user = $this->userRepository->create($data);
+        $user = $this->userService->create($data->all());
 
         return AuthData::from([
             "authUser" => $user,

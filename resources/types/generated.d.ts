@@ -82,6 +82,7 @@ declare namespace App.Data.Admin.Courts {
     export type SelectCourtData = {
         id: number;
         name: string;
+        type: App.Enums.CourtType;
     };
     export type StoreCourtData = {
         name: string;
@@ -267,6 +268,20 @@ declare namespace App.Data.Admin.ReservationTimes {
         date_from: string;
         date_to: string;
         court_type?: App.Enums.CourtType;
+    };
+    export type StoreReservationTimeData = {
+        user_id: number;
+        court_type: App.Enums.CourtType;
+        court_id?: number | null;
+        date_from: string;
+        date_to: string;
+        force_create: boolean;
+        times: Array<App.Data.Admin.ReservationTimes.TimeData>;
+    };
+    export type TimeData = {
+        day: App.Enums.Day;
+        start_time: string;
+        end_time: string;
     };
 }
 declare namespace App.Data.Admin.Subscriptions {

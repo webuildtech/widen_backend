@@ -8,15 +8,15 @@ use App\Data\Admin\Courts\SelectCourtData;
 use App\Data\Admin\Courts\StoreCourtData;
 use App\Data\Admin\Courts\UpdateCourtData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\CourtRepositoryInterface;
 use App\Models\Court;
+use App\Services\CourtService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CourtController extends Controller
 {
     public function __construct(
-        protected CourtRepositoryInterface $courtRepository
+        protected CourtService $courtService
     )
     {
     }
@@ -46,7 +46,7 @@ class CourtController extends Controller
 
     public function store(StoreCourtData $data): CourtData
     {
-        $court = $this->courtRepository->create($data);
+        $court = $this->courtService->create($data);
 
         return CourtData::from($court);
     }
@@ -58,14 +58,14 @@ class CourtController extends Controller
 
     public function update(UpdateCourtData $data, Court $court): CourtData
     {
-        $court = $this->courtRepository->update($court, $data);
+        $court = $this->courtService->update($court, $data);
 
         return CourtData::from($court);
     }
 
     public function destroy(Court $court): array
     {
-        $this->courtRepository->delete($court);
+        $court->delete();
 
         return [];
     }

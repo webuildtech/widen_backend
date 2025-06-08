@@ -56,7 +56,7 @@ $appUrl = env('APP_FRONTEND_URL');
                   <div role="separator" style="line-height: 24px">&zwj;</div>
                   <div>
                     <h1 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600; color: #0f172a">
-                      Sveiki, {{ $payment->user->first_name ?? $payment->paymentable->guest_first_name }},
+                      Sveiki, {{ $payment->owner->first_name }},
                     </h1>
                     <p style="font-size: 16px; line-height: 24px; color: #475569; margin: 24px 0 0">
                       Dėkojame už Jūsų apmokėjimą! Jūsų rezervacija sėkmingai patvirtinta.
@@ -73,16 +73,16 @@ $appUrl = env('APP_FRONTEND_URL');
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach ($payment->paymentable->times as $time)
+                        @foreach ($payment->paymentable->reservations as $reservation)
                         <tr>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">
-                            {{ $time->start_time->format('Y-m-d') }}
+                            {{ $reservation->start_time->format('Y-m-d') }}
                           </td>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">
-                            {{ $time->start_time->format('H:i') }} - {{ $time->end_time->format('H:i') }}
+                            {{ $reservation->start_time->format('H:i') }} - {{ $reservation->end_time->format('H:i') }}
                           </td>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">
-                            {{ $time->court->name }}
+                            {{ $reservation->court->name }}
                           </td>
                         </tr>
                         @endforeach

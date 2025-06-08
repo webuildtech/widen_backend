@@ -27,14 +27,17 @@ class BaseModel extends Model
             ->logOnlyDirty();
     }
 
-    public function scopeUpdatedAtBetween(Builder $query, ...$interval): Builder
+    public function scopeUpdatedAtBetween(Builder $query, string $start, ?string $end = null): Builder
     {
-        $table = $this->getTable();
+        return $query->dateBetween('updated_at', $start, $end);
+    }
 
-        $query->whereDate("$table.updated_at", '>=', Carbon::parseWithAppTimezone($interval[0]));
+    public function scopeDateBetween(Builder $query, string $column, string $start, ?string $end = null): Builder
+    {
+        $query->whereDate("{$this->getTable()}.$column", '>=', Carbon::parseWithAppTimezone($start));
 
-        if (!empty($interval[1])) {
-            $query->whereDate("$table.updated_at", '<=', Carbon::parseWithAppTimezone($interval[1]));
+        if ($end !== null) {
+            $query->whereDate("{$this->getTable()}.$column", '<=', Carbon::parseWithAppTimezone($end));
         }
 
         return $query;

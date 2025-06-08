@@ -12,7 +12,7 @@
     $borderColor = 'border-[#14d315]';
     $bgColor = 'bg-green-100';
 
-    $user = $payment->user;
+    $owner = $payment->owner;
 @endphp
 
 <div class="max-w-4xl mx-auto pt-4 px-8">
@@ -45,34 +45,30 @@
             <div class="font-bold text-xl text-center">Pirkėjas</div>
 
             <div class="font-semibold">
-                {{
-                    $user ?
-                        $user->is_company ? $user->company_name : $user->first_name . ' ' . $user->last_name :
-                        $payment->paymentable->guest_first_name . ' ' . $payment->paymentable->guest_last_name
-                }}
+                {{$owner->is_company ? $owner->company_name : $owner->full_name}}
             </div>
 
-            @if($user?->is_company)
+            @if($owner->is_company)
                 <div class="text-xs">
-                    {{$user->company_code}}
+                    {{$owner->company_code}}
                 </div>
 
                 <div class="text-xs">
-                    {{$user->company_address}}
+                    {{$owner->company_address}}
                 </div>
 
-                @if($user->company_vat_code)
+                @if($owner->company_vat_code)
                     <div class="text-xs">
-                        PVM kodas: <span class="font-semibold">{{$user->company_vat_code}}</span>
+                        PVM kodas: <span class="font-semibold">{{$owner->company_vat_code}}</span>
                     </div>
                 @endif
             @else
                 <div class="text-xs">
-                    {{$user ? $user->email : $payment->paymentable->guest_email}}
+                    {{$owner->email}}
                 </div>
 
                 <div class="text-xs">
-                    {{$user ? $user->phone : $payment->paymentable->guest_phone}}
+                    {{$owner->phone}}
                 </div>
             @endif
         </div>

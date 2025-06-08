@@ -8,15 +8,15 @@ use App\Data\Admin\Groups\SelectGroupData;
 use App\Data\Admin\Groups\StoreGroupData;
 use App\Data\Admin\Groups\UpdateGroupData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\GroupRepositoryInterface;
 use App\Models\Group;
+use App\Services\GroupService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class GroupController extends Controller
 {
     public function __construct(
-        protected GroupRepositoryInterface $groupRepository
+        protected GroupService $groupService
     )
     {
     }
@@ -42,7 +42,7 @@ class GroupController extends Controller
 
     public function store(StoreGroupData $data): GroupData
     {
-        $group = $this->groupRepository->create($data);
+        $group = $this->groupService->create($data);
 
         return GroupData::from($group);
     }
@@ -54,14 +54,14 @@ class GroupController extends Controller
 
     public function update(UpdateGroupData $data, Group $group): GroupData
     {
-        $group = $this->groupRepository->update($group, $data);
+        $group = $this->groupService->update($group, $data);
 
         return GroupData::from($group);
     }
 
     public function destroy(Group $group): array
     {
-        $this->groupRepository->delete($group);
+        $group->delete();
 
         return [];
     }

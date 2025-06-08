@@ -6,8 +6,8 @@ use App\Data\User\Plans\PlanData;
 use App\Data\User\Subscriptions\SubscriptionData;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
-use App\Services\MakeCommerceService;
-use App\Services\PaymentService;
+use App\Services\Payments\MakeCommerceService;
+use App\Services\Payments\PaymentService;
 use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller

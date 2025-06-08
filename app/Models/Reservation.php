@@ -2,23 +2,37 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @mixin IdeHelperReservation
  */
 class Reservation extends BaseModel
 {
-    public function user(): BelongsTo
+    protected $casts = [
+        'is_paid' => 'boolean',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+        'canceled_at' => 'datetime',
+        'paid_at' => 'datetime',
+    ];
+
+    public function owner(): MorphTo
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
 
-    public function times(): HasMany
+    public function reservationGroup(): BelongsTo
     {
-        return $this->hasMany(ReservationTime::class);
+        return $this->belongsTo(ReservationGroup::class);
+    }
+
+    public function court(): BelongsTo
+    {
+        return $this->belongsTo(Court::class);
     }
 
     public function slots(): HasMany
@@ -26,8 +40,13 @@ class Reservation extends BaseModel
         return $this->hasMany(ReservationSlot::class);
     }
 
-    public function payment(): MorphOne
+    public function scopePaidAtBetween(Builder $query, string $start, ?string $end = null): Builder
     {
-        return $this->morphOne(Payment::class, 'paymentable');
+        return $query->dateBetween('paid_at', $start, $end);
+    }
+
+    public function scopeCanceledAtBetween(Builder $query, string $start, ?string $end = null): Builder
+    {
+        return $query->dateBetween('canceled_at', $start, $end);
     }
 }

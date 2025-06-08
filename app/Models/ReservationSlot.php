@@ -12,20 +12,22 @@ class ReservationSlot extends BaseModel
     protected $casts = [
         'slot_start' => 'datetime',
         'slot_end' => 'datetime',
+        'try_sell' => 'boolean',
+        'is_refunded' => 'boolean',
     ];
-
-    public function court(): BelongsTo
-    {
-        return $this->belongsTo(Court::class);
-    }
 
     public function reservation(): BelongsTo
     {
         return $this->belongsTo(Reservation::class);
     }
 
-    public function reservationTime(): BelongsTo
+    public function court(): BelongsTo
     {
-        return $this->belongsTo(ReservationTime::class);
+        return $this->belongsTo(Court::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('try_sell', false)->where('is_refunded', false);
     }
 }

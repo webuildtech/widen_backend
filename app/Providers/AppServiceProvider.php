@@ -6,13 +6,14 @@ use App\Models\Admin;
 use App\Models\Court;
 use App\Models\Downtime;
 use App\Models\Group;
+use App\Models\Guest;
 use App\Models\Interval;
 use App\Models\IntervalPrice;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\Reservation;
+use App\Models\ReservationGroup;
 use App\Models\ReservationSlot;
-use App\Models\ReservationTime;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -41,15 +42,16 @@ class AppServiceProvider extends ServiceProvider
             'plan' => Plan::class,
             'reservation' => Reservation::class,
             'reservationSlot' => ReservationSlot::class,
-            'reservationTime' => ReservationTime::class,
+            'reservationGroup' => ReservationGroup::class,
             'user' => User::class,
+            'guest' => Guest::class,
             'downtime' => Downtime::class,
         ]);
 
-        Carbon::macro('parseWithAppTimezone', fn ($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));
+        Carbon::macro('parseWithAppTimezone', fn($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return env('APP_FRONTEND_URL') . '/reset-password?token='.$token;
+            return env('APP_FRONTEND_URL') . '/reset-password?token=' . $token;
         });
     }
 }

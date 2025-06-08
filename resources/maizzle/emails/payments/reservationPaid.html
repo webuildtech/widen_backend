@@ -1,7 +1,7 @@
 <x-main>
   <div class="space-y-6">
     <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
-      Sveiki, @{{ $payment->user->first_name ?? $payment->paymentable->guest_first_name }},
+      Sveiki, @{{ $payment->owner->first_name }},
     </h1>
 
     <p class="m-0 text-base/6 text-slate-600">
@@ -22,18 +22,18 @@
       </thead>
 
       <tbody>
-        @foreach ($payment->paymentable->times as $time)
+        @foreach ($payment->paymentable->reservations as $reservation)
           <tr>
             <td class="p-2 border-b border-gray-200">
-              @{{ $time->start_time->format('Y-m-d') }}
+              @{{ $reservation->start_time->format('Y-m-d') }}
             </td>
 
             <td class="p-2 border-b border-gray-200">
-              @{{ $time->start_time->format('H:i') }} - @{{ $time->end_time->format('H:i') }}
+              @{{ $reservation->start_time->format('H:i') }} - @{{ $reservation->end_time->format('H:i') }}
             </td>
 
             <td class="p-2 border-b border-gray-200">
-              @{{ $time->court->name }}
+              @{{ $reservation->court->name }}
             </td>
           </tr>
         @endforeach

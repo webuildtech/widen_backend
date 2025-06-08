@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Enums\PaymentStatus;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @mixin IdeHelperPayment
@@ -10,15 +11,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Payment extends BaseModel
 {
     protected $casts = [
+        'renew' => 'boolean',
         'paid_at' => 'datetime',
+        'price' => 'decimal:2',
+        'vat' => 'decimal:2',
+        'price_with_vat' => 'decimal:2',
+        'discount' => 'decimal:2',
+        'paid_amount' => 'decimal:2',
+        'paid_amount_from_balance' => 'decimal:2',
+        'refunded_amount' => 'decimal:2',
+        'refunded_amount_to_balance' => 'decimal:2',
+        'status' => PaymentStatus::class,
     ];
 
-    public function user(): BelongsTo
+    public function owner(): MorphTo
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
 
-    public function paymentable()
+    public function paymentable(): MorphTo
     {
         return $this->morphTo();
     }

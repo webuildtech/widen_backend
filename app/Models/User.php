@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,9 +46,9 @@ class User extends Authenticatable
             ->logOnlyDirty();
     }
 
-    public function getFullNameAttribute(): string
+    protected function fullName(): Attribute
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return Attribute::get(fn () => trim("{$this->first_name} {$this->last_name}"));
     }
 
     public function groups(): BelongsToMany
@@ -114,5 +116,15 @@ class User extends Authenticatable
     {
         $this->balance = max(0, $this->balance - $amount);
         $this->save();
+    }
+
+    public function reservations(): MorphMany
+    {
+        return $this->morphMany(Reservation::class, 'owner');
+    }
+
+    public function payments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'owner');
     }
 }

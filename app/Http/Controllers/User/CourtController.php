@@ -8,7 +8,7 @@ use App\Data\User\Courts\CourtTimesData;
 use App\Data\User\Courts\ListCourtData;
 use App\Http\Controllers\Controller;
 use App\Models\Court;
-use App\Services\CourtSlotService;
+use App\Services\Slots\CourtSlotService;
 use Illuminate\Http\JsonResponse;
 
 class CourtController extends Controller

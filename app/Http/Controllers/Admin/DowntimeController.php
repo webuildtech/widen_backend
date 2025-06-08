@@ -6,19 +6,12 @@ use App\Data\Admin\Downtimes\DowntimeData;
 use App\Data\Admin\Downtimes\ListDowntimeData;
 use App\Data\Admin\Downtimes\StoreUpdateDowntimeData;
 use App\Http\Controllers\Controller;
-use App\Interfaces\Repositories\Models\DowntimeRepositoryInterface;
 use App\Models\Downtime;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class DowntimeController extends Controller
 {
-    public function __construct(
-        protected DowntimeRepositoryInterface $downtimeRepository
-    )
-    {
-    }
-
     public function index()
     {
         $downtimes = QueryBuilder::for(Downtime::class)
@@ -45,7 +38,7 @@ class DowntimeController extends Controller
 
     public function store(StoreUpdateDowntimeData $data): DowntimeData
     {
-        $downtime = $this->downtimeRepository->create($data);
+        $downtime = Downtime::create($data->all());
 
         return DowntimeData::from($downtime);
     }
@@ -57,14 +50,14 @@ class DowntimeController extends Controller
 
     public function update(StoreUpdateDowntimeData $data, Downtime $downtime): DowntimeData
     {
-        $downtime = $this->downtimeRepository->update($downtime, $data);
+        $downtime->update($data->all());
 
         return DowntimeData::from($downtime);
     }
 
     public function destroy(Downtime $downtime): array
     {
-        $this->downtimeRepository->delete($downtime);
+        $downtime->delete();
 
         return [];
     }
