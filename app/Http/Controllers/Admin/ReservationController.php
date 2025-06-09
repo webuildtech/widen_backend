@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Services\Reservations\MultiReservationService;
+use App\Services\Reservations\ReservationService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -19,7 +20,9 @@ class ReservationController extends Controller
 {
     public function __construct(
         protected MultiReservationService $multiReservationService,
-    ) {
+        protected ReservationService      $reservationService,
+    )
+    {
     }
 
     public function index()
@@ -85,6 +88,17 @@ class ReservationController extends Controller
         }
 
         return CalendarReservationData::collect($reservationTimes->get());
+    }
+
+    public function pay(Reservation $reservation): array
+    {
+        if (!$reservation->is_paid) {
+            $reservation->update(['is_paid' => true, 'paid_at' => now(), 'payment_source' => 'admin']);
+
+            $this->reservationService->refundSlots($reservation);
+        }
+
+        return [];
     }
 
     public function destroy(Reservation $reservation): array

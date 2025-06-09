@@ -1,0 +1,17 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+      Sveiki, @{{ $reservation->owner->first_name }},
+    </h1>
+
+    <p class="m-0 text-base/6 text-slate-600">
+      Norime priminti, jog turite neapmokėtą rezervaciją: <strong>@{{ $reservation->start_time->format('Y-m-d H:i') }} - @{{ $reservation->end_time->format('H:i') }}</strong>.<br><br>
+      Jūsų balanso likučio nepakanka šiai sumai padengti, taip pat būtų viršytas leidžiamas balanso limitas (<strong>-100 eurų</strong>).<br><br>
+      Prašome kuo skubiau apmokėti, kitu atveju rezervacija bus atšaukta likus <strong>@{{ $reservation->owner->cancel_before }}</strong> valandoms iki jos.
+    </p>
+
+    <x-button href="@{{ $appUrl }}/dashboard/unpaid-reservations" class="bg-green-700 hover:bg-green-800">
+      Apmokėti
+    </x-button>
+  </div>
+</x-main>

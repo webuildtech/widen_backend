@@ -55,5 +55,6 @@ Route::prefix('admin')->group(function () {
 
         Route::get('reservations/calendar', [ReservationController::class, 'calendar']);
         Route::apiResource('reservations', ReservationController::class)->except(['show', 'update']);
+        Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
     });
 });

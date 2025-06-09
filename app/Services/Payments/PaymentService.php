@@ -40,7 +40,7 @@ class PaymentService
         return $payment;
     }
 
-    public function createFromReservationGroup(ReservationGroup $reservationGroup, User|Guest $owner): Payment
+    public function createFromReservationGroup(ReservationGroup $reservationGroup, User|Guest $owner, bool $allowMinus = false): Payment
     {
         $reservations = $reservationGroup->reservations();
 
@@ -52,7 +52,7 @@ class PaymentService
         $paidAmountFromBalance = 0;
 
         if ($owner instanceof User) {
-            $paidAmountFromBalance = $owner->getDeductedAmount($priceWithVat);
+            $paidAmountFromBalance = $allowMinus ? $priceWithVat : $owner->getDeductedAmount($priceWithVat);
             $owner->deductBalance($paidAmountFromBalance);
         }
 

@@ -114,7 +114,7 @@ class User extends Authenticatable
 
     public function deductBalance(float $amount): void
     {
-        $this->balance = max(0, $this->balance - $amount);
+        $this->balance -= $amount;
         $this->save();
     }
 

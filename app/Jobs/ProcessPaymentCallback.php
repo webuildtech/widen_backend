@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Enums\PaymentStatus;
 use App\Models\Payment;
+use App\Services\Payments\PaymentHandlerResolver;
 use App\Services\Payments\PaymentService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -19,7 +20,7 @@ class ProcessPaymentCallback implements ShouldQueue
     )
     {
         $this->onQueue('payments');
-        $this->paymentService = new PaymentService();
+        $this->paymentService = new PaymentService(new PaymentHandlerResolver());
     }
 
     public function handle(): void
