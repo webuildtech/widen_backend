@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Intervals\IntervalData;
-use App\Data\Admin\Intervals\ListIntervalData;
-use App\Data\Admin\Intervals\SelectIntervalData;
-use App\Data\Admin\Intervals\StoreIntervalData;
-use App\Data\Admin\Intervals\UpdateIntervalData;
+use App\Data\Admin\Intervals\IntervalListData;
+use App\Data\Admin\Intervals\IntervalSelectOptionData;
+use App\Data\Admin\Intervals\IntervalStoreData;
+use App\Data\Admin\Intervals\IntervalUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Interval;
 use App\Services\IntervalService;
@@ -34,17 +34,18 @@ class IntervalController extends Controller
             ->allowedFilters([
                 'name',
                 'inside_name',
-                AllowedFilter::scope('date_between'),
+                AllowedFilter::scope('date_from_between'),
+                AllowedFilter::scope('date_to_between'),
                 AllowedFilter::scope('updated_at_between'),
                 AllowedFilter::scope('global'),
             ])
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListIntervalData::collect($companies);
+        return IntervalListData::collect($companies);
     }
 
-    public function store(StoreIntervalData $data): IntervalData
+    public function store(IntervalStoreData $data): IntervalData
     {
         $interval = $this->intervalService->create($data);
 
@@ -56,7 +57,7 @@ class IntervalController extends Controller
         return IntervalData::from($interval);
     }
 
-    public function update(UpdateIntervalData $data, Interval $interval): IntervalData
+    public function update(IntervalUpdateData $data, Interval $interval): IntervalData
     {
         $interval = $this->intervalService->update($interval, $data);
 
@@ -74,6 +75,6 @@ class IntervalController extends Controller
     {
         $intervals = Interval::where('date_to', '>=', now())->get();
 
-        return SelectIntervalData::collect($intervals);
+        return IntervalSelectOptionData::collect($intervals);
     }
 }

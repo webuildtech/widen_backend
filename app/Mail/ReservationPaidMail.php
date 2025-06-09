@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -37,8 +38,12 @@ class ReservationPaidMail extends Mailable implements ShouldQueue
 
     public function attachments(): array
     {
-        return $this->payment->invoice_path
-            ? [Storage::disk('local')->path($this->payment->invoice_path)]
-            : [];
+        if (! $this->payment->invoice_path) {
+            return [];
+        }
+
+        return [
+            Attachment::fromPath(Storage::disk('local')->path($this->payment->invoice_path))
+        ];
     }
 }

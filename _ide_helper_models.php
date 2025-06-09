@@ -28,15 +28,16 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
- * @property-read string $role
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
  * @property-read int|null $permissions_count
+ * @property-read mixed $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin newQuery()
@@ -44,7 +45,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin permission($permissions, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin role($roles, $guard = null, $without = false)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereBlocked($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereDeletedAt($value)
@@ -70,11 +71,12 @@ namespace App\Models{
 /**
  * 
  *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BaseModel withoutTrashed()
  * @mixin \Eloquent
@@ -100,21 +102,22 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Downtime> $downtimes
  * @property-read int|null $downtimes_count
- * @property-read array $intervals_ids
- * @property-read mixed $is_available
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Media|null $logo
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interval> $intervals
  * @property-read int|null $intervals_count
+ * @property-read mixed $intervals_ids
+ * @property-read mixed $is_available
+ * @property-read mixed $logo
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationSlot> $reservationSlots
  * @property-read int|null $reservation_slots_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Court dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Court updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Court updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereDeletedAt($value)
@@ -149,12 +152,14 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\Court $court
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime dateBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime dateFromBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime dateToBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereCourtId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Downtime whereCreatedAt($value)
@@ -226,15 +231,16 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
- * @property-read array $users_ids
  * @property-read \App\Models\Plan|null $plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
+ * @property-read mixed $users_ids
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Group updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereId($value)
@@ -269,11 +275,12 @@ namespace App\Models{
  * @property-read int|null $payments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Guest whereEmail($value)
@@ -309,13 +316,15 @@ namespace App\Models{
  * @property-read int|null $courts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IntervalPrice> $prices
  * @property-read int|null $prices_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval dateBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval dateFromBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval dateToBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval whereDateFrom($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Interval whereDateTo($value)
@@ -349,11 +358,12 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice whereDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IntervalPrice whereDeletedAt($value)
@@ -401,11 +411,12 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $paymentable
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDiscount($value)
@@ -518,11 +529,14 @@ namespace App\Models{
  * @property-read \App\Models\ReservationGroup|null $reservationGroup
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ReservationSlot> $slots
  * @property-read int|null $slots_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation canceledAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation paidAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCancellationReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCourtId($value)
@@ -565,11 +579,12 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationGroup whereId($value)
@@ -606,11 +621,12 @@ namespace App\Models{
  * @property-read \App\Models\Court|null $court
  * @property-read \App\Models\Reservation $reservation
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereCourtId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReservationSlot whereDeletedAt($value)
@@ -659,12 +675,12 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read mixed $cancel_before
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureConsumption> $featureConsumptions
  * @property-read int|null $feature_consumptions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $featureTickets
  * @property-read int|null $feature_tickets_count
  * @property-read mixed $full_name
- * @property-read int $cancel_before
  * @property-read \Illuminate\Database\Eloquent\Collection $features
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
@@ -679,14 +695,15 @@ namespace App\Models{
  * @property-read \LucasDotVin\Soulbscription\Models\Subscription|null $subscription
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User birthdayBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User birthdayBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User updatedAtBetween(...$interval)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCompanyAddress($value)

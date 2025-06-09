@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasCourtScopes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @mixin IdeHelperCourt
@@ -15,19 +15,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Court extends BaseModel implements HasMedia
 {
     use InteractsWithMedia;
-
-    public function scopeGlobal(Builder $query, string $text): Builder
-    {
-        return $query->whereAny([
-            'name',
-            'inside_name',
-        ], 'like', "%$text%");
-    }
-
-    public function getLogoAttribute(): ?Media
-    {
-        return $this->getFirstMedia('logo');
-    }
+    use HasCourtScopes;
 
     public function registerMediaCollections(): void
     {
@@ -49,13 +37,18 @@ class Court extends BaseModel implements HasMedia
         return $this->hasMany(ReservationSlot::class);
     }
 
-    public function getIntervalsIdsAttribute(): array
+    public function logo(): Attribute
     {
-        return $this->intervals->pluck('id')->toArray();
+        return Attribute::get(fn() => $this->getFirstMedia('logo'));
     }
 
-    public function getIsAvailableAttribute()
+    public function intervalsIds(): Attribute
     {
-        return $this->active && $this->intervals()->exists();
+        return Attribute::get(fn() => $this->intervals->pluck('id')->toArray());
+    }
+
+    public function isAvailable(): Attribute
+    {
+        return Attribute::get(fn() => $this->active && $this->intervals()->exists());
     }
 }

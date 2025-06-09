@@ -32,7 +32,7 @@ class ReservationData extends Data
 
         public ?Carbon    $cancelled_at,
 
-        /** @var Collection<int, StoreReservationSlotData> */
+        /** @var Collection<int, ReservationSlotStoreData> */
         public Collection $slots,
     )
     {

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Groups\GroupData;
-use App\Data\Admin\Groups\ListGroupData;
-use App\Data\Admin\Groups\SelectGroupData;
-use App\Data\Admin\Groups\StoreGroupData;
-use App\Data\Admin\Groups\UpdateGroupData;
+use App\Data\Admin\Groups\GroupListData;
+use App\Data\Admin\Groups\GroupSelectOptionData;
+use App\Data\Admin\Groups\GroupStoreData;
+use App\Data\Admin\Groups\GroupUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Services\GroupService;
@@ -37,10 +37,10 @@ class GroupController extends Controller
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListGroupData::collect($groups);
+        return GroupListData::collect($groups);
     }
 
-    public function store(StoreGroupData $data): GroupData
+    public function store(GroupStoreData $data): GroupData
     {
         $group = $this->groupService->create($data);
 
@@ -52,7 +52,7 @@ class GroupController extends Controller
         return GroupData::from($group);
     }
 
-    public function update(UpdateGroupData $data, Group $group): GroupData
+    public function update(GroupUpdateData $data, Group $group): GroupData
     {
         $group = $this->groupService->update($group, $data);
 
@@ -68,6 +68,6 @@ class GroupController extends Controller
 
     public function all()
     {
-        return SelectGroupData::collect(Group::all());
+        return GroupSelectOptionData::collect(Group::all());
     }
 }

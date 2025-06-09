@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Data\Admin\Groups\StoreGroupData;
-use App\Data\Admin\Groups\UpdateGroupData;
+use App\Data\Admin\Groups\GroupStoreData;
+use App\Data\Admin\Groups\GroupUpdateData;
 use App\Models\Group;
 
 class GroupService
 {
-    public function create(StoreGroupData $data): Group
+    public function create(GroupStoreData $data): Group
     {
         $group = Group::create($data->except('users_ids')->all());
 
@@ -17,7 +17,7 @@ class GroupService
         return $group->refresh();
     }
 
-    public function update(Group $group, UpdateGroupData $data): Group
+    public function update(Group $group, GroupUpdateData $data): Group
     {
         $group->update($data->except('users_ids')->all());
 

@@ -55,7 +55,7 @@ class PaymentHandlerResolver
             'payment_source' => 'make_commerce'
         ]);
 
-        CheckRefundSlots::dispatch($payment->paymentable);
+        CheckRefundSlots::dispatch($payment->paymentable_id);
     }
 
     private function handleDefault(Payment $payment): void

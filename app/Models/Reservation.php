@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasReservationScopes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Reservation extends BaseModel
 {
+    use HasReservationScopes;
+
     protected $casts = [
         'is_paid' => 'boolean',
         'start_time' => 'datetime',
@@ -38,15 +40,5 @@ class Reservation extends BaseModel
     public function slots(): HasMany
     {
         return $this->hasMany(ReservationSlot::class);
-    }
-
-    public function scopePaidAtBetween(Builder $query, string $start, ?string $end = null): Builder
-    {
-        return $query->dateBetween('paid_at', $start, $end);
-    }
-
-    public function scopeCanceledAtBetween(Builder $query, string $start, ?string $end = null): Builder
-    {
-        return $query->dateBetween('canceled_at', $start, $end);
     }
 }

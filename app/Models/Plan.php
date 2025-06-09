@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPlanScopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -14,6 +15,8 @@ use LucasDotVin\Soulbscription\Models\Plan as PlanBase;
  */
 class Plan extends PlanBase
 {
+    use HasPlanScopes;
+
     protected $fillable = [
         'grace_days',
         'name',
@@ -39,14 +42,6 @@ class Plan extends PlanBase
         $expirationDate = $start->copy()->add($this->periodicity_type, $this->periodicity + $recurrences)->endOfDay();
 
         return $expirationDate;
-    }
-
-    public function scopeGlobal(Builder $query, string $text): Builder
-    {
-        return $query->whereAny([
-            'name',
-            'type',
-        ], 'like', "%$text%");
     }
 
     public function groups(): HasMany

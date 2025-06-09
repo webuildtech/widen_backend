@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasDateRangeScopes;
+use App\Models\Concerns\HasIntervalScopes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -12,37 +12,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Interval extends BaseModel
 {
-    public function prices(): HasMany
-    {
-        return $this->hasMany(IntervalPrice::class);
-    }
+    use HasIntervalScopes;
+    use HasDateRangeScopes;
 
     protected $casts = [
         'date_from' => 'datetime',
         'date_to' => 'datetime',
     ];
 
-    public function scopeGlobal(Builder $query, string $text): Builder
+    public function prices(): HasMany
     {
-        return $query->whereAny([
-            'name',
-            'inside_name',
-            'date_from',
-            'date_to',
-        ], 'like', "%$text%");
-    }
-
-    public function scopeDateBetween(Builder $query, ...$interval): Builder
-    {
-        $table = $this->getTable();
-
-        $query->whereDate("$table.date_from", '<=', Carbon::parseWithAppTimezone($interval[0]));
-
-        if (!empty($interval[1])) {
-            $query->whereDate("$table.date_to", '>=', Carbon::parseWithAppTimezone($interval[1]));
-        }
-
-        return $query;
+        return $this->hasMany(IntervalPrice::class);
     }
 
     public function courts(): BelongsToMany

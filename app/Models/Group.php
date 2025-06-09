@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -20,8 +21,8 @@ class Group extends BaseModel
         return $this->belongsToMany(User::class);
     }
 
-    public function getUsersIdsAttribute(): array
+    public function usersIds(): Attribute
     {
-        return $this->users->pluck('id')->toArray();
+        return Attribute::get(fn() => $this->users->pluck('id')->toArray());
     }
 }

@@ -24,6 +24,9 @@ class IntervalPriceGroupData extends Data
 
     public static function fromModel(Group $group): self
     {
-        return new self($group->id, $group->pivot->price);
+        return new self(
+            $group->id,
+            $group->pivot->price
+        );
     }
 }

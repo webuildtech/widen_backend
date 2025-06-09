@@ -2,32 +2,36 @@
 
 namespace App\Services;
 
-use App\Data\Admin\Courts\StoreCourtData;
-use App\Data\Admin\Courts\UpdateCourtData;
+use App\Data\Admin\Courts\CourtStoreData;
+use App\Data\Admin\Courts\CourtUpdateData;
 use App\Models\Court;
-use App\Traits\LogoTrait;
+use App\Services\Media\LogoManager;
 use Illuminate\Database\Eloquent\Model;
 
 class CourtService
 {
-    use LogoTrait;
+    public function __construct(
+        protected LogoManager $logoManager
+    )
+    {
+    }
 
-    public function create(StoreCourtData $data): Court
+    public function create(CourtStoreData $data): Court
     {
         $court = Court::create($data->except('logoFile', 'intervals_ids')->all());
 
-        $this->saveLogo($court, $data);
+        $this->logoManager->handle($court, $data);
 
         $this->syncIntervals($court, $data->intervals_ids);
 
         return $court->refresh();
     }
 
-    public function update(Court $court, UpdateCourtData $data): Model
+    public function update(Court $court, CourtUpdateData $data): Model
     {
         $court->update($data->except('logoFile', 'deleteLogo', 'intervals_ids')->all());
 
-        $this->saveLogo($court, $data);
+        $this->logoManager->handle($court, $data);
 
         $this->syncIntervals($court, $data->intervals_ids);
 

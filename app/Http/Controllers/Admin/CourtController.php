@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Courts\CourtData;
-use App\Data\Admin\Courts\ListCourtData;
-use App\Data\Admin\Courts\SelectCourtData;
-use App\Data\Admin\Courts\StoreCourtData;
-use App\Data\Admin\Courts\UpdateCourtData;
+use App\Data\Admin\Courts\CourtListData;
+use App\Data\Admin\Courts\CourtSelectOptionData;
+use App\Data\Admin\Courts\CourtStoreData;
+use App\Data\Admin\Courts\CourtUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Court;
 use App\Services\CourtService;
@@ -41,10 +41,10 @@ class CourtController extends Controller
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListCourtData::collect($companies);
+        return CourtListData::collect($companies);
     }
 
-    public function store(StoreCourtData $data): CourtData
+    public function store(CourtStoreData $data): CourtData
     {
         $court = $this->courtService->create($data);
 
@@ -56,7 +56,7 @@ class CourtController extends Controller
         return CourtData::from($court);
     }
 
-    public function update(UpdateCourtData $data, Court $court): CourtData
+    public function update(CourtUpdateData $data, Court $court): CourtData
     {
         $court = $this->courtService->update($court, $data);
 
@@ -74,6 +74,6 @@ class CourtController extends Controller
     {
         $courts = Court::all();
 
-        return SelectCourtData::collect($courts);
+        return CourtSelectOptionData::collect($courts);
     }
 }

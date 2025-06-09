@@ -1,10 +1,9 @@
 <?php
 
+use App\Data\Core\Pricing\PriceDetailsData;
+
 if (!function_exists('applyDiscountAndCalculatePriceDetails')) {
-    /**
-     * @return stdClass{price: float, discount: float, vat: float, priceWithVat: float}
-     */
-    function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount): stdClass
+    function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount): PriceDetailsData
     {
         $priceWithoutVAT = $priceWithVat / 1.21;
 
@@ -14,12 +13,7 @@ if (!function_exists('applyDiscountAndCalculatePriceDetails')) {
         $vat = round($discountedTotal * 0.21, 2);
         $priceWithVat = round($discountedTotal, 2) + $vat;
 
-        return (object)[
-            'price' => round($discountedTotal, 2),
-            'discount' => round($discountAmount, 2),
-            'vat' => $vat,
-            'price_with_vat' => round($priceWithVat, 2),
-        ];
+        return new PriceDetailsData($discountedTotal, $discountAmount, $vat, $priceWithVat);
     }
 }
 

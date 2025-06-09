@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Data\Admin\Admins\StoreAdminData;
-use App\Data\Admin\Admins\UpdateAdminData;
+use App\Data\Admin\Admins\AdminStoreData;
+use App\Data\Admin\Admins\AdminUpdateData;
 use App\Models\Admin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +11,7 @@ use Spatie\LaravelData\Optional;
 
 class AdminService
 {
-    public function create(StoreAdminData $data): Admin
+    public function create(AdminStoreData $data): Admin
     {
         $attributes = $data->except('role')->all();
 
@@ -24,7 +24,7 @@ class AdminService
         return $admin->fresh();
     }
 
-    public function update(Admin $admin, UpdateAdminData $data): Model
+    public function update(Admin $admin, AdminUpdateData $data): Model
     {
         $attributes = $data->except('role')->all();
 

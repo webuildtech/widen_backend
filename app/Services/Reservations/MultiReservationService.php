@@ -2,9 +2,9 @@
 
 namespace App\Services\Reservations;
 
-use App\Data\Admin\Reservations\MultiReservationResult;
-use App\Data\Admin\Reservations\StoreMultiReservationData;
-use App\Data\Admin\Reservations\StoreTimeBlockData;
+use App\Data\Admin\Reservations\MultiReservationResultData;
+use App\Data\Admin\Reservations\MultiReservationStoreData;
+use App\Data\Admin\Reservations\TimeBlockStoreData;
 use App\Models\User;
 use App\Repositories\CourtRepository;
 use App\Services\Slots\CourtSlotService;
@@ -26,7 +26,7 @@ class MultiReservationService
     {
     }
 
-    public function store(StoreMultiReservationData $data): MultiReservationResult
+    public function store(MultiReservationStoreData $data): MultiReservationResultData
     {
         $weeklyTimeBlocks = $this->expandTimeBlocksToSlots($data);
         $matchedDates = $this->generateMatchedDates($data, $weeklyTimeBlocks);
@@ -35,7 +35,7 @@ class MultiReservationService
         [$freeSlots, $blockedSlots] = $this->findFreeSlots($matchedDates, $courts);
 
         if ($blockedSlots->isNotEmpty() && !$data->force_create) {
-            return MultiReservationResult::blocked($blockedSlots);
+            return MultiReservationResultData::blocked($blockedSlots);
         }
 
         $user = User::find($data->user_id);
@@ -53,18 +53,18 @@ class MultiReservationService
             );
         }
 
-        return MultiReservationResult::success($freeSlots);
+        return MultiReservationResultData::success($freeSlots);
     }
 
-    protected function expandTimeBlocksToSlots(StoreMultiReservationData $data): Collection
+    protected function expandTimeBlocksToSlots(MultiReservationStoreData $data): Collection
     {
-        return $data->time_blocks->map(fn(StoreTimeBlockData $time) => [
+        return $data->time_blocks->map(fn(TimeBlockStoreData $time) => [
             ...$time->toArray(),
             'slots' => $this->slotService->generate($time->start_time, $time->end_time)
         ]);
     }
 
-    protected function generateMatchedDates(StoreMultiReservationData $data, Collection $weeklyTimeBlocks): Collection
+    protected function generateMatchedDates(MultiReservationStoreData $data, Collection $weeklyTimeBlocks): Collection
     {
         return collect(CarbonPeriod::create($data->date_from, $data->date_to))
             ->flatMap(fn($date) => $weeklyTimeBlocks

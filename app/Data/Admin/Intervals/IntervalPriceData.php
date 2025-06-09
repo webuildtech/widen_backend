@@ -3,6 +3,7 @@
 namespace App\Data\Admin\Intervals;
 
 use App\Enums\Day;
+use App\Support\RegexPatterns;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\Min;
@@ -18,10 +19,10 @@ class IntervalPriceData extends Data
     public function __construct(
         public Day                 $day,
 
-        #[Regex('/^((?:[01]\d|2[0-3]):(?:00|30)|24:00)$/')]
+        #[Regex(RegexPatterns::TIME_HALF_HOUR)]
         public string              $start_time,
 
-        #[Regex('/^((?:[01]\d|2[0-3]):(?:00|30)|24:00)$/')]
+        #[Regex(RegexPatterns::TIME_HALF_HOUR)]
         public string              $end_time,
 
         #[Numeric, Min(0)]

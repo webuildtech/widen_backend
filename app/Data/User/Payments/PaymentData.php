@@ -2,7 +2,7 @@
 
 namespace App\Data\User\Payments;
 
-use App\Data\User\Owners\OwnerData;
+use App\Data\Core\Owners\OwnerData;
 use App\Enums\PaymentStatus;
 use App\Models\Payment;
 use Spatie\LaravelData\Data;
@@ -28,7 +28,7 @@ class PaymentData extends Data
         return new self(
             $payment->status,
             $payment->paymentable_type,
-            OwnerData::fromModel($payment->owner),
+            OwnerData::from($payment->owner),
             $payment->owner->balance ?? null,
         );
     }

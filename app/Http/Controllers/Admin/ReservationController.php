@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Data\Admin\Reservations\CalendarReservationData;
+use App\Data\Admin\Reservations\ReservationCalendarData;
 use App\Data\Admin\Reservations\IndexReservationTimeData;
-use App\Data\Admin\Reservations\SearchReservationTimeData;
-use App\Data\Admin\Reservations\StoreMultiReservationData;
+use App\Data\Admin\Reservations\ReservationFilterData;
+use App\Data\Admin\Reservations\MultiReservationStoreData;
 use App\Enums\CourtType;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
@@ -61,7 +61,7 @@ class ReservationController extends Controller
         return IndexReservationTimeData::collect($reservations);
     }
 
-    public function store(StoreMultiReservationData $data)
+    public function store(MultiReservationStoreData $data)
     {
         $result = $this->multiReservationService->store($data);
 
@@ -72,7 +72,7 @@ class ReservationController extends Controller
         return $result->freeSlots();
     }
 
-    public function calendar(SearchReservationTimeData $data)
+    public function calendar(ReservationFilterData $data)
     {
         $reservationTimes = Reservation::with(['court', 'owner'])
             ->whereCanceledAt(null)
@@ -87,7 +87,7 @@ class ReservationController extends Controller
             $reservationTimes->whereHas('court', fn($query) => $query->where('type', $data->court_type));
         }
 
-        return CalendarReservationData::collect($reservationTimes->get());
+        return ReservationCalendarData::collect($reservationTimes->get());
     }
 
     public function pay(Reservation $reservation): array

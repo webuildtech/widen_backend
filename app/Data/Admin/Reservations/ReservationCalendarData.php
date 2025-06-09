@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Data\Admin\Reservations;
+
+use App\Data\Admin\Courts\CourtSelectOptionData;
+use App\Data\Core\Owners\OwnerData;
+use Carbon\Carbon;
+use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+
+#[TypeScript]
+class ReservationCalendarData extends Data
+{
+    public function __construct(
+        public Carbon                $start_time,
+
+        public Carbon                $end_time,
+
+        public CourtSelectOptionData $court,
+
+        public string                $owner_type,
+
+        public OwnerData             $owner,
+
+        public float                 $price_with_vat,
+
+        public bool                  $is_paid,
+    )
+    {
+    }
+}

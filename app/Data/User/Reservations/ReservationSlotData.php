@@ -30,5 +30,4 @@ class ReservationSlotData extends Data
             $slot->is_refunded,
         );
     }
-
 }

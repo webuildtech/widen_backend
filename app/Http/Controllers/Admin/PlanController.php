@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Data\Admin\Plans\ListPlanData;
+use App\Data\Admin\Plans\PlanListData;
 use App\Data\Admin\Plans\PlanData;
-use App\Data\Admin\Plans\SelectPlanData;
-use App\Data\Admin\Plans\StorePlanData;
-use App\Data\Admin\Plans\UpdatePlanData;
+use App\Data\Admin\Plans\PlanSelectOptionData;
+use App\Data\Admin\Plans\PlanStoreData;
+use App\Data\Admin\Plans\PlanUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Services\PlanService;
@@ -40,10 +40,10 @@ class PlanController extends Controller
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListPlanData::collect($plans);
+        return PlanListData::collect($plans);
     }
 
-    public function store(StorePlanData $data): PlanData
+    public function store(PlanStoreData $data): PlanData
     {
         $plan = $this->planService->create($data->all());
 
@@ -55,7 +55,7 @@ class PlanController extends Controller
         return PlanData::from($plan);
     }
 
-    public function update(UpdatePlanData $data, Plan $plan): PlanData
+    public function update(PlanUpdateData $data, Plan $plan): PlanData
     {
         $plan->update($data->all());
 
@@ -71,6 +71,6 @@ class PlanController extends Controller
 
     public function all()
     {
-        return SelectPlanData::collect(Plan::all());
+        return PlanSelectOptionData::collect(Plan::all());
     }
 }

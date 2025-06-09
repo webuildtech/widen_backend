@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Data\Admin\Dashboard\SearchIncomesByIntervalData;
+use App\Data\Admin\Dashboard\IncomeFilterData;
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
@@ -43,7 +43,7 @@ class DashboardController extends Controller
         ];
     }
 
-    public function incomesByInterval(SearchIncomesByIntervalData $data): array
+    public function incomesByInterval(IncomeFilterData $data): array
     {
         $payments = Payment::whereStatus(PaymentStatus::PAID);
 

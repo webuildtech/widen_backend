@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Data\User\Account\ChangeAccountPasswordData;
-use App\Data\User\Account\TopUpAccountBalanceData;
-use App\Data\User\Account\UpdateAccountData;
-use App\Data\User\AccountData;
+use App\Data\User\Account\AccountBalanceTopUpData;
+use App\Data\User\Account\AccountData;
+use App\Data\User\Account\AccountPasswordChangeData;
+use App\Data\User\Account\AccountUpdateData;
 use App\Http\Controllers\Controller;
 use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
@@ -27,21 +27,21 @@ class AccountController extends Controller
         return AccountData::from(auth()->user());
     }
 
-    public function update(UpdateAccountData $data): AccountData
+    public function update(AccountUpdateData $data): AccountData
     {
         $user = $this->userService->update(auth()->user(), $data->all());
 
         return AccountData::from($user);
     }
 
-    public function changePassword(ChangeAccountPasswordData $data): JsonResponse
+    public function changePassword(AccountPasswordChangeData $data): JsonResponse
     {
         $this->userService->update(auth()->user(), ['password' => $data->password]);
 
         return response()->json();
     }
 
-    public function topUpBalance(TopUpAccountBalanceData $data): JsonResponse
+    public function topUpBalance(AccountBalanceTopUpData $data): JsonResponse
     {
         $user = auth()->user();
 

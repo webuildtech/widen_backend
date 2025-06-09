@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Data\User\Payments\ListPaymentData;
+use App\Data\User\Payments\PaymentListData;
 use App\Data\User\Payments\PaymentData;
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
@@ -30,7 +30,7 @@ class PaymentController extends Controller
             ->orderBy('paid_at', 'desc')
             ->get();
 
-        return ListPaymentData::collect($payments);
+        return PaymentListData::collect($payments);
     }
 
     public function callback(): JsonResponse

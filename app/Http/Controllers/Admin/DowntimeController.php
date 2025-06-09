@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Downtimes\DowntimeData;
-use App\Data\Admin\Downtimes\ListDowntimeData;
-use App\Data\Admin\Downtimes\StoreUpdateDowntimeData;
+use App\Data\Admin\Downtimes\DowntimeListData;
+use App\Data\Admin\Downtimes\DowntimeInputData;
 use App\Http\Controllers\Controller;
 use App\Models\Downtime;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -27,16 +27,17 @@ class DowntimeController extends Controller
             ->allowedFilters([
                 'comment',
                 AllowedFilter::exact('court_id'),
-                AllowedFilter::scope('date_between'),
+                AllowedFilter::scope('date_from_between'),
+                AllowedFilter::scope('date_to_between'),
                 AllowedFilter::scope('updated_at_between'),
             ])
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListDowntimeData::collect($downtimes);
+        return DowntimeListData::collect($downtimes);
     }
 
-    public function store(StoreUpdateDowntimeData $data): DowntimeData
+    public function store(DowntimeInputData $data): DowntimeData
     {
         $downtime = Downtime::create($data->all());
 
@@ -48,7 +49,7 @@ class DowntimeController extends Controller
         return DowntimeData::from($downtime);
     }
 
-    public function update(StoreUpdateDowntimeData $data, Downtime $downtime): DowntimeData
+    public function update(DowntimeInputData $data, Downtime $downtime): DowntimeData
     {
         $downtime->update($data->all());
 

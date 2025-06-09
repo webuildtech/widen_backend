@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Services\Reservations\ReservationService;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,20 +11,17 @@ class CheckRefundSlots implements ShouldQueue
 {
     use Queueable;
 
-    protected ReservationService $reservationService;
-
     public function __construct(
-        public ReservationGroup $reservationGroup
+        public int                   $reservationGroupId,
+        protected ReservationService $reservationService
     )
     {
-        $this->reservationGroup->load('reservations', 'reservations.slots');
-        $this->reservationService = new ReservationService();
     }
 
     public function handle(): void
     {
-        $this->reservationGroup->reservations->each(function (Reservation $reservation) {
-            $this->reservationService->refundSlots($reservation);
-        });
+        $reservationGroup = ReservationGroup::with('reservations.slots')->findOrFail($this->reservationGroupId);
+
+        $reservationGroup->reservations->each(fn($r) => $this->reservationService->refundSlots($r));
     }
 }

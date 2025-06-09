@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Data\Admin\Subscriptions\ListSubscriptionData;
+use App\Data\Admin\Subscriptions\SubscriptionListData;
 use App\Http\Controllers\Controller;
 use LucasDotVin\Soulbscription\Models\Subscription;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -28,6 +28,6 @@ class SubscriptionController extends Controller
             ->appends(request()->query());
 
 
-        return ListSubscriptionData::collect($subscriptions);
+        return SubscriptionListData::collect($subscriptions);
     }
 }

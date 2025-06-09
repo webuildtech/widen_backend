@@ -2,7 +2,6 @@
 
 namespace App\Data\User\Plans;
 
-use App\Models\Plan;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -21,16 +20,5 @@ class PlanData extends Data
         public int    $cancel_before,
     )
     {
-    }
-
-    public static function fromModel(Plan $plan): self
-    {
-        return new self(
-            $plan->id,
-            $plan->name,
-            $plan->type,
-            $plan->price,
-            $plan->cancel_before
-        );
     }
 }

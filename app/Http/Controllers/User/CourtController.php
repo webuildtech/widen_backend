@@ -4,8 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Data\User\Courts\CourtData;
 use App\Data\User\Courts\CourtSlotData;
-use App\Data\User\Courts\CourtTimesData;
-use App\Data\User\Courts\ListCourtData;
+use App\Data\User\Courts\CourtFilterData;
+use App\Data\User\Courts\CourtListData;
 use App\Http\Controllers\Controller;
 use App\Models\Court;
 use App\Services\Slots\CourtSlotService;
@@ -18,7 +18,7 @@ class CourtController extends Controller
     ) {
     }
 
-    public function index(CourtTimesData $data)
+    public function index(CourtFilterData $data)
     {
         $courts = Court::whereActive(true)
             ->whereHas('intervals')
@@ -29,7 +29,7 @@ class CourtController extends Controller
                return $court;
             });
 
-        return ListCourtData::collect($courts);
+        return CourtListData::collect($courts);
     }
 
     public function show(Court $court): CourtData|JsonResponse
@@ -41,7 +41,7 @@ class CourtController extends Controller
         return CourtData::from($court);
     }
 
-    public function times(Court $court, CourtTimesData $data): JsonResponse|array
+    public function times(Court $court, CourtFilterData $data): JsonResponse|array
     {
         if (!$court->is_available) {
             return response()->json([], 403);

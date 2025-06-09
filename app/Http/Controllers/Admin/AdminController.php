@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Admins\AdminData;
-use App\Data\Admin\Admins\ListAdminData;
-use App\Data\Admin\Admins\StoreAdminData;
-use App\Data\Admin\Admins\UpdateAdminData;
+use App\Data\Admin\Admins\AdminListData;
+use App\Data\Admin\Admins\AdminStoreData;
+use App\Data\Admin\Admins\AdminUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Services\AdminService;
@@ -41,10 +41,10 @@ class AdminController extends Controller
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListAdminData::collect($admins);
+        return AdminListData::collect($admins);
     }
 
-    public function store(StoreAdminData $data): AdminData
+    public function store(AdminStoreData $data): AdminData
     {
         $admin = $this->adminService->create($data);
 
@@ -56,7 +56,7 @@ class AdminController extends Controller
         return AdminData::from($admin);
     }
 
-    public function update(UpdateAdminData $data, Admin $admin): AdminData
+    public function update(AdminUpdateData $data, Admin $admin): AdminData
     {
         $admin = $this->adminService->update($admin, $data);
 

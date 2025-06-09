@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Data\Admin\Users\ListUserData;
-use App\Data\Admin\Users\SelectUserData;
-use App\Data\Admin\Users\StoreUserData;
-use App\Data\Admin\Users\UpdateUserData;
+use App\Data\Admin\Users\UserListData;
+use App\Data\Admin\Users\UserSelectOptionData;
+use App\Data\Admin\Users\UserStoreData;
+use App\Data\Admin\Users\UserUpdateData;
 use App\Data\Admin\Users\UserData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -49,10 +49,10 @@ class UserController extends Controller
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return ListUserData::collect($users);
+        return UserListData::collect($users);
     }
 
-    public function store(StoreUserData $data): UserData
+    public function store(UserStoreData $data): UserData
     {
         $user = $this->userService->create($data->all());
 
@@ -64,7 +64,7 @@ class UserController extends Controller
         return UserData::from($user);
     }
 
-    public function update(UpdateUserData $data, User $user): UserData
+    public function update(UserUpdateData $data, User $user): UserData
     {
         $user = $this->userService->update($user, $data->all());
 
@@ -80,6 +80,6 @@ class UserController extends Controller
 
     public function all()
     {
-        return SelectUserData::collect(User::select(['id', 'first_name', 'last_name'])->get());
+        return UserSelectOptionData::collect(User::select(['id', 'first_name', 'last_name'])->get());
     }
 }

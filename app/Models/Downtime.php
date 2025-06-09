@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasDateRangeScopes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -11,21 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Downtime extends BaseModel
 {
+    use HasDateRangeScopes;
+
     public function court(): BelongsTo
     {
         return $this->belongsTo(Court::class);
-    }
-
-    public function scopeDateBetween(Builder $query, ...$interval): Builder
-    {
-        $table = $this->getTable();
-
-        $query->whereDate("$table.date_from", '<=', Carbon::parseWithAppTimezone($interval[0]));
-
-        if (!empty($interval[1])) {
-            $query->whereDate("$table.date_to", '>=', Carbon::parseWithAppTimezone($interval[1]));
-        }
-
-        return $query;
     }
 }

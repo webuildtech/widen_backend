@@ -93,7 +93,7 @@ class PaymentService
 
         $this->paymentHandlerResolver->handle($payment);
 
-        GenerateInvoice::dispatch($payment);
+        GenerateInvoice::dispatch($payment->id);
 
         return $payment;
     }

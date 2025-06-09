@@ -13,11 +13,11 @@ class LoginData extends Data
 {
     public function __construct(
         #[Email, Max(255)]
-        public string $email,
+        public string        $email,
 
-        public string $password,
+        public string        $password,
 
-        public bool|Optional   $remember,
+        public bool|Optional $remember,
     )
     {
     }

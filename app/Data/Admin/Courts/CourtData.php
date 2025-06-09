@@ -2,7 +2,7 @@
 
 namespace App\Data\Admin\Courts;
 
-use App\Data\MediaData;
+use App\Data\Core\Media\MediaData;
 use App\Enums\CourtType;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;

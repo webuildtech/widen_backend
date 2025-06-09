@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Data\Admin\Intervals\StoreIntervalData;
-use App\Data\Admin\Intervals\UpdateIntervalData;
+use App\Data\Admin\Intervals\IntervalStoreData;
+use App\Data\Admin\Intervals\IntervalUpdateData;
 use App\Models\Interval;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class IntervalService
 {
-    public function create(StoreIntervalData $data): Interval
+    public function create(IntervalStoreData $data): Interval
     {
         $data->date_from->startOfDay();
         $data->date_to->endOfDay();
@@ -26,7 +26,7 @@ class IntervalService
         return $interval->refresh();
     }
 
-    public function update(Interval $interval, UpdateIntervalData $data): Model
+    public function update(Interval $interval, IntervalUpdateData $data): Model
     {
         $attributes = $data->except('prices')->all();
 

@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasAdminScopes;
+use App\Models\Concerns\HasDateScopes;
+use App\Models\Concerns\LogsSystemActivity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -18,7 +18,14 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity, HasRoles;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
+    use HasRoles;
+    use LogsSystemActivity;
+    use HasDateScopes;
+    use HasAdminScopes;
 
     protected $guarded = [];
 
@@ -27,40 +34,8 @@ class Admin extends Authenticatable
         'remember_token',
     ];
 
-    public function scopeGlobal(Builder $query, string $text): Builder
+    public function role(): Attribute
     {
-        return $query->whereAny([
-            'email',
-            'first_name',
-            'last_name',
-            'phone',
-            'updated_at'
-        ], 'like', "%$text%");
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->useLogName('system')
-            ->logUnguarded()
-            ->logOnlyDirty();
-    }
-
-    public function getRoleAttribute(): string
-    {
-        return $this->getRoleNames()->first();
-    }
-
-    public function scopeUpdatedAtBetween(Builder $query, ...$interval): Builder
-    {
-        $table = $this->getTable();
-
-        $query->whereDate("$table.updated_at", '>=', Carbon::parseWithAppTimezone($interval[0]));
-
-        if (!empty($interval[1])) {
-            $query->whereDate("$table.updated_at", '<=', Carbon::parseWithAppTimezone($interval[1]));
-        }
-
-        return $query;
+        return Attribute::get(fn() => $this->getRoleNames()->first());
     }
 }

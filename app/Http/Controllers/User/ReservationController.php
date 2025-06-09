@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Data\User\Reservations\IndexReservationData;
-use App\Data\User\Reservations\PayReservationData;
+use App\Data\User\Reservations\ReservationFilterData;
+use App\Data\User\Reservations\ReservationPayData;
 use App\Data\User\Reservations\ReservationData;
-use App\Data\User\Reservations\StoreReservationData;
+use App\Data\User\Reservations\ReservationStoreData;
 use App\Http\Controllers\Controller;
 use App\Models\Guest;
 use App\Models\Reservation;
@@ -28,7 +28,7 @@ class ReservationController extends Controller
     {
     }
 
-    public function index(IndexReservationData $data)
+    public function index(ReservationFilterData $data)
     {
         $user = auth()->user();
 
@@ -67,7 +67,7 @@ class ReservationController extends Controller
         return ReservationData::collect($reservations->get());
     }
 
-    public function store(StoreReservationData $data): JsonResponse
+    public function store(ReservationStoreData $data): JsonResponse
     {
         $owner = auth()->guard('user')->user();
 
@@ -122,7 +122,7 @@ class ReservationController extends Controller
         }
     }
 
-    public function pay(PayReservationData $data)
+    public function pay(ReservationPayData $data)
     {
         $user = auth()->user();
 
