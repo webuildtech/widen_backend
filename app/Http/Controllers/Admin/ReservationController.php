@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Reservations\ReservationCalendarData;
-use App\Data\Admin\Reservations\IndexReservationTimeData;
 use App\Data\Admin\Reservations\ReservationFilterData;
 use App\Data\Admin\Reservations\MultiReservationStoreData;
+use App\Data\Admin\Reservations\ReservationListData;
 use App\Enums\CourtType;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
@@ -58,7 +58,7 @@ class ReservationController extends Controller
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());
 
-        return IndexReservationTimeData::collect($reservations);
+        return ReservationListData::collect($reservations);
     }
 
     public function store(MultiReservationStoreData $data)
