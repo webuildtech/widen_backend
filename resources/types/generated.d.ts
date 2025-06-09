@@ -539,7 +539,7 @@ declare namespace App.Data.User.Reservations {
         is_paid: boolean;
         is_past: number;
         cancelled_at: string | null;
-        slots: Array<App.Data.User.Reservations.ReservationSlotStoreData>;
+        slots: Array<App.Data.User.Reservations.ReservationSlotData>;
     };
     export type ReservationFilterData = {
         type: string;
