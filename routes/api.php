@@ -8,15 +8,11 @@ use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\ReservationController;
-use App\Http\Controllers\User\ReservationTimeController;
 use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
 
 Route::prefix('courts')->group(function () {
     Route::get('', [CourtController::class, 'index']);
-    Route::get('{court}', [CourtController::class, 'show']);
-
-    Route::get('{court}/times', [CourtController::class, 'times']);
 });
 
 Route::post('/reservations', [ReservationController::class, 'store']);
