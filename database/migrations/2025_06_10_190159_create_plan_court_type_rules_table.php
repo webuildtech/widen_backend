@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courts', function (Blueprint $table) {
+        Schema::create('plan_court_type_rules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('court_type_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('inside_name')->nullable();
-            $table->boolean('active')->default(false);
-            $table->text('description')->nullable();
+            $table->integer('max_days_in_advance');
+            $table->integer('cancel_hours_before');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courts');
+        Schema::dropIfExists('plan_court_type_rules');
     }
 };

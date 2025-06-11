@@ -21,7 +21,7 @@ class MakeCommerceService
         );
     }
 
-    public function createTransaction(Payment $payment, string $email, string $ip): string
+    public function createTransaction(Payment $payment, string $ip): string
     {
         $frontendUrl = rtrim(config('app.frontend_url'), '/') . '/payment';
 
@@ -45,7 +45,7 @@ class MakeCommerceService
         $transaction = $this->client->createTransaction([
             'transaction' => $transaction,
             'customer' => [
-                'email' => $email,
+                'email' => $payment->owner->email,
                 'ip' => $ip,
                 'country' => 'LT',
                 'locale' => 'LT'

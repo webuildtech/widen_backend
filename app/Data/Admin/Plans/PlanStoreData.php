@@ -19,13 +19,10 @@ class PlanStoreData extends Data
         #[Rule(['max:255'])]
         public string        $type,
 
-        #[Rule(['min:0', 'max:2147483647'])]
-        public int           $cancel_before,
-
         #[Numeric, Min(0)]
         public float         $price,
 
-        public bool|Optional $active,
+        public bool|Optional $is_active,
     )
     {
     }

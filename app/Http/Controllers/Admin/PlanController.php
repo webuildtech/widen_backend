@@ -45,7 +45,7 @@ class PlanController extends Controller
 
     public function store(PlanStoreData $data): PlanData
     {
-        $plan = $this->planService->create($data->all());
+        $plan = $this->planService->create($data->toArray());
 
         return PlanData::from($plan);
     }
@@ -62,8 +62,12 @@ class PlanController extends Controller
         return PlanData::from($plan);
     }
 
-    public function destroy(Plan $plan): array
+    public function destroy(Plan $plan)
     {
+        if ($plan->is_default) {
+            return response()->json(['message' => 'Negalite ištrinti default plano!'], 406);
+        }
+
         $plan->delete();
 
         return [];

@@ -6,7 +6,6 @@ use App\Data\Admin\Reservations\ReservationCalendarData;
 use App\Data\Admin\Reservations\ReservationFilterData;
 use App\Data\Admin\Reservations\MultiReservationStoreData;
 use App\Data\Admin\Reservations\ReservationListData;
-use App\Enums\CourtType;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\User;
@@ -49,7 +48,7 @@ class ReservationController extends Controller
                 AllowedFilter::operator('price_from', FilterOperator::GREATER_THAN_OR_EQUAL, 'and', 'price_with_vat'),
                 AllowedFilter::operator('price_to', FilterOperator::LESS_THAN_OR_EQUAL, 'and', 'price_with_vat'),
                 AllowedFilter::exact('court_id'),
-                'court.type',
+                AllowedFilter::exact('court.court_type_id'),
                 'is_paid',
                 AllowedFilter::scope('paid_at_between'),
                 AllowedFilter::scope('canceled_at_between'),
@@ -83,8 +82,8 @@ class ReservationController extends Controller
             $reservationTimes->whereIn('court_id', $data->courts_ids);
         }
 
-        if ($data->court_type instanceof CourtType) {
-            $reservationTimes->whereHas('court', fn($query) => $query->where('type', $data->court_type));
+        if (is_int($data->court_type_id)) {
+            $reservationTimes->whereHas('court', fn($query) => $query->where('court_type_id', $data->court_type_id));
         }
 
         return ReservationCalendarData::collect($reservationTimes->get());

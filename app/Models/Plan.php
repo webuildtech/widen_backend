@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasPlanScopes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
@@ -21,9 +20,9 @@ class Plan extends PlanBase
         'grace_days',
         'name',
         'type',
-        'active',
+        'is_active',
+        'is_default',
         'price',
-        'cancel_before',
         'periodicity_type',
         'periodicity',
     ];
@@ -52,5 +51,10 @@ class Plan extends PlanBase
     public function payment(): MorphOne
     {
         return $this->morphOne(Payment::class, 'paymentable');
+    }
+
+    public function courtTypeRules(): HasMany
+    {
+        return $this->hasMany(PlanCourtTypeRule::class);
     }
 }

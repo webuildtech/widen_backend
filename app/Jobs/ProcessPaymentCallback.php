@@ -13,21 +13,20 @@ class ProcessPaymentCallback implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        public array             $values,
-        protected PaymentService $paymentService
+        public array $values,
     )
     {
         $this->onQueue('payments');
     }
 
-    public function handle(): void
+    public function handle(PaymentService $paymentService): void
     {
         $payment = Payment::whereTransactionId($this->values['transaction'])->first();
 
         match ($this->values['status']) {
-            'COMPLETED' => $this->paymentService->approve($payment),
-            'CANCELLED' => $this->paymentService->cancel($payment, PaymentStatus::CANCELLED),
-            'EXPIRED' => $this->paymentService->cancel($payment, PaymentStatus::EXPIRED),
+            'COMPLETED' => $paymentService->approve($payment),
+            'CANCELLED' => $paymentService->cancel($payment, PaymentStatus::CANCELLED),
+            'EXPIRED' => $paymentService->cancel($payment, PaymentStatus::EXPIRED),
             default => $payment
         };
     }

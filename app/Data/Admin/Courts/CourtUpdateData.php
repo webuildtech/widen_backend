@@ -2,7 +2,6 @@
 
 namespace App\Data\Admin\Courts;
 
-use App\Enums\CourtType;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\Attributes\Validation\Accepted;
@@ -27,7 +26,8 @@ class CourtUpdateData extends Data
 
         public string|Optional|null  $description,
 
-        public CourtType|Optional    $type,
+        #[Exists('court_types', 'id', withoutTrashed: true)]
+        public int|Optional          $court_type_id,
 
         public bool|Optional         $active,
 

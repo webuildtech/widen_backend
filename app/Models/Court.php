@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\HasCourtScopes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -20,6 +21,11 @@ class Court extends BaseModel implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('logo')->singleFile();
+    }
+
+    public function courtType(): BelongsTo
+    {
+        return $this->belongsTo(CourtType::class);
     }
 
     public function intervals(): BelongsToMany

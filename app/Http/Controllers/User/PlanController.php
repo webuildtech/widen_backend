@@ -10,7 +10,10 @@ class PlanController extends Controller
 {
     public function index()
     {
-        $plans = Plan::whereActive(true)->orderBy('price')->get();
+        $plans = Plan::whereIsDefault(false)
+            ->whereIsActive(true)
+            ->orderBy('price')
+            ->get();
 
         return PlanData::collect($plans);
     }

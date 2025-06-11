@@ -23,7 +23,7 @@ class ReservationPaymentResponder
         $payment = $this->paymentService->createFromReservationGroup($group, $owner);
 
         if ($payment->paid_amount > 0) {
-            $url = $this->makeCommerceService->createTransaction($payment, $payment->owner->email, $this->request->ip());
+            $url = $this->makeCommerceService->createTransaction($payment, $this->request->ip());
 
             return ServiceResponse::success(['url' => $url], 201);
         }

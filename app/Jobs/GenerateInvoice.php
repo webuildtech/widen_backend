@@ -16,18 +16,17 @@ class GenerateInvoice implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        public int               $paymentId,
-        protected InvoiceService $invoiceService
+        public int $paymentId,
     )
     {
     }
 
-    public function handle(): void
+    public function handle(InvoiceService $invoiceService): void
     {
         $payment = Payment::findOrFail($this->paymentId);
 
         if ($payment->paid_at) {
-            $this->invoiceService->generate($payment);
+            $invoiceService->generate($payment);
             $payment->refresh();
 
             $mailable = match ($payment->paymentable_type) {

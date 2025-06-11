@@ -4,7 +4,6 @@ namespace App\Data\Admin\Downtimes;
 
 use App\Data\Admin\Courts\CourtSelectOptionData;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -14,7 +13,6 @@ class DowntimeListData extends Data
     public function __construct(
         public int                   $id,
 
-        #[LoadRelation]
         public CourtSelectOptionData $court,
 
         public string                $date_from,

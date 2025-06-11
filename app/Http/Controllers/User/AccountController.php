@@ -47,7 +47,7 @@ class AccountController extends Controller
 
         $payment = $this->paymentService->createFromAmount($data->amount, $user);
 
-        $url = $this->makeCommerceService->createTransaction($payment, $user->email, request()->ip());
+        $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
 
         return response()->json(['url' => $url], 201);
     }

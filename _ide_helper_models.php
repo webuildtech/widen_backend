@@ -90,16 +90,17 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $court_type_id
  * @property string $name
  * @property string|null $inside_name
  * @property int $active
  * @property string|null $description
- * @property string $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \App\Models\CourtType $courtType
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Downtime> $downtimes
  * @property-read int|null $downtimes_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interval> $intervals
@@ -119,13 +120,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereCourtTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereInsideName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Court withoutTrashed()
@@ -133,6 +134,40 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperCourt {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Court> $courts
+ * @property-read int|null $courts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanCourtTypeRule> $planRules
+ * @property-read int|null $plan_rules_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperCourtType {}
 }
 
 namespace App\Models{
@@ -401,8 +436,6 @@ namespace App\Models{
  * @property numeric $discount
  * @property numeric $paid_amount
  * @property numeric $paid_amount_from_balance
- * @property numeric $refunded_amount
- * @property numeric $refunded_amount_to_balance
  * @property \Illuminate\Support\Carbon|null $paid_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -432,8 +465,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePriceWithVat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmountToBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRenew($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
@@ -452,17 +483,19 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $is_default
  * @property int $grace_days
  * @property string $name
  * @property string $type
  * @property int|null $periodicity
  * @property string|null $periodicity_type
  * @property string $price
- * @property int $cancel_before
- * @property int $active
+ * @property int $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanCourtTypeRule> $courtTypeRules
+ * @property-read int|null $court_type_rules_count
  * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
  * @property-read int|null $features_count
@@ -477,12 +510,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCancelBefore($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereGraceDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsDefault($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePeriodicity($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePeriodicityType($value)
@@ -495,6 +528,83 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperPlan {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $plan_id
+ * @property int $court_type_id
+ * @property int $max_days_in_advance
+ * @property int $cancel_hours_before
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\CourtType $courtType
+ * @property-read \App\Models\Plan $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanCourtTypeRuleSlot> $slots
+ * @property-read int|null $slots_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereCancelHoursBefore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereCourtTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereMaxDaysInAdvance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRule withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPlanCourtTypeRule {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $plan_court_type_rule_id
+ * @property string $day
+ * @property string $start_time
+ * @property string $end_time
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\PlanCourtTypeRule $planCourtTypeRule
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot wherePlanCourtTypeRuleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanCourtTypeRuleSlot withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPlanCourtTypeRuleSlot {}
 }
 
 namespace App\Models{

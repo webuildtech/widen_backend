@@ -1,31 +1,23 @@
 <?php
 
-namespace App\Data\Admin\Courts;
-
+namespace App\Data\Admin\PlanCourtTypeRules;
 
 use App\Data\Core\CourtTypes\CourtTypeSelectOptionData;
-use App\Data\Core\Media\MediaData;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class CourtListData extends Data
+class PlanCourtTypeRuleListData extends Data
 {
     public function __construct(
         public int                       $id,
 
-        public string                    $name,
-
-        public string                    $inside_name,
-
-        public bool                      $active,
-
-        #[LoadRelation]
         public CourtTypeSelectOptionData $courtType,
 
-        public ?MediaData                $logo,
+        public int                       $max_days_in_advance,
+
+        public int                       $cancel_hours_before,
 
         public Carbon                    $updated_at,
     )

@@ -14,7 +14,8 @@ class ReservationRepository
         return $court->reservationSlots()
             ->active()
             ->whereDate('slot_start', $date)
-            ->pluck('slot_end', 'slot_start')
+            ->get(['slot_start', 'slot_end'])
+            ->mapWithKeys(fn ($slot) => [$slot->slot_start->format('H:i') => $slot->slot_end->format('H:i')])
             ->toArray();
     }
 

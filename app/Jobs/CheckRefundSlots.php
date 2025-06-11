@@ -12,16 +12,15 @@ class CheckRefundSlots implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        public int                   $reservationGroupId,
-        protected ReservationService $reservationService
+        public int $reservationGroupId,
     )
     {
     }
 
-    public function handle(): void
+    public function handle(ReservationService $reservationService): void
     {
         $reservationGroup = ReservationGroup::with('reservations.slots')->findOrFail($this->reservationGroupId);
 
-        $reservationGroup->reservations->each(fn($r) => $this->reservationService->refundSlots($r));
+        $reservationGroup->reservations->each(fn($r) => $reservationService->refundSlots($r));
     }
 }

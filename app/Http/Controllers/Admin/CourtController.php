@@ -28,13 +28,13 @@ class CourtController extends Controller
                 'name',
                 'inside_name',
                 'active',
-                'type',
+                'court_type_id',
                 'updated_at'
             ])
             ->allowedFilters([
                 'name',
                 'inside_name',
-                AllowedFilter::exact('type'),
+                AllowedFilter::exact('court_type_id'),
                 AllowedFilter::scope('updated_at_between'),
                 AllowedFilter::scope('global'),
             ])

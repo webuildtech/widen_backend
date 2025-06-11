@@ -4,11 +4,13 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourtController;
+use App\Http\Controllers\Admin\CourtTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\PlanCourtTypeRuleController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\UserController;
@@ -34,11 +36,15 @@ Route::prefix('admin')->group(function () {
         Route::get('plans/all', [PlanController::class, 'all']);
         Route::apiResource('plans', PlanController::class);
 
+        Route::apiResource('plan-court-type-rules', PlanCourtTypeRuleController::class)->except(['store', 'destroy']);
+
         Route::get('groups/all', [GroupController::class, 'all']);
         Route::apiResource('groups', GroupController::class);
 
         Route::get('intervals/all', [IntervalController::class, 'all']);
         Route::apiResource('intervals', IntervalController::class);
+
+        Route::get('court-types/all', [CourtTypeController::class, 'all']);
 
         Route::get('courts/all', [CourtController::class, 'all']);
         Route::apiResource('courts', CourtController::class);

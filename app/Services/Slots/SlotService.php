@@ -25,6 +25,8 @@ class SlotService
             ]);
         }
 
+        $slots->pop();
+
         return $slots;
     }
 }

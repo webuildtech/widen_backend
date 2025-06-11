@@ -1,25 +1,17 @@
 <?php
 
-namespace App\Data\Admin\Plans;
+namespace App\Data\Core\CourtTypes;
 
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class PlanData extends Data
+class CourtTypeSelectOptionData extends Data
 {
     public function __construct(
         public int    $id,
 
         public string $name,
-
-        public string $type,
-
-        public float  $price,
-
-        public bool   $is_active,
-
-        public bool   $is_default,
     )
     {
     }

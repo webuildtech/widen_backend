@@ -14,14 +14,14 @@ return new class extends Migration {
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_default')->default(false);
             $table->integer('grace_days')->default(0);
             $table->string('name');
             $table->string('type');
             $table->integer('periodicity')->unsigned()->nullable();
             $table->string('periodicity_type')->nullable();
             $table->decimal('price')->default(0);
-            $table->integer('cancel_before')->default(0);
-            $table->boolean('active')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

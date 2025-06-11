@@ -57,7 +57,7 @@ declare namespace App.Data.Admin.Courts {
         inside_name: string;
         description: string | null;
         active: boolean;
-        type: App.Enums.CourtType;
+        court_type_id: number;
         logo: App.Data.Core.Media.MediaData | null;
         intervals_ids: Array<number>;
     };
@@ -66,20 +66,20 @@ declare namespace App.Data.Admin.Courts {
         name: string;
         inside_name: string;
         active: boolean;
-        type: App.Enums.CourtType;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
         logo: App.Data.Core.Media.MediaData | null;
         updated_at: string;
     };
     export type CourtSelectOptionData = {
         id: number;
         name: string;
-        type: App.Enums.CourtType;
+        court_type_id: number;
     };
     export type CourtStoreData = {
         name: string;
         inside_name: string | null;
         description: string | null;
-        type: App.Enums.CourtType;
+        court_type_id: number;
         active?: boolean;
         logoFile?: any;
         intervals_ids?: Array<number> | null;
@@ -88,7 +88,7 @@ declare namespace App.Data.Admin.Courts {
         name?: string;
         inside_name?: string | null;
         description?: string | null;
-        type?: App.Enums.CourtType;
+        court_type_id?: number;
         active?: boolean;
         logoFile?: any;
         deleteLogo?: boolean;
@@ -208,21 +208,48 @@ declare namespace App.Data.Admin.Intervals {
         prices?: Array<App.Data.Admin.Intervals.IntervalPriceData>;
     };
 }
+declare namespace App.Data.Admin.PlanCourtTypeRules {
+    export type PlanCourtTypeRuleData = {
+        id: number;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
+        max_days_in_advance: number;
+        cancel_hours_before: number;
+        slots: Array<App.Data.Admin.PlanCourtTypeRules.PlanCourtTypeRuleSlotData>;
+    };
+    export type PlanCourtTypeRuleListData = {
+        id: number;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
+        max_days_in_advance: number;
+        cancel_hours_before: number;
+        updated_at: string;
+    };
+    export type PlanCourtTypeRuleSlotData = {
+        day: App.Enums.Day;
+        start_time: string;
+        end_time: string;
+    };
+    export type PlanCourtTypeRuleUpdateData = {
+        max_days_in_advance?: number;
+        cancel_hours_before?: number;
+        slots?: Array<App.Data.Admin.PlanCourtTypeRules.PlanCourtTypeRuleSlotData>;
+    };
+}
 declare namespace App.Data.Admin.Plans {
     export type PlanData = {
         id: number;
         name: string;
         type: string;
-        cancel_before: number;
         price: number;
-        active: boolean;
+        is_active: boolean;
+        is_default: boolean;
     };
     export type PlanListData = {
         id: number;
         name: string;
         type: string;
         price: number;
-        active: boolean;
+        is_active: boolean;
+        is_default: boolean;
         updated_at: string;
     };
     export type PlanSelectOptionData = {
@@ -232,16 +259,14 @@ declare namespace App.Data.Admin.Plans {
     export type PlanStoreData = {
         name: string;
         type: string;
-        cancel_before: number;
         price: number;
-        active?: boolean;
+        is_active?: boolean;
     };
     export type PlanUpdateData = {
         name?: string;
         type?: string;
-        cancel_before?: number;
         price?: number;
-        active?: boolean;
+        is_active?: boolean;
     };
 }
 declare namespace App.Data.Admin.Reservations {
@@ -251,7 +276,7 @@ declare namespace App.Data.Admin.Reservations {
     };
     export type MultiReservationStoreData = {
         user_id: number;
-        court_type: App.Enums.CourtType;
+        court_type_id: number;
         court_id?: number | null;
         date_from: string;
         date_to: string;
@@ -271,7 +296,7 @@ declare namespace App.Data.Admin.Reservations {
         courts_ids?: Array<number>;
         date_from: string;
         date_to: string;
-        court_type?: App.Enums.CourtType;
+        court_type_id?: number;
     };
     export type ReservationListData = {
         id: number;
@@ -364,6 +389,12 @@ declare namespace App.Data.Admin.Users {
         company_address?: string | null;
         company_phone?: string | null;
         password?: string;
+    };
+}
+declare namespace App.Data.Core.CourtTypes {
+    export type CourtTypeSelectOptionData = {
+        id: number;
+        name: string;
     };
 }
 declare namespace App.Data.Core.Media {
@@ -466,13 +497,6 @@ declare namespace App.Data.User.Auth {
     };
 }
 declare namespace App.Data.User.Courts {
-    export type CourtData = {
-        id: number;
-        name: string;
-        description: string | null;
-        type: App.Enums.CourtType;
-        logo: App.Data.Core.Media.MediaData | null;
-    };
     export type CourtFilterData = {
         date: string;
     };
@@ -481,7 +505,7 @@ declare namespace App.Data.User.Courts {
         name: string;
         description: string | null;
         slots: Array<App.Data.User.Courts.CourtSlotData>;
-        type: App.Enums.CourtType;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
         logo: App.Data.Core.Media.MediaData | null;
     };
     export type CourtSlotData = {
@@ -575,7 +599,6 @@ declare namespace App.Data.User.Subscriptions {
 }
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
-    export type CourtType = "tennis" | "table_tennis";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";

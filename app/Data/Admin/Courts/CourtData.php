@@ -3,7 +3,6 @@
 namespace App\Data\Admin\Courts;
 
 use App\Data\Core\Media\MediaData;
-use App\Enums\CourtType;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -21,7 +20,7 @@ class CourtData extends Data
 
         public bool       $active,
 
-        public CourtType  $type,
+        public int        $court_type_id,
 
         public ?MediaData $logo,
 

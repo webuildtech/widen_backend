@@ -5,11 +5,14 @@ use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CourtController;
+use App\Http\Controllers\User\CourtTypeController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
+
+Route::get('court-types', [CourtTypeController::class, 'index']);
 
 Route::prefix('courts')->group(function () {
     Route::get('', [CourtController::class, 'index']);

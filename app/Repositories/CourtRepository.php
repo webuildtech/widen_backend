@@ -2,18 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Enums\CourtType;
 use App\Models\Court;
 use Illuminate\Support\Collection;
 
 class CourtRepository
 {
-    public function get(?CourtType $type = null, mixed $id = null): Collection
+    public function get(?int $courtTypeId = null, mixed $id = null): Collection
     {
         $courts = Court::query();
 
-        if ($type) {
-            $courts->whereType($type->value);
+        if ($courtTypeId) {
+            $courts->whereCourtTypeId($courtTypeId);
         }
 
         if (is_int($id)) {

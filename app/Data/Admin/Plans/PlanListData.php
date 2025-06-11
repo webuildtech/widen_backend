@@ -18,7 +18,9 @@ class PlanListData extends Data
 
         public float  $price,
 
-        public bool   $active,
+        public bool   $is_active,
+
+        public bool   $is_default,
 
         public Carbon $updated_at,
     )

@@ -15,6 +15,7 @@ class DowntimeController extends Controller
     public function index()
     {
         $downtimes = QueryBuilder::for(Downtime::class)
+            ->with('court')
             ->allowedSorts([
                 'court_id',
                 'date_from',

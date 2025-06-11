@@ -2,7 +2,6 @@
 
 namespace App\Data\Admin\Reservations;
 
-use App\Enums\CourtType;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
@@ -21,7 +20,8 @@ class MultiReservationStoreData extends Data
         #[Exists('users', 'id', withoutTrashed: true)]
         public int               $user_id,
 
-        public CourtType         $court_type,
+        #[Exists('court_types', 'id', withoutTrashed: true)]
+        public int               $court_type_id,
 
         #[Exists('courts', 'id', withoutTrashed: true)]
         public int|null|Optional $court_id,

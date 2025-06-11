@@ -39,6 +39,10 @@ class SubscriptionController extends Controller
 
     public function subscribe(Plan $plan): JsonResponse
     {
+        if ($plan->is_default) {
+            return response()->json(['error' => 'Šio plano prenumeruoti negalima.'], 405);
+        }
+
         $user = auth()->user();
 
         $subscription = $user->subscription ?? $user->lastSubscription();
@@ -52,7 +56,7 @@ class SubscriptionController extends Controller
         $payment = $this->paymentService->createFromPlan($plan, $user, $subscription && !$subscription->canceled_at);
 
         if ($payment->paid_amount > 0) {
-            $url = $this->makeCommerceService->createTransaction($payment, $payment->user->email, request()->ip());
+            $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
 
             return response()->json(['url' => $url], 201);
         }
