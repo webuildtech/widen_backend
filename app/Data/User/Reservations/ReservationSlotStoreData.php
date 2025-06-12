@@ -3,6 +3,7 @@
 namespace App\Data\User\Reservations;
 
 use App\Models\Court;
+use App\Services\PlanCourtTypeRuleService;
 use App\Support\RegexPatterns;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
@@ -32,13 +33,17 @@ class ReservationSlotStoreData extends Data
     {
     }
 
-    public static function rules(ValidationContext $context): array
+    public static function rules(ValidationContext $context, PlanCourtTypeRuleService $planCourtTypeRuleService): array
     {
+        $user = auth()->guard('user')->user();
+
         return [
             'date' => [
                 new Required(),
                 new AfterOrEqual(Carbon::today()),
-                new BeforeOrEqual(Carbon::today()->addDays(7))
+                new BeforeOrEqual(Carbon::today()->addDays(
+                    $planCourtTypeRuleService->getMaxDaysInAdvance($user, $context->payload['court_id'])
+                ))
             ]
         ];
     }

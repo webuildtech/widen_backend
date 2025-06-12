@@ -32,7 +32,7 @@ class ReservationController extends Controller
     {
         $user = auth()->user();
 
-        $reservations = $user->reservations()->with(['court']);
+        $reservations = $user->reservations()->with(['court', 'court.courtType']);
 
         if ($data->date) {
             $reservations->whereDate('start_time', $data->date);

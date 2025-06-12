@@ -52,11 +52,6 @@ class User extends Authenticatable
         return Attribute::get(fn() => trim("{$this->first_name} {$this->last_name}"));
     }
 
-    public function cancelBefore(): Attribute
-    {
-        return Attribute::get(fn() => $this->subscription ? $this->subscription->plan->cancel_before : 48);
-    }
-
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);

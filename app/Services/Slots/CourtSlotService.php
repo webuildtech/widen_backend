@@ -18,6 +18,7 @@ class CourtSlotService
     public function __construct(
         protected SlotService                  $slotService,
         protected DowntimeSlotService          $downtimeSlotService,
+        protected PlanCourtTypeRuleSlotService $planSlotService,
         protected IntervalService              $intervalService,
         protected IntervalPriceService         $intervalPriceService,
         protected IntervalRepository           $intervalRepository,
@@ -27,7 +28,7 @@ class CourtSlotService
     {
     }
 
-    public function generateFreeSlots(Court $court, Carbon $date, User $user = null): Collection
+    public function generateFreeSlots(Court $court, Carbon $date, User $user = null, bool $checkByPlan = true): Collection
     {
         if (!$interval = $this->intervalRepository->getForCourtAndDateFirst($court, $date)) {
             return collect();
@@ -36,11 +37,20 @@ class CourtSlotService
         $intervalPrices = $this->intervalService->getPricesByDay($interval, $date);
         $reservedSlots = $this->reservationRepository->getReservedSlotsForCourtAndDate($court, $date);
         $downtimeSlots = $this->downtimeSlotService->getForCourtAndDate($court, $date);
+        $planSlots = $checkByPlan ? $this->planSlotService->getForDateUserAndCourtType($court->courtType, $date, $user) : null;
 
-        return $this->calculateAvailableSlots($intervalPrices, $court, $date, $reservedSlots, $downtimeSlots, $user);
+        return $this->calculateAvailableSlots($intervalPrices, $court, $date, $reservedSlots, $downtimeSlots, $planSlots, $user);
     }
 
-    private function calculateAvailableSlots(Collection $intervalPrices, Court $court, Carbon $date, array $reservedSlots, array $downtimeSlots, User $user = null): Collection
+    private function calculateAvailableSlots(
+        Collection $intervalPrices,
+        Court $court,
+        Carbon $date,
+        array $reservedSlots,
+        array $downtimeSlots,
+        array $planSlots = null,
+        User $user = null
+    ): Collection
     {
         $slots = collect();
 
@@ -54,7 +64,7 @@ class CourtSlotService
             foreach ($generatedSlots as $slot) {
                 $slotDateTime = $date->copy()->setTimeFromTimeString($slot['start_time']);
 
-                if ($this->courtSlotAvailabilityChecker->isAvailable($slotDateTime, $reservedSlots, $downtimeSlots)) {
+                if ($this->courtSlotAvailabilityChecker->isAvailable($slotDateTime, $reservedSlots, $downtimeSlots, $planSlots)) {
                     $slots->push(
                         $this->createSlot($court, $intervalPrice, $slotDateTime, $slot, $specialPrice)
                     );

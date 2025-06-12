@@ -24,8 +24,6 @@ class AccountData extends Data
 
         public float   $discount_on_everything,
 
-        public int     $cancel_before,
-
         public bool    $is_company,
 
         public ?string $company_name,

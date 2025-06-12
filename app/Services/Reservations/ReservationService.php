@@ -6,12 +6,19 @@ use App\Models\Guest;
 use App\Models\Reservation;
 use App\Models\ReservationSlot;
 use App\Models\User;
+use App\Services\PlanCourtTypeRuleService;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
 class ReservationService
 {
+    public function __construct(
+        protected PlanCourtTypeRuleService $planCourtTypeRuleService,
+    )
+    {
+    }
+
     public function createWithSlots(Guest|User $owner, array $reservationData, Collection $slots): Reservation
     {
         $reservation = $owner->reservations()->create($reservationData);
@@ -47,7 +54,7 @@ class ReservationService
         }
 
         $now = now();
-        $cancelBefore = $now->copy()->addHours($user->cancel_before);
+        $cancelBefore = $now->copy()->addHours($this->planCourtTypeRuleService->getCancelHoursBefore($user, $reservation->court->court_type_id));
 
         if ($reservation->start_time->isBefore($cancelBefore)) {
             $reservation->update(['canceled_at' => $now]);

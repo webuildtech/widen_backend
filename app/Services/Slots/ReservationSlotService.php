@@ -45,12 +45,12 @@ class ReservationSlotService
         return ['free' => $free, 'occupied' => $occupied];
     }
 
-    public function getFreeAndOccupied(Court $court, Carbon $date, $slots, User $user = null): array
+    public function getFreeAndOccupied(Court $court, Carbon $date, $slots, User $user = null, bool $checkByPlan = true): array
     {
         $free = collect();
         $occupied = collect();
 
-        $availableSlots = $this->courtSlotService->generateFreeSlots($court, $date, $user);
+        $availableSlots = $this->courtSlotService->generateFreeSlots($court, $date, $user, $checkByPlan);
         $indexedSlots = $availableSlots->keyBy(fn($slot) => $this->generateSlotKey($slot));
 
         foreach ($slots as $slot) {

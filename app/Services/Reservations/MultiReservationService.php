@@ -30,15 +30,15 @@ class MultiReservationService
     {
         $weeklyTimeBlocks = $this->expandTimeBlocksToSlots($data);
         $matchedDates = $this->generateMatchedDates($data, $weeklyTimeBlocks);
-        $courts = $this->courtRepository->get($data->court_type, $data->court_id);
+        $courts = $this->courtRepository->get($data->court_type_id, $data->court_id);
 
-        [$freeSlots, $blockedSlots] = $this->findFreeSlots($matchedDates, $courts);
+        $user = User::find($data->user_id);
+
+        [$freeSlots, $blockedSlots] = $this->findFreeSlots($matchedDates, $courts, $user);
 
         if ($blockedSlots->isNotEmpty() && !$data->force_create) {
             return MultiReservationResultData::blocked($blockedSlots);
         }
-
-        $user = User::find($data->user_id);
 
         foreach ($freeSlots as $time) {
             $this->reservationService->createWithSlots(
@@ -73,7 +73,7 @@ class MultiReservationService
             );
     }
 
-    protected function findFreeSlots(Collection $matchedDates, Collection $courts): array
+    protected function findFreeSlots(Collection $matchedDates, Collection $courts, User $user): array
     {
         $busySlots = collect();
         $availableSlots = collect();
@@ -82,10 +82,12 @@ class MultiReservationService
             $isAvailable = false;
 
             foreach ($courts as $court) {
-                [$freeSlots, $occupySlots] = $this->reservationSlotService->getFreeAndOccupied(
+                ['free' => $freeSlots, 'occupied' => $occupySlots] = $this->reservationSlotService->getFreeAndOccupied(
                     $court,
                     Carbon::parse($date['date']),
-                    $date['slots']
+                    $date['slots'],
+                    $user,
+                    false
                 );
 
                 if ($freeSlots->count() === $date['slots']->count()) {

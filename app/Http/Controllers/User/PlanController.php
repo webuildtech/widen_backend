@@ -12,6 +12,7 @@ class PlanController extends Controller
     {
         $plans = Plan::whereIsDefault(false)
             ->whereIsActive(true)
+            ->with('courtTypeRules')
             ->orderBy('price')
             ->get();
 

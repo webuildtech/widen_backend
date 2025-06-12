@@ -439,7 +439,6 @@ declare namespace App.Data.User.Account {
         phone: string | null;
         balance: number;
         discount_on_everything: number;
-        cancel_before: number;
         is_company: boolean;
         company_name: string | null;
         company_code: string | null;
@@ -542,19 +541,27 @@ declare namespace App.Data.User.Payments {
         paid_at: string;
     };
 }
+declare namespace App.Data.User.PlanCourtTypeRules {
+    export type PlanCourtTypeRuleData = {
+        court_type_id: number;
+        max_days_in_advance: number;
+        cancel_hours_before: number;
+    };
+}
 declare namespace App.Data.User.Plans {
     export type PlanData = {
         id: number;
         name: string;
         type: string;
         price: number;
-        cancel_before: number;
+        courtTypeRules: Array<App.Data.User.PlanCourtTypeRules.PlanCourtTypeRuleData>;
     };
 }
 declare namespace App.Data.User.Reservations {
     export type ReservationData = {
         id: number;
         courtName: string;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
         date: string;
         start_time: string;
         end_time: string;

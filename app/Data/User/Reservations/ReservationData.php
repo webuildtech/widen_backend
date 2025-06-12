@@ -2,6 +2,7 @@
 
 namespace App\Data\User\Reservations;
 
+use App\Data\Core\CourtTypes\CourtTypeSelectOptionData;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -12,28 +13,30 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class ReservationData extends Data
 {
     public function __construct(
-        public int        $id,
+        public int                       $id,
 
-        public string     $courtName,
+        public string                    $courtName,
 
-        public string     $date,
+        public CourtTypeSelectOptionData $courtType,
 
-        public string     $start_time,
+        public string                    $date,
 
-        public string     $end_time,
+        public string                    $start_time,
 
-        public float      $price_with_vat,
+        public string                    $end_time,
 
-        public float      $refunded_amount,
+        public float                     $price_with_vat,
 
-        public bool       $is_paid,
+        public float                     $refunded_amount,
 
-        public float      $is_past,
+        public bool                      $is_paid,
 
-        public ?Carbon    $cancelled_at,
+        public float                     $is_past,
+
+        public ?Carbon                   $cancelled_at,
 
         /** @var Collection<int, ReservationSlotData> */
-        public Collection $slots,
+        public Collection                $slots,
     )
     {
     }
@@ -43,6 +46,7 @@ class ReservationData extends Data
         return new self(
             $reservation->id,
             $reservation->court->name,
+            CourtTypeSelectOptionData::from($reservation->court->courtType),
             $reservation->start_time->format('Y-m-d'),
             $reservation->start_time->format('H:i'),
             $reservation->end_time->format('H:i'),

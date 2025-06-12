@@ -2,6 +2,8 @@
 
 namespace App\Data\User\Plans;
 
+use App\Data\User\PlanCourtTypeRules\PlanCourtTypeRuleData;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -9,15 +11,16 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class PlanData extends Data
 {
     public function __construct(
-        public int    $id,
+        public int        $id,
 
-        public string $name,
+        public string     $name,
 
-        public string $type,
+        public string     $type,
 
-        public float  $price,
+        public float      $price,
 
-        public int    $cancel_before,
+        /** @var Collection<int, PlanCourtTypeRuleData> */
+        public Collection $courtTypeRules
     )
     {
     }
