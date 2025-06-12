@@ -259,6 +259,50 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $email
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $phone
+ * @property array<array-key, mixed> $services
+ * @property array<array-key, mixed>|null $days
+ * @property array<array-key, mixed>|null $times
+ * @property string|null $plan
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereDays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember wherePlan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereServices($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereTimes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FutureMember withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperFutureMember {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $name
  * @property int|null $plan_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -785,7 +829,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
- * @property-read mixed $cancel_before
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureConsumption> $featureConsumptions
  * @property-read int|null $feature_consumptions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $featureTickets

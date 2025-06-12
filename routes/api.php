@@ -5,6 +5,7 @@ use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\CourtTypeController;
+use App\Http\Controllers\User\FutureMemberController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\PlanCourtTypeRuleController;
@@ -69,3 +70,5 @@ Route::middleware(['auth:user'])->group(function () {
        Route::get('{payment}/download-invoice', [PaymentController::class, 'downloadInvoice']);
     });
 });
+
+Route::post('future-members', [FutureMemberController::class, 'store']);

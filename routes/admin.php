@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CourtController;
 use App\Http\Controllers\Admin\CourtTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DowntimeController;
+use App\Http\Controllers\Admin\FutureMemberController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\PlanController;
@@ -62,5 +63,7 @@ Route::prefix('admin')->group(function () {
         Route::get('reservations/calendar', [ReservationController::class, 'calendar']);
         Route::apiResource('reservations', ReservationController::class)->except(['show', 'update']);
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
+
+        Route::get('future-members', [FutureMemberController::class, 'index']);
     });
 });

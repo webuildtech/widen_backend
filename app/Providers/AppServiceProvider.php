@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Court;
 use App\Models\CourtType;
 use App\Models\Downtime;
+use App\Models\FutureMember;
 use App\Models\Group;
 use App\Models\Guest;
 use App\Models\Interval;
@@ -36,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         Relation::enforceMorphMap([
+            'futureMember' => FutureMember::class,
             'admin' => Admin::class,
             'courtType' => CourtType::class,
             'court' => Court::class,

@@ -130,6 +130,18 @@ declare namespace App.Data.Admin.Downtimes {
         updated_at: string;
     };
 }
+declare namespace App.Data.Admin.FutureMembers {
+    export type FutureMemberListData = {
+        email: string;
+        first_name: string;
+        last_name: string;
+        phone: string | null;
+        services: string;
+        days: string | null;
+        times: string | null;
+        plan: string | null;
+    };
+}
 declare namespace App.Data.Admin.Groups {
     export type GroupData = {
         id: number;
@@ -515,6 +527,18 @@ declare namespace App.Data.User.Courts {
         end_time: string;
         price: number;
         original_price: number;
+    };
+}
+declare namespace App.Data.User.FutureMembers {
+    export type FutureMemberStoreData = {
+        email: string;
+        first_name: string;
+        last_name: string;
+        phone: string | null;
+        services: Array<any>;
+        days?: Array<any>;
+        times?: Array<any>;
+        plan?: string;
     };
 }
 declare namespace App.Data.User.Guests {
