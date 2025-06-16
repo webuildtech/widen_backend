@@ -3,9 +3,12 @@
 namespace App\Data\Admin\Admins;
 
 use App\Enums\AdminRole;
+use App\Models\Admin;
 use Spatie\LaravelData\Attributes\Validation\Confirmed;
+use Spatie\LaravelData\Attributes\Validation\Email;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\Min;
+use Spatie\LaravelData\Attributes\Validation\Unique;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -20,6 +23,7 @@ class AdminStoreData extends Data
         #[Max(255)]
         public string               $last_name,
 
+        #[Unique(Admin::class, column: 'email'), Email, Max(255)]
         public string               $email,
 
         public AdminRole            $role,
