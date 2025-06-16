@@ -175,6 +175,54 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $name
+ * @property int $is_active
+ * @property string $code
+ * @property string $type
+ * @property string $value
+ * @property int|null $usage_limit
+ * @property int $used
+ * @property string|null $date_from
+ * @property string|null $date_to
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateFromBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateToBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereDateFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereDateTo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereUsageLimit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperDiscountCode {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $court_id
  * @property string $date_from
  * @property string $date_to

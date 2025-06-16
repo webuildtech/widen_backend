@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourtController;
 use App\Http\Controllers\Admin\CourtTypeController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\FutureMemberController;
 use App\Http\Controllers\Admin\GroupController;
@@ -51,6 +52,8 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('courts', CourtController::class);
 
         Route::apiResource('downtimes', DowntimeController::class);
+
+        Route::apiResource('discount-codes', DiscountCodeController::class);
 
         Route::get('subscriptions', [SubscriptionController::class, 'index']);
 

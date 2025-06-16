@@ -128,7 +128,31 @@ return [
     'prohibited' => 'Laukas :attribute yra draudžiamas.',
     'regex' => 'Lauko :attribute formatas yra netinkamas.',
     'required' => 'Laukas :attribute yra privalomas.',
-
+    'required_array_keys' => ':attribute lauke turi būti šie įrašai: :values.',
+    'required_if' => ':attribute laukas privalomas, kai :other yra :value.',
+    'required_if_accepted' => ':attribute laukas privalomas, kai :other yra priimtas.',
+    'required_if_declined' => ':attribute laukas privalomas, kai :other yra atmestas.',
+    'required_unless' => ':attribute laukas privalomas, nebent :other yra tarp :values.',
+    'required_with' => ':attribute laukas privalomas, kai yra :values.',
+    'required_with_all' => ':attribute laukas privalomas, kai visi iš šių yra: :values.',
+    'required_without' => ':attribute laukas privalomas, kai nėra :values.',
+    'required_without_all' => ':attribute laukas privalomas, kai nėra nė vieno iš šių: :values.',
+    'same' => ':attribute laukas turi sutapti su :other.',
+    'size' => [
+        'array' => ':attribute lauke turi būti :size elementai.',
+        'file' => ':attribute failas turi būti :size kilobaitų.',
+        'numeric' => ':attribute reikšmė turi būti :size.',
+        'string' => ':attribute laukas turi būti sudarytas iš :size simbolių.',
+    ],
+    'starts_with' => ':attribute laukas turi prasidėti vienu iš šių: :values.',
+    'string' => ':attribute laukas turi būti tekstinis.',
+    'timezone' => ':attribute laukas turi būti galiojanti laiko juosta.',
+    'unique' => ':attribute jau yra naudojamas.',
+    'uploaded' => 'Nepavyko įkelti :attribute.',
+    'uppercase' => ':attribute laukas turi būti didžiosiomis raidėmis.',
+    'url' => ':attribute laukas turi būti galiojantis URL.',
+    'ulid' => ':attribute laukas turi būti galiojantis ULID.',
+    'uuid' => ':attribute laukas turi būti galiojantis UUID.',
     /*
     |--------------------------------------------------------------------------
     | Pasirinktinis validacijos tekstas

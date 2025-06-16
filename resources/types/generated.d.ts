@@ -101,6 +101,48 @@ declare namespace App.Data.Admin.Dashboard {
         date_to?: string;
     };
 }
+declare namespace App.Data.Admin.DiscountCodes {
+    export type DiscountCodeData = {
+        id: number;
+        name: string;
+        code: string;
+        is_active: boolean;
+        value: number;
+        usage_limit: number | null;
+        date_from: string | null;
+        date_to: string | null;
+    };
+    export type DiscountCodeListData = {
+        id: number;
+        name: string;
+        code: string;
+        is_active: boolean;
+        value: number;
+        usage_limit: number | null;
+        used: number;
+        date_from: string | null;
+        date_to: string | null;
+        updated_at: string;
+    };
+    export type DiscountCodeStoreData = {
+        name: string;
+        code: string;
+        value: number;
+        usage_limit?: number | null;
+        date_from?: string | null;
+        date_to?: string | null;
+        is_active?: boolean;
+    };
+    export type DiscountCodeUpdateData = {
+        name: string;
+        code: string;
+        value: number;
+        usage_limit?: number | null;
+        date_from?: string | null;
+        date_to?: string | null;
+        is_active?: boolean;
+    };
+}
 declare namespace App.Data.Admin.Downtimes {
     export type DowntimeData = {
         id: number;
@@ -631,6 +673,7 @@ declare namespace App.Data.User.Subscriptions {
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+    export type DiscountCodeType = "percent" | "fixed";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";
 }

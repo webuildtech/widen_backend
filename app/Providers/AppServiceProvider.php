@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Admin;
 use App\Models\Court;
 use App\Models\CourtType;
+use App\Models\DiscountCode;
 use App\Models\Downtime;
 use App\Models\FutureMember;
 use App\Models\Group;
@@ -54,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'guest' => Guest::class,
             'downtime' => Downtime::class,
+            'discountCode' => DiscountCode::class,
         ]);
 
         Carbon::macro('parseWithAppTimezone', fn($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));
