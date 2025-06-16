@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Enums\PaymentStatus;
 use App\Jobs\GenerateInvoice;
+use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\Payment;
 use App\Models\Plan;
@@ -40,7 +41,7 @@ class PaymentService
         return $payment;
     }
 
-    public function createFromReservationGroup(ReservationGroup $reservationGroup, User|Guest $owner, bool $allowMinus = false): Payment
+    public function createFromReservationGroup(ReservationGroup $reservationGroup, User|Guest $owner, bool $allowMinus = false, DiscountCode $discountCode = null): Payment
     {
         $reservations = $reservationGroup->reservations();
 
@@ -56,7 +57,12 @@ class PaymentService
             $owner->deductBalance($paidAmountFromBalance);
         }
 
+        if ($discountCode) {
+            $discountCode->increment('used');
+        }
+
         $payment = new Payment([
+            'discount_code_id' => $discountCode?->id,
             'discount' => $discount,
             'price' => $price,
             'vat' => $vat,
@@ -108,6 +114,10 @@ class PaymentService
 
         if ($payment->owner instanceof User) {
             $payment->owner->addBalance($payment->paid_amount_from_balance);
+        }
+
+        if ($payment->discountCode) {
+            $payment->discountCode->decrement('used');
         }
 
         if ($payment->paymentable_type === 'reservationGroup') {

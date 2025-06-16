@@ -2,6 +2,7 @@
 
 namespace App\Services\Reservations;
 
+use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\Reservation;
 use App\Models\ReservationSlot;
@@ -19,12 +20,18 @@ class ReservationService
     {
     }
 
-    public function createWithSlots(Guest|User $owner, array $reservationData, Collection $slots): Reservation
+    public function createWithSlots(Guest|User $owner, array $reservationData, Collection $slots, DiscountCode $discountCode = null): Reservation
     {
         $reservation = $owner->reservations()->create($reservationData);
 
         foreach ($slots as $slot) {
             $price = applyDiscountAndCalculatePriceDetails($slot['price'], $owner->discount_on_everything ?? 0);
+            $discount = $price->discount;
+
+            if ($discountCode) {
+                $price = applyDiscountAndCalculatePriceDetails($price->price_with_vat, $discountCode->value);
+                $discount += $price->discount;
+            }
 
             $reservation->slots()->create([
                 'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
@@ -32,7 +39,7 @@ class ReservationService
                 'court_id' => $slot['court_id'],
                 'price' => $price->price,
                 'vat' => $price->vat,
-                'discount' => $price->discount,
+                'discount' => $discount,
                 'price_with_vat' => $price->price_with_vat,
             ]);
 

@@ -178,8 +178,8 @@ namespace App\Models{
  * @property string $name
  * @property int $is_active
  * @property string $code
- * @property string $type
- * @property string $value
+ * @property \App\Enums\DiscountCodeType $type
+ * @property numeric $value
  * @property int|null $usage_limit
  * @property int $used
  * @property string|null $date_from

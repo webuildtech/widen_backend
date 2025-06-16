@@ -2,6 +2,7 @@
 
 namespace App\Responders\Reservations;
 
+use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\ReservationGroup;
 use App\Models\User;
@@ -18,9 +19,9 @@ class ReservationPaymentResponder
         protected Request $request
     ) {}
 
-    public function handle(ReservationGroup $group, User|Guest $owner): ServiceResponse
+    public function handle(ReservationGroup $group, User|Guest $owner, DiscountCode $discountCode = null): ServiceResponse
     {
-        $payment = $this->paymentService->createFromReservationGroup($group, $owner);
+        $payment = $this->paymentService->createFromReservationGroup($group, $owner, false, $discountCode);
 
         if ($payment->paid_amount > 0) {
             $url = $this->makeCommerceService->createTransaction($payment, $this->request->ip());

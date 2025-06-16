@@ -571,6 +571,13 @@ declare namespace App.Data.User.Courts {
         original_price: number;
     };
 }
+declare namespace App.Data.User.DiscountCodes {
+    export type DiscountCodeData = {
+        code: string;
+        type: App.Enums.DiscountCodeType;
+        value: number;
+    };
+}
 declare namespace App.Data.User.FutureMembers {
     export type FutureMemberStoreData = {
         email: string;
@@ -659,6 +666,7 @@ declare namespace App.Data.User.Reservations {
     };
     export type ReservationStoreData = {
         guest: App.Data.User.Guests.GuestStoreData | null;
+        discount_code?: string | null;
         slots: Array<App.Data.User.Reservations.ReservationSlotStoreData>;
     };
 }

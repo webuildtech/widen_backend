@@ -11,6 +11,7 @@ use App\Models\Guest;
 use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Responders\Reservations\ReservationPaymentResponder;
+use App\Services\DiscountCodeService;
 use App\Services\Reservations\ReservationService;
 use App\Services\Slots\ReservationSlotService;
 use Carbon\Carbon;
@@ -23,7 +24,8 @@ class ReservationController extends Controller
     public function __construct(
         protected ReservationService          $reservationService,
         protected ReservationSlotService      $reservationSlotService,
-        protected ReservationPaymentResponder $reservationPaymentResponder
+        protected DiscountCodeService         $discountCodeService,
+        protected ReservationPaymentResponder $reservationPaymentResponder,
     )
     {
     }
@@ -84,6 +86,18 @@ class ReservationController extends Controller
             return response()->json(['slots' => $occupySlots], 423);
         }
 
+        $discountCode = null;
+
+        if (is_string($data->discount_code)) {
+            $result = $this->discountCodeService->validateCode($data->discount_code);
+
+            if (!$result['valid']) {
+                return response()->json(['message' => $result['message']], 406);
+            }
+
+            $discountCode = $result['discountCode'];
+        }
+
         if (!$owner) {
             $owner = Guest::firstOrCreate($data->guest->toArray(), ['uuid' => Str::uuid()]);
         }
@@ -102,10 +116,11 @@ class ReservationController extends Controller
                     'reservation_group_id' => $reservationGroup->id,
                 ],
                 collect($timeBlock['slots']),
+                $discountCode
             );
         }
 
-        $response = $this->reservationPaymentResponder->handle($reservationGroup, $owner);
+        $response = $this->reservationPaymentResponder->handle($reservationGroup, $owner, $discountCode);
 
         return $response->toResponse();
     }

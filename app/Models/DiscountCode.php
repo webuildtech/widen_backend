@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DiscountCodeType;
 use App\Models\Concerns\HasDateRangeScopes;
 
 /**
@@ -10,4 +11,9 @@ use App\Models\Concerns\HasDateRangeScopes;
 class DiscountCode extends BaseModel
 {
     use HasDateRangeScopes;
+
+    protected $casts = [
+        'value' => 'decimal:2',
+        'type' => DiscountCodeType::class,
+    ];
 }
