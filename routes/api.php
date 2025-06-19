@@ -25,8 +25,6 @@ Route::prefix('courts')->group(function () {
 
 Route::post('/discount-codes/check', [DiscountCodeController::class, 'check']);
 
-Route::post('/reservations', [ReservationController::class, 'store']);
-
 Route::post('contact-us', [ContactUsController::class, 'store']);
 
 Route::prefix('payments')->group(function () {
@@ -54,6 +52,7 @@ Route::middleware(['auth:user'])->group(function () {
     });
 
     Route::prefix('reservations')->group(function () {
+        Route::post('', [ReservationController::class, 'store']);
         Route::get('', [ReservationController::class, 'index']);
         Route::post('pay', [ReservationController::class, 'pay']);
         Route::post('{reservation}/cancel', [ReservationController::class, 'cancel'])

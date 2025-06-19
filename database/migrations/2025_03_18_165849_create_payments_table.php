@@ -34,6 +34,7 @@ return new class extends Migration
             $table->decimal('paid_amount_from_balance', 10)->default(0);
 
             $table->dateTime('paid_at')->nullable();
+            $table->foreignId('discount_code_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamps();
             $table->softDeletes();
