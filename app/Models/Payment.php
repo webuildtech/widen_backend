@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PaymentStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -38,5 +39,10 @@ class Payment extends BaseModel
     public function discountCode(): BelongsTo
     {
         return $this->belongsTo(DiscountCode::class);
+    }
+
+    public function scopePaidAtBetween(Builder $query, string $start, ?string $end = null): Builder
+    {
+        return $query->dateBetween('paid_at', $start, $end);
     }
 }

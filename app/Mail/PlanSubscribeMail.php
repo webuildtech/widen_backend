@@ -37,15 +37,4 @@ class PlanSubscribeMail extends Mailable implements ShouldQueue
             view: 'emails.maizzle.payments.planSubscribe',
         );
     }
-
-    public function attachments(): array
-    {
-        if (! $this->payment->invoice_path) {
-            return [];
-        }
-
-        return [
-            Attachment::fromPath(Storage::disk('local')->path($this->payment->invoice_path))
-        ];
-    }
 }

@@ -12,7 +12,7 @@
     $borderColor = 'border-[#14d315]';
     $bgColor = 'bg-green-100';
 
-    $owner = $payment->owner;
+    $owner = $invoice->owner;
 @endphp
 
 <div class="max-w-4xl mx-auto pt-4 px-8">
@@ -25,7 +25,7 @@
                     PVM sąskaita faktūra
                 </div>
                 <div class="text-right font-semibold">
-                    SS {{$payment->invoice_no}}
+                    SS {{$invoice->number}}
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                     Sąskaita išrašyta
                 </div>
                 <div class="text-right font-medium">
-                    {{$payment->paid_at?->format('Y-m-d')}}
+                    {{$invoice->date->format('Y-m-d')}}
                 </div>
             </div>
         </div>
@@ -93,26 +93,13 @@
         <div class="text-right">Suma su PVM</div>
     </div>
 
-    @php
-        if ($payment->paid_amount_from_balance > 0) {
-            $prices = applyDiscountAndCalculatePriceDetails($payment->paid_amount, 0);
-
-            $price = $prices->price;
-            $vat = $prices->vat;
-            $price_with_vat = $prices->price_with_vat;
-        } else {
-            $price = $payment->price;
-            $vat = $payment->vat;
-            $price_with_vat = $payment->price_with_vat;
-        }
-    @endphp
     <div class="grid grid-cols-8 gap-1 text-xs border-b border-black mb-2">
         <div class="col-span-5">
             Teniso paslaugos
         </div>
-        <div class="text-center">{{formatPrice($price)}}</div>
-        <div class="text-center">{{formatPrice($vat)}}</div>
-        <div class="text-right">{{formatPrice($price_with_vat)}}</div>
+        <div class="text-center">{{formatPrice($invoice->price)}}</div>
+        <div class="text-center">{{formatPrice($invoice->vat)}}</div>
+        <div class="text-right">{{formatPrice($invoice->price_with_vat)}}</div>
     </div>
 
     <div class="flex justify-end text-xs">
@@ -122,7 +109,7 @@
                     <p>Iš viso suma be PVM:</p>
                 </div>
                 <div class="w-1/4 text-right">
-                    <p>{{formatPrice($price)}}</p>
+                    <p>{{formatPrice($invoice->price)}}</p>
                 </div>
             </div>
 
@@ -131,7 +118,7 @@
                     <p>PVM 21%:</p>
                 </div>
                 <div class="w-1/4 text-right">
-                    <p>{{formatPrice($vat)}}</p>
+                    <p>{{formatPrice($invoice->vat)}}</p>
                 </div>
             </div>
         </div>
@@ -145,7 +132,7 @@
                 </div>
 
                 <div class="w-1/4 text-right">
-                    <p>{{formatPrice($price_with_vat)}}</p>
+                    <p>{{formatPrice($invoice->price_with_vat)}}</p>
                 </div>
             </div>
         </div>

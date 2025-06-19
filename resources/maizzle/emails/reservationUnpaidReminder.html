@@ -10,7 +10,7 @@
       Prašome kuo skubiau apmokėti, kitu atveju rezervacija bus atšaukta likus <strong>@{{ $reservation->owner->cancel_before }}</strong> valandoms iki jos.
     </p>
 
-    <x-button href="@{{ $appUrl }}/dashboard/unpaid-reservations" class="bg-green-700 hover:bg-green-800">
+    <x-button href="@{{ $appUrl }}/dashboard/reservations/unpaid" class="bg-green-700 hover:bg-green-800">
       Apmokėti
     </x-button>
   </div>

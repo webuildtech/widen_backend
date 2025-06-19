@@ -3,7 +3,7 @@
 use App\Data\Core\Pricing\PriceDetailsData;
 
 if (!function_exists('applyDiscountAndCalculatePriceDetails')) {
-    function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount): PriceDetailsData
+    function applyDiscountAndCalculatePriceDetails(float $priceWithVat, float $discount = 0): PriceDetailsData
     {
         $priceWithoutVAT = $priceWithVat / 1.21;
 

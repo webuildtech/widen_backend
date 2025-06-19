@@ -6,7 +6,6 @@ use App\Models\Concerns\HasBalance;
 use App\Models\Concerns\HasDateScopes;
 use App\Models\Concerns\HasUserScopes;
 use App\Models\Concerns\LogsSystemActivity;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -65,5 +64,10 @@ class User extends Authenticatable
     public function payments(): MorphMany
     {
         return $this->morphMany(Payment::class, 'owner');
+    }
+
+    public function invoices(): MorphMany
+    {
+        return $this->morphMany(Invoice::class, 'owner');
     }
 }

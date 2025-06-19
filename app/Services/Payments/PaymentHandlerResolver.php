@@ -3,7 +3,11 @@
 namespace App\Services\Payments;
 
 use App\Jobs\CheckRefundSlots;
+use App\Mail\BalanceTopUpMail;
+use App\Mail\PlanSubscribeMail;
+use App\Mail\ReservationPaidMail;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentHandlerResolver
 {
@@ -45,6 +49,8 @@ class PaymentHandlerResolver
             'vat' => $priceDetails->vat,
             'price_with_vat' => $priceDetails->price_with_vat,
         ]);
+
+        Mail::queue(new PlanSubscribeMail($payment, $payment->renew));
     }
 
     private function handleReservationGroup(Payment $payment): void
@@ -56,10 +62,14 @@ class PaymentHandlerResolver
         ]);
 
         CheckRefundSlots::dispatch($payment->paymentable_id);
+
+        Mail::queue(new ReservationPaidMail($payment));
     }
 
     private function handleDefault(Payment $payment): void
     {
         $payment->user->addBalance($payment->paid_amount);
+
+        Mail::queue(new BalanceTopUpMail($payment));
     }
 }

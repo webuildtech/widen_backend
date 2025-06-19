@@ -2,25 +2,30 @@
 
 namespace App\Services\Payments;
 
-use App\Models\Payment;
+use App\Models\Guest;
+use App\Models\Invoice;
+use App\Models\User;
+use Carbon\Carbon;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 
 class InvoiceService
 {
-    public function generate(Payment $payment): void
+    public function create(User|Guest $owner, Carbon $date, float $priceWithVat): Invoice
     {
-        if ($payment->invoice_path || floatval($payment->paid_amount) === 0.0) return;
+        $priceDetails = applyDiscountAndCalculatePriceDetails($priceWithVat);;
 
-        if (!$payment->invoice_no) {
-            $payment->update([
-                'invoice_no' => Payment::whereNotNull('invoice_no')->max('invoice_no') + 1
-            ]);
-        }
+        $invoice = $owner->invoices()->create([
+            'date' => $date,
+            'number' => Invoice::max('number') + 1,
+            'price' => $priceDetails->price,
+            'vat' => $priceDetails->vat,
+            'price_with_vat' => $priceDetails->price_with_vat,
+        ]);
 
-        $path = "/invoices/Septyni Sesi SF - {$payment->invoice_no}.pdf";
+        $path = "/invoices/WIDEN Arena SF - {$invoice->number}.pdf";
 
-        Pdf::view('pdfs.invoice', ['payment' => $payment])
+        Pdf::view('pdfs.invoice', ['invoice' => $invoice])
             ->disk('local')
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot->setNodeBinary(env('LOCAL_NODE_PATH'))
@@ -29,6 +34,8 @@ class InvoiceService
             })
             ->save($path);
 
-        $payment->update(['invoice_path' => $path]);
+        $invoice->update(['path' => $path]);
+
+        return $invoice->refresh();
     }
 }

@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\FutureMemberController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PlanCourtTypeRuleController;
 use App\Http\Controllers\Admin\ReservationController;
@@ -55,7 +57,14 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('discount-codes', DiscountCodeController::class);
 
+        Route::get('payments', [PaymentController::class, 'index']);
+
         Route::get('subscriptions', [SubscriptionController::class, 'index']);
+
+        Route::controller(InvoiceController::class)->prefix('invoices')->group(function () {
+            Route::get('', 'index');
+            Route::get('{invoice}/download', 'download');
+        });
 
         Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
             Route::get('metrics', 'metrics');

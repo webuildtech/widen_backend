@@ -3,7 +3,9 @@
 namespace App\Services\Payments;
 
 use App\Enums\PaymentStatus;
-use App\Jobs\GenerateInvoice;
+use App\Mail\BalanceTopUpMail;
+use App\Mail\PlanSubscribeMail;
+use App\Mail\ReservationPaidMail;
 use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\Payment;
@@ -11,6 +13,7 @@ use App\Models\Plan;
 use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentService
 {
@@ -98,8 +101,6 @@ class PaymentService
         $payment->update(['status' => PaymentStatus::PAID->value, 'paid_at' => now()]);
 
         $this->paymentHandlerResolver->handle($payment);
-
-        GenerateInvoice::dispatch($payment->id);
 
         return $payment;
     }

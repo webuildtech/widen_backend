@@ -398,6 +398,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read mixed $full_name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
  * @property-read int|null $payments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
@@ -515,13 +517,57 @@ namespace App\Models{
  * @property int $id
  * @property string $owner_type
  * @property int $owner_id
+ * @property int $number
+ * @property string $date
+ * @property string $price
+ * @property string $vat
+ * @property string $price_with_vat
+ * @property string|null $path
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice invoiceDateBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereOwnerType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice wherePriceWithVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice whereVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invoice withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperInvoice {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $owner_type
+ * @property int $owner_id
  * @property string|null $paymentable_type
  * @property int|null $paymentable_id
  * @property string|null $transaction_id
  * @property \App\Enums\PaymentStatus $status
  * @property bool $renew
- * @property string|null $invoice_no
- * @property string|null $invoice_path
  * @property numeric $price
  * @property numeric $vat
  * @property numeric $price_with_vat
@@ -534,20 +580,20 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \App\Models\DiscountCode|null $discountCode
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $paymentable
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment paidAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDiscount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereInvoiceNo($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereInvoicePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereOwnerType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaidAmount($value)
@@ -885,6 +931,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection $features
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments

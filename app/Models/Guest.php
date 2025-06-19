@@ -20,6 +20,11 @@ class Guest extends BaseModel
         return $this->morphMany(Payment::class, 'owner');
     }
 
+    public function invoices(): MorphMany
+    {
+        return $this->morphMany(Invoice::class, 'owner');
+    }
+
     protected function fullName(): Attribute
     {
         return Attribute::get(fn () => trim("{$this->first_name} {$this->last_name}"));

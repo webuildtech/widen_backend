@@ -35,15 +35,4 @@ class ReservationPaidMail extends Mailable implements ShouldQueue
             view: 'emails.maizzle.payments.reservationPaid',
         );
     }
-
-    public function attachments(): array
-    {
-        if (! $this->payment->invoice_path) {
-            return [];
-        }
-
-        return [
-            Attachment::fromPath(Storage::disk('local')->path($this->payment->invoice_path))
-        ];
-    }
 }

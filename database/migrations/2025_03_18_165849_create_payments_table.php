@@ -25,9 +25,6 @@ return new class extends Migration
 
             $table->boolean('renew')->default(false);
 
-            $table->string('invoice_no')->nullable();
-            $table->string('invoice_path')->nullable();
-
             $table->decimal('price', 10)->default(0);
             $table->decimal('vat', 10)->default(0);
             $table->decimal('price_with_vat', 10)->default(0);

@@ -64,7 +64,7 @@ $appUrl = env('APP_FRONTEND_URL');
                       Prašome kuo skubiau apmokėti, kitu atveju rezervacija bus atšaukta likus <strong>{{ $reservation->owner->cancel_before }}</strong> valandoms iki jos.
                     </p>
                     <div style="margin-top: 24px; margin-bottom: 0">
-                      <a href="{{ $appUrl }}/dashboard/unpaid-reservations" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #15803d" class="hover-bg-green-800">
+                      <a href="{{ $appUrl }}/dashboard/reservations/unpaid" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #15803d" class="hover-bg-green-800">
                         <!--[if mso]><i style="mso-font-width: 150%; mso-text-raise: 31px" hidden>&emsp;</i><![endif]-->
                         <span style="mso-text-raise: 16px">Apmokėti</span>
                         <!--[if mso]><i hidden style="mso-font-width: 150%">&emsp;&#8203;</i><![endif]-->

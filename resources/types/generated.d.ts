@@ -262,6 +262,34 @@ declare namespace App.Data.Admin.Intervals {
         prices?: Array<App.Data.Admin.Intervals.IntervalPriceData>;
     };
 }
+declare namespace App.Data.Admin.Invoices {
+    export type InvoiceListData = {
+        id: number;
+        number: number;
+        date: string;
+        owner_type: string;
+        owner: App.Data.Core.Owners.OwnerData;
+        price: number;
+        vat: number;
+        price_with_vat: number;
+        updated_at: string;
+    };
+}
+declare namespace App.Data.Admin.Payments {
+    export type PaymentListData = {
+        id: number;
+        owner_type: string;
+        owner: App.Data.Core.Owners.OwnerData;
+        paymentable_type: string | null;
+        price: number;
+        discount: number;
+        vat: number;
+        price_with_vat: number;
+        paid_amount_from_balance: number;
+        paid_amount: number;
+        paid_at: string;
+    };
+}
 declare namespace App.Data.Admin.PlanCourtTypeRules {
     export type PlanCourtTypeRuleData = {
         id: number;
@@ -596,6 +624,15 @@ declare namespace App.Data.User.Guests {
         first_name: string;
         last_name: string;
         phone: string;
+    };
+}
+declare namespace App.Data.User.Invoices {
+    export type InvoiceListData = {
+        id: number;
+        date: string;
+        price: number;
+        vat: number;
+        price_with_vat: number;
     };
 }
 declare namespace App.Data.User.Payments {
