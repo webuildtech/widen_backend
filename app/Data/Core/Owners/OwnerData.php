@@ -9,11 +9,11 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class OwnerData extends Data
 {
     public function __construct(
-        public string $full_name,
+        public string  $full_name,
 
-        public string $email,
+        public string  $email,
 
-        public string $phone,
+        public ?string $phone,
     )
     {
     }
