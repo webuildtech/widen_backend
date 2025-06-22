@@ -32,6 +32,8 @@ class PaymentListData extends Data
         public float     $paid_amount,
 
         public Carbon    $paid_at,
+
+        public Carbon    $updated_at,
     )
     {
     }
