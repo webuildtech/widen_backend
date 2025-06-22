@@ -9,15 +9,15 @@
 <body>
 
 @php
-    $borderColor = 'border-[#14d315]';
-    $bgColor = 'bg-green-100';
+    $borderColor = 'border-[#4887af]';
+    $bgColor = 'bg-[#e8eff6]';
 
     $owner = $invoice->owner;
 @endphp
 
 <div class="max-w-4xl mx-auto pt-4 px-8">
     <div class="flex justify-between items-center mb-16">
-        <img src="{{base_path('public/logo.png')}}" alt="Logo" class="w-24">
+        <img src="{{base_path('public/logo.png')}}" alt="Logo" class="w-32">
 
         <div class="w-1/2 border-b-2 {!! $borderColor !!} space-y-1">
             <div class="flex justify-between">

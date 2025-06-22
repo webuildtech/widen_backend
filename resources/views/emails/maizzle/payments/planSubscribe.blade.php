@@ -51,7 +51,7 @@ $appUrl = env('APP_FRONTEND_URL');
               <tr>
                 <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; border: 1px solid #e2e8f0">
                   <a href="{{ $appUrl }}">
-                    <img src="{{asset('logo.png')}}" width="70" alt style="max-width: 100%; vertical-align: middle">
+                    <img src="{{asset('logo.png')}}" width="110" alt style="max-width: 100%; vertical-align: middle">
                   </a>
                   <div role="separator" style="line-height: 24px">&zwj;</div>
                   <div>
@@ -83,7 +83,7 @@ $appUrl = env('APP_FRONTEND_URL');
                   <div role="separator" style="line-height: 24px">&zwj;</div>
                   <p style="margin: 0; font-size: 16px; line-height: 24px; color: #475569">
                     Ačiū, kad naudojatės mūsų paslaugomis,<br>
-                    <span style="font-weight: 600">SEPTYNI ŠEŠI</span>
+                    <span style="font-weight: 600">WIDEN arena</span>
                   </p>
                 </td>
               </tr>
