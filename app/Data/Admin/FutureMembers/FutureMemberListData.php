@@ -3,6 +3,7 @@
 namespace App\Data\Admin\FutureMembers;
 
 use App\Models\FutureMember;
+use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -25,6 +26,8 @@ class FutureMemberListData extends Data
         public string|null $times,
 
         public string|null $plan,
+
+        public Carbon      $updated_at
     )
     {
     }
@@ -40,6 +43,7 @@ class FutureMemberListData extends Data
             $futureMember->days ? implode(', ', $futureMember->days) : null,
             $futureMember->times ? implode(', ', $futureMember->times) : null,
             $futureMember->plan,
+            $futureMember->updated_at,
         );
     }
 }

@@ -23,7 +23,7 @@ class MakeCommerceService
 
     public function createTransaction(Payment $payment, string $ip): string
     {
-        $frontendUrl = rtrim(config('app.frontend_url'), '/') . '/payment';
+        $frontendUrl = env('APP_URL') . '/payment';
 
         $transaction = [
             'amount' => $payment->paid_amount,
