@@ -69,7 +69,7 @@ class ReservationSlotService
         $seenKeys = [];
 
         foreach ($slots as $slot) {
-            $key = $slot['court_id'] . '|' . $slot['start_time'] . '|' . $slot['end_time'];
+            $key = $slot['date'] . '|' . $slot['court_id'] . '|' . $slot['start_time'] . '|' . $slot['end_time'];
 
             if (isset($seenKeys[$key])) {
                 return false;
