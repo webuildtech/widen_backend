@@ -1,14 +1,14 @@
 <x-main>
   <div class="space-y-6">
-    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+    <h1 class="m-0 text-2xl/8 text-blumine-900 font-semibold">
       Sveiki, @{{ $payment->owner->first_name }},
     </h1>
 
-    <p class="m-0 text-base/6 text-slate-600">
+    <p class="m-0 text-base/6 text-blumine-600">
       Dėkojame už Jūsų apmokėjimą! Jūsų rezervacija sėkmingai patvirtinta.
     </p>
 
-    <h2 class="font-semibold text-gray-800 text-lg/7">
+    <h2 class="font-semibold text-blumine-800 text-lg/7">
       📅 Rezervacijos informacija:
     </h2>
 
@@ -45,7 +45,7 @@
     </p>
 
     @if ($payment->user_id)
-      <x-button href="@{{ $appUrl }}/dashboard" class="bg-green-700 hover:bg-green-800">
+      <x-button href="@{{ $appUrl }}/dashboard" class="bg-blumine-700 hover:bg-blumine-800">
         Prietaisų skydelis
       </x-button>
     @endif

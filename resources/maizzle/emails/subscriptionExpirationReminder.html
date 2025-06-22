@@ -1,6 +1,6 @@
 <x-main>
   <div class="space-y-6">
-    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+    <h1 class="m-0 text-2xl/8 text-blumine-900 font-semibold">
       Sveiki, @{{ $user->first_name }},
     </h1>
 
@@ -10,7 +10,7 @@
       Jei jūsų balanso likutis pakankamas, planas prasitęs automatiškai @{{ $user->subscription->expired_at->addSecond() }}. Tačiau jei balanso likutis per mažas, turite jį pratęsti patys.
     </p>
 
-    <x-button href="@{{ $appUrl }}/dashboard/plan" class="bg-green-700 hover:bg-green-800">
+    <x-button href="@{{ $appUrl }}/dashboard/plan" class="bg-blumine-700 hover:bg-blumine-800">
       Pratęsti planą
     </x-button>
   </div>

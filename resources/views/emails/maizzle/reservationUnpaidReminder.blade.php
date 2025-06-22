@@ -26,8 +26,8 @@ $appUrl = env('APP_FRONTEND_URL');
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" media="screen">
   <style>
-    .hover-bg-green-800:hover {
-      background-color: #166534 !important
+    .hover-bg-blumine-800:hover {
+      background-color: #284a64 !important
     }
     @media (max-width: 600px) {
       .sm-p-6 {
@@ -55,7 +55,7 @@ $appUrl = env('APP_FRONTEND_URL');
                   </a>
                   <div role="separator" style="line-height: 24px">&zwj;</div>
                   <div>
-                    <h1 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600; color: #0f172a">
+                    <h1 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600; color: #264054">
                       Sveiki, {{ $reservation->owner->first_name }},
                     </h1>
                     <p style="font-size: 16px; line-height: 24px; color: #475569; margin: 24px 0 0">
@@ -64,7 +64,7 @@ $appUrl = env('APP_FRONTEND_URL');
                       Prašome kuo skubiau apmokėti, kitu atveju rezervacija bus atšaukta likus <strong>{{ $reservation->owner->cancel_before }}</strong> valandoms iki jos.
                     </p>
                     <div style="margin-top: 24px; margin-bottom: 0">
-                      <a href="{{ $appUrl }}/dashboard/reservations/unpaid" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #15803d" class="hover-bg-green-800">
+                      <a href="{{ $appUrl }}/dashboard/reservations/unpaid" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #2f5c7e" class="hover-bg-blumine-800">
                         <!--[if mso]><i style="mso-font-width: 150%; mso-text-raise: 31px" hidden>&emsp;</i><![endif]-->
                         <span style="mso-text-raise: 16px">Apmokėti</span>
                         <!--[if mso]><i hidden style="mso-font-width: 150%">&emsp;&#8203;</i><![endif]-->
@@ -72,7 +72,7 @@ $appUrl = env('APP_FRONTEND_URL');
                     </div>
                   </div>
                   <div role="separator" style="line-height: 24px">&zwj;</div>
-                  <p style="margin: 0; font-size: 16px; line-height: 24px; color: #475569">
+                  <p style="margin: 0; font-size: 16px; line-height: 24px; color: #2f5c7e">
                     Ačiū, kad naudojatės mūsų paslaugomis,<br>
                     <span style="font-weight: 600">WIDEN arena</span>
                   </p>

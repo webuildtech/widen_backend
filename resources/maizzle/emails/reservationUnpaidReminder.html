@@ -1,6 +1,6 @@
 <x-main>
   <div class="space-y-6">
-    <h1 class="m-0 text-2xl/8 text-slate-900 font-semibold">
+    <h1 class="m-0 text-2xl/8 text-blumine-900 font-semibold">
       Sveiki, @{{ $reservation->owner->first_name }},
     </h1>
 
@@ -10,7 +10,7 @@
       Prašome kuo skubiau apmokėti, kitu atveju rezervacija bus atšaukta likus <strong>@{{ $reservation->owner->cancel_before }}</strong> valandoms iki jos.
     </p>
 
-    <x-button href="@{{ $appUrl }}/dashboard/reservations/unpaid" class="bg-green-700 hover:bg-green-800">
+    <x-button href="@{{ $appUrl }}/dashboard/reservations/unpaid" class="bg-blumine-700 hover:bg-blumine-800">
       Apmokėti
     </x-button>
   </div>
