@@ -37,6 +37,7 @@ class ReservationController extends Controller
                 'owner_type',
                 'is_paid',
                 'paid_at',
+                'refunded_amount',
                 'canceled_at',
                 'updated_at'
             ])

@@ -26,6 +26,8 @@ class ReservationListData extends Data
 
         public float                 $price_with_vat,
 
+        public float                 $refunded_amount,
+
         public bool                  $is_paid,
 
         public ?Carbon               $paid_at,
