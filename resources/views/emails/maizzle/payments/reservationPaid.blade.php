@@ -91,7 +91,7 @@ $appUrl = env('APP_FRONTEND_URL');
                     <p style="margin-top: 24px; margin-bottom: 0">
                       💰 <strong>Suma:</strong> {{ $payment->price_with_vat }} €
                     </p>
-                    @if ($payment->user_id)<div style="margin-top: 24px; margin-bottom: 0">
+                    @if ($payment->owner_type === 'user')<div style="margin-top: 24px; margin-bottom: 0">
                       <a href="{{ $appUrl }}/dashboard" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #2f5c7e" class="hover-bg-blumine-800">
                         <!--[if mso]><i style="mso-font-width: 150%; mso-text-raise: 31px" hidden>&emsp;</i><![endif]-->
                         <span style="mso-text-raise: 16px">Prietaisų skydelis</span>

@@ -68,7 +68,7 @@ class PaymentHandlerResolver
 
     private function handleDefault(Payment $payment): void
     {
-        $payment->user->addBalance($payment->paid_amount);
+        $payment->owner->addBalance($payment->paid_amount);
 
         Mail::queue(new BalanceTopUpMail($payment));
     }

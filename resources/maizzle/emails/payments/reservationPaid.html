@@ -44,7 +44,7 @@
       💰 <strong>Suma:</strong> @{{ $payment->price_with_vat }} €
     </p>
 
-    @if ($payment->user_id)
+    @if ($payment->owner_type === 'user')
       <x-button href="@{{ $appUrl }}/dashboard" class="bg-blumine-700 hover:bg-blumine-800">
         Prietaisų skydelis
       </x-button>

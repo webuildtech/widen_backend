@@ -66,6 +66,6 @@ class SubscriptionController extends Controller
 
         $payment = $this->paymentService->approve($payment);
 
-        return response()->json(['balance' => $payment->user->balance]);
+        return response()->json(['balance' => $payment->owner->balance]);
     }
 }
