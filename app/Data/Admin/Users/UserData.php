@@ -37,6 +37,8 @@ class UserData extends Data
         public ?string $company_address,
 
         public ?string $company_phone,
+
+        public bool    $agreed_newsletter
     )
     {
     }

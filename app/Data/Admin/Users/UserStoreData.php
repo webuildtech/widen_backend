@@ -56,6 +56,8 @@ class UserStoreData extends Data
         #[Rule(['max:255'])]
         public null|string|Optional $company_phone,
 
+        public bool|Optional        $agreed_newsletter,
+
         #[Min(6), Max(32), Confirmed]
         public string               $password,
     )

@@ -34,6 +34,7 @@ class UserController extends Controller
                 'phone',
                 'is_company',
                 'company_name',
+                'agreed_newsletter',
                 'updated_at'
             ])
             ->allowedFilters([

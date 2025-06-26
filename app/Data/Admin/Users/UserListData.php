@@ -30,6 +30,8 @@ class UserListData extends Data
 
         public ?string $company_name,
 
+        public bool    $agreed_newsletter,
+
         public Carbon  $updated_at,
     )
     {
