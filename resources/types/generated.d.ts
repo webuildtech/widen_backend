@@ -107,6 +107,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         name: string;
         code: string;
         is_active: boolean;
+        type: App.Enums.DiscountCodeType;
         value: number;
         usage_limit: number | null;
         date_from: string | null;
@@ -117,6 +118,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         name: string;
         code: string;
         is_active: boolean;
+        type: App.Enums.DiscountCodeType;
         value: number;
         usage_limit: number | null;
         used: number;
@@ -127,6 +129,7 @@ declare namespace App.Data.Admin.DiscountCodes {
     export type DiscountCodeStoreData = {
         name: string;
         code: string;
+        type: App.Enums.DiscountCodeType;
         value: number;
         usage_limit?: number | null;
         date_from?: string | null;
@@ -136,6 +139,7 @@ declare namespace App.Data.Admin.DiscountCodes {
     export type DiscountCodeUpdateData = {
         name: string;
         code: string;
+        type: App.Enums.DiscountCodeType;
         value: number;
         usage_limit?: number | null;
         date_from?: string | null;
@@ -182,6 +186,7 @@ declare namespace App.Data.Admin.FutureMembers {
         days: string | null;
         times: string | null;
         plan: string | null;
+        updated_at: string;
     };
 }
 declare namespace App.Data.Admin.Groups {
@@ -288,6 +293,7 @@ declare namespace App.Data.Admin.Payments {
         paid_amount_from_balance: number;
         paid_amount: number;
         paid_at: string;
+        updated_at: string;
     };
 }
 declare namespace App.Data.Admin.PlanCourtTypeRules {
@@ -388,6 +394,7 @@ declare namespace App.Data.Admin.Reservations {
         owner_type: string;
         owner: App.Data.Core.Owners.OwnerData;
         price_with_vat: number;
+        refunded_amount: number;
         is_paid: boolean;
         paid_at: string | null;
         canceled_at: string | null;
@@ -424,6 +431,7 @@ declare namespace App.Data.Admin.Users {
         company_vat_code: string | null;
         company_address: string | null;
         company_phone: string | null;
+        agreed_newsletter: boolean;
     };
     export type UserListData = {
         id: number;
@@ -436,6 +444,7 @@ declare namespace App.Data.Admin.Users {
         phone: string | null;
         is_company: boolean;
         company_name: string | null;
+        agreed_newsletter: boolean;
         updated_at: string;
     };
     export type UserSelectOptionData = {
@@ -455,6 +464,7 @@ declare namespace App.Data.Admin.Users {
         company_vat_code?: string | null;
         company_address?: string | null;
         company_phone?: string | null;
+        agreed_newsletter?: boolean;
         password: string;
     };
     export type UserUpdateData = {
@@ -470,6 +480,7 @@ declare namespace App.Data.Admin.Users {
         company_vat_code?: string | null;
         company_address?: string | null;
         company_phone?: string | null;
+        agreed_newsletter?: boolean;
         password?: string;
     };
 }
@@ -490,7 +501,7 @@ declare namespace App.Data.Core.Owners {
     export type OwnerData = {
         full_name: string;
         email: string;
-        phone: string;
+        phone: string | null;
     };
 }
 declare namespace App.Data.Core.Pricing {
@@ -571,6 +582,8 @@ declare namespace App.Data.User.Auth {
         birthday: string;
         phone: string;
         password: string;
+        agreed_terms: boolean;
+        agreed_newsletter?: boolean;
     };
     export type SocialData = {
         accessToken: string;

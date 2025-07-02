@@ -13,12 +13,12 @@
         "lucasdotvin/laravel-soulbscription": "^4.2",
         "maksekeskus/maksekeskus-php": "^1.4",
         "spatie/laravel-activitylog": "^4.8",
-        "spatie/laravel-data": "^4.8",
+        "spatie/laravel-data": "^4.17",
         "spatie/laravel-medialibrary": "^11.11",
         "spatie/laravel-pdf": "^1.5",
         "spatie/laravel-permission": "^6.14",
         "spatie/laravel-query-builder": "^6.0",
-        "spatie/laravel-typescript-transformer": "^2.4"
+        "spatie/laravel-typescript-transformer": "^2.5"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",

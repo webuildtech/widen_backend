@@ -2,6 +2,7 @@
 
 namespace App\Services\Reservations;
 
+use App\Enums\DiscountCodeType;
 use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\Reservation;
@@ -25,13 +26,30 @@ class ReservationService
         $reservation = $owner->reservations()->create($reservationData);
 
         foreach ($slots as $slot) {
-            $price = applyDiscountAndCalculatePriceDetails($slot['price'], $owner->discount_on_everything ?? 0);
-            $discount = $price->discount;
+            $price = $slot['price'];
+            $totalDiscount = 0;
+
+            if ($owner->discount_on_everything > 0) {
+                $discount = round($price * ($owner->discount_on_everything / 100), 2);
+
+                $price -= $discount;
+                $totalDiscount += $discount;
+            }
 
             if ($discountCode) {
-                $price = applyDiscountAndCalculatePriceDetails($price->price_with_vat, $discountCode->value);
-                $discount += $price->discount;
+                $discount = 0;
+
+                if ($discountCode->type === DiscountCodeType::FIXED) {
+                    $discount = min($discountCode->value, $price);
+                } elseif ($discountCode->type === DiscountCodeType::PERCENT) {
+                    $discount = round($price * ($discountCode->value / 100), 2);
+                }
+
+                $price -= $discount;
+                $totalDiscount += $discount;
             }
+
+            $price = applyDiscountAndCalculatePriceDetails($price);
 
             $reservation->slots()->create([
                 'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
@@ -39,13 +57,13 @@ class ReservationService
                 'court_id' => $slot['court_id'],
                 'price' => $price->price,
                 'vat' => $price->vat,
-                'discount' => $discount,
+                'discount' => $totalDiscount,
                 'price_with_vat' => $price->price_with_vat,
             ]);
 
             $reservation->price += $price->price;
             $reservation->vat += $price->vat;
-            $reservation->discount += $price->discount;
+            $reservation->discount += $totalDiscount;
             $reservation->price_with_vat += $price->price_with_vat;
         }
 

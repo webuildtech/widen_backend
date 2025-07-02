@@ -2,6 +2,7 @@
 
 namespace App\Data\Admin\DiscountCodes;
 
+use App\Enums\DiscountCodeType;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -10,25 +11,27 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class DiscountCodeListData extends Data
 {
     public function __construct(
-        public int     $id,
+        public int              $id,
 
-        public string  $name,
+        public string           $name,
 
-        public string  $code,
+        public string           $code,
 
-        public bool    $is_active,
+        public bool             $is_active,
 
-        public float   $value,
+        public DiscountCodeType $type,
 
-        public ?int    $usage_limit,
+        public float            $value,
 
-        public int     $used,
+        public ?int             $usage_limit,
 
-        public ?string $date_from,
+        public int              $used,
 
-        public ?string $date_to,
+        public ?string          $date_from,
 
-        public Carbon  $updated_at,
+        public ?string          $date_to,
+
+        public Carbon           $updated_at,
     )
     {
     }

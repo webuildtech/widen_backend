@@ -21,6 +21,7 @@ class DiscountCodeController extends Controller
                 'name',
                 'is_active',
                 'code',
+                'type',
                 'value',
                 'usage_limit',
                 'used',
