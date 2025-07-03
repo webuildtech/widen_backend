@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Data\User\Plans\PlanData;
+use App\Data\User\Subscriptions\SubscribeData;
 use App\Data\User\Subscriptions\SubscriptionData;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use App\Services\DiscountCodeService;
 use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +17,7 @@ class SubscriptionController extends Controller
     public function __construct(
         protected MakeCommerceService $makeCommerceService,
         protected PaymentService      $paymentService,
+        protected DiscountCodeService $discountCodeService,
     )
     {
     }
@@ -37,7 +40,7 @@ class SubscriptionController extends Controller
         return response()->json([], 404);
     }
 
-    public function subscribe(Plan $plan): JsonResponse
+    public function subscribe(SubscribeData $data, Plan $plan): JsonResponse
     {
         if ($plan->is_default) {
             return response()->json(['error' => 'Šio plano prenumeruoti negalima.'], 405);
@@ -45,15 +48,25 @@ class SubscriptionController extends Controller
 
         $user = auth()->user();
 
-        $subscription = $user->subscription ?? $user->lastSubscription();
+        $subscription = $user->subscription;
 
         if ($subscription && $subscription->plan_id !== $plan->id) {
-            if (!$subscription->is_overdue || ($subscription->is_overdue && !$subscription->canceled_at)) {
-                return response()->json(['error' => 'Jau turite kita aktyvią prenumeratą!'], 405);
-            }
+            return response()->json(['error' => 'Jau turite kita aktyvią prenumeratą!'], 405);
         }
 
-        $payment = $this->paymentService->createFromPlan($plan, $user, $subscription && !$subscription->canceled_at);
+        $discountCode = null;
+
+        if (is_string($data->discount_code)) {
+            $result = $this->discountCodeService->validateCode($data->discount_code);
+
+            if (!$result['valid']) {
+                return response()->json(['message' => $result['message']], 406);
+            }
+
+            $discountCode = $result['discountCode'];
+        }
+
+        $payment = $this->paymentService->createFromPlan($plan, $user, !!$subscription, $discountCode);
 
         if ($payment->paid_amount > 0) {
             $url = $this->makeCommerceService->createTransaction($payment, request()->ip());

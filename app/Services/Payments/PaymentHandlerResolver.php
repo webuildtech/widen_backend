@@ -24,9 +24,9 @@ class PaymentHandlerResolver
     {
         $user = $payment->owner;
 
-        $subscription = $user->subscription ?? $user->lastSubscription();
+        $subscription = $user->subscription;
 
-        if (!$subscription || ($subscription->is_overdue && $subscription->canceled_at)) {
+        if (!$subscription) {
             $user->subscribeTo($payment->paymentable);
             return;
         }

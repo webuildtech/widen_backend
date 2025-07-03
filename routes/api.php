@@ -65,7 +65,7 @@ Route::middleware(['auth:user'])->group(function () {
 
     Route::prefix('subscriptions')->group(function () {
         Route::get('current', [SubscriptionController::class, 'current']);
-        Route::get('subscribe/{plan}', [SubscriptionController::class, 'subscribe']);
+        Route::post('subscribe/{plan}', [SubscriptionController::class, 'subscribe']);
     });
 
     Route::prefix('payments')->group(function () {

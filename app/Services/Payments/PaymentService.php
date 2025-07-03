@@ -2,6 +2,7 @@
 
 namespace App\Services\Payments;
 
+use App\Enums\DiscountCodeType;
 use App\Enums\PaymentStatus;
 use App\Mail\BalanceTopUpMail;
 use App\Mail\PlanSubscribeMail;
@@ -21,9 +22,32 @@ class PaymentService
         protected PaymentHandlerResolver $paymentHandlerResolver
     ) {}
 
-    public function createFromPlan(Plan $plan, User $user, bool $renew = false): Payment
+    public function createFromPlan(Plan $plan, User $user, bool $renew = false, DiscountCode $discountCode = null): Payment
     {
-        $priceDetails = applyDiscountAndCalculatePriceDetails($plan->price, $user->discount_on_everything);
+        $price = $plan->price;
+        $totalDiscount = 0;
+
+        if ($user->discount_on_everything > 0) {
+            $discount = round($price * ($user->discount_on_everything / 100), 2);
+
+            $price -= $discount;
+            $totalDiscount += $discount;
+        }
+
+        if ($discountCode) {
+            $discount = 0;
+
+            if ($discountCode->type === DiscountCodeType::FIXED) {
+                $discount = min($discountCode->value, $price);
+            } elseif ($discountCode->type === DiscountCodeType::PERCENT) {
+                $discount = round($price * ($discountCode->value / 100), 2);
+            }
+
+            $price -= $discount;
+            $totalDiscount += $discount;
+        }
+
+        $priceDetails = applyDiscountAndCalculatePriceDetails($price);
 
         $paidAmountFromBalance = $user->getDeductedAmount($priceDetails->price_with_vat);
         $user->deductBalance($paidAmountFromBalance);
@@ -32,7 +56,7 @@ class PaymentService
             'renew' => $renew,
             'price' => $priceDetails->price,
             'vat' => $priceDetails->vat,
-            'discount' => $priceDetails->discount,
+            'discount' => $totalDiscount,
             'price_with_vat' => $priceDetails->price_with_vat,
             'paid_amount' => $priceDetails->price_with_vat - $paidAmountFromBalance,
             'paid_amount_from_balance' => $paidAmountFromBalance
