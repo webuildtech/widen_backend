@@ -35,6 +35,8 @@ class AccountData extends Data
         public ?string $company_address,
 
         public ?string $company_phone,
+
+        public bool    $has_subscription
     )
     {
     }

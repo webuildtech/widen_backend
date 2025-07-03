@@ -538,6 +538,7 @@ declare namespace App.Data.User.Account {
         company_vat_code: string | null;
         company_address: string | null;
         company_phone: string | null;
+        has_subscription: boolean;
     };
     export type AccountPasswordChangeData = {
         old_password: string;
@@ -722,10 +723,10 @@ declare namespace App.Data.User.Reservations {
 }
 declare namespace App.Data.User.Subscriptions {
     export type SubscriptionData = {
+        plan_id: number;
         started_at: string;
         expired_at: string;
         cancelled_at: string | null;
-        plan: App.Data.User.Plans.PlanData;
     };
 }
 declare namespace App.Enums {

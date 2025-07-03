@@ -23,17 +23,14 @@ class SubscriptionController extends Controller
     {
         $user = auth()->user();
 
-        $subscription = $user->lastSubscription();
+        $subscription = $user->subscription;
 
         if ($subscription) {
-            $plan = $subscription->plan;
-            $plan->load('courtTypeRules');
-
             return SubscriptionData::from([
+                'plan_id' => $subscription->plan_id,
                 'started_at' => $subscription->started_at,
                 'expired_at' => $subscription->expired_at,
                 'cancelled_at' => $subscription->cancelled_at,
-                'plan' => PlanData::from($plan),
             ]);
         }
 
