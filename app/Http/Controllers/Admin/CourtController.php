@@ -65,6 +65,12 @@ class CourtController extends Controller
 
     public function destroy(Court $court): array
     {
+        $court->clearMediaCollection('logo');
+
+        $court->intervals()->detach();
+
+        $court->downtimes()->delete();
+
         $court->delete();
 
         return [];

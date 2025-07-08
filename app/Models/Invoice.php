@@ -12,7 +12,7 @@ class Invoice extends BaseModel
 {
     public function owner(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo()->withTrashed();
     }
 
     public function scopeInvoiceDateBetween(Builder $query, string $start, ?string $end = null): Builder

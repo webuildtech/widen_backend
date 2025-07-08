@@ -9,6 +9,7 @@ use App\Data\Admin\Intervals\IntervalStoreData;
 use App\Data\Admin\Intervals\IntervalUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Interval;
+use App\Models\IntervalPrice;
 use App\Services\IntervalService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -66,6 +67,12 @@ class IntervalController extends Controller
 
     public function destroy(Interval $interval): array
     {
+        $interval->courts()->detach();
+
+        $interval->prices->each(fn (IntervalPrice $intervalPrice) => $intervalPrice->groups()->detach());
+
+        $interval->prices()->delete();
+
         $interval->delete();
 
         return [];

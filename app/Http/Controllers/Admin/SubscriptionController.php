@@ -14,6 +14,7 @@ class SubscriptionController extends Controller
     {
         $subscriptions = QueryBuilder::for(Subscription::class)
             ->withoutGlobalScopes()
+            ->whereNull('deleted_at')
             ->defaultSort('expired_at')
             ->allowedSorts([
                 'subscriber_id',

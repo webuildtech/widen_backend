@@ -10,6 +10,7 @@ use App\Data\Admin\Users\UserData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserService;
+use LucasDotVin\Soulbscription\Models\Subscription;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -74,6 +75,12 @@ class UserController extends Controller
 
     public function destroy(User $user): array
     {
+        $user->groups()->detach();
+
+        Subscription::query()->withoutGlobalScopes()
+            ->where('subscriber_id', $user->id)->where('subscriber_type', 'user')
+            ->delete();
+
         $user->delete();
 
         return [];

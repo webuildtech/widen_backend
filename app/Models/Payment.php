@@ -28,7 +28,7 @@ class Payment extends BaseModel
 
     public function owner(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo()->withTrashed();
     }
 
     public function paymentable(): MorphTo

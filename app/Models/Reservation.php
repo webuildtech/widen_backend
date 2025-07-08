@@ -24,7 +24,7 @@ class Reservation extends BaseModel
 
     public function owner(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo()->withTrashed();
     }
 
     public function reservationGroup(): BelongsTo
@@ -34,7 +34,7 @@ class Reservation extends BaseModel
 
     public function court(): BelongsTo
     {
-        return $this->belongsTo(Court::class);
+        return $this->belongsTo(Court::class)->withTrashed();
     }
 
     public function slots(): HasMany

@@ -61,6 +61,10 @@ class GroupController extends Controller
 
     public function destroy(Group $group): array
     {
+        $group->users()->detach();
+
+        $group->intervalPrices()->detach();
+
         $group->delete();
 
         return [];

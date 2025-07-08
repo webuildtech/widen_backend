@@ -21,6 +21,11 @@ class Group extends BaseModel
         return $this->belongsToMany(User::class);
     }
 
+    public function intervalPrices(): BelongsToMany
+    {
+        return $this->belongsToMany(IntervalPrice::class)->withPivot(['price']);
+    }
+
     public function usersIds(): Attribute
     {
         return Attribute::get(fn() => $this->users->pluck('id')->toArray());

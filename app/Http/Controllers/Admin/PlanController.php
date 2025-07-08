@@ -10,6 +10,7 @@ use App\Data\Admin\Plans\PlanUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Services\PlanService;
+use LucasDotVin\Soulbscription\Models\Subscription;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -66,6 +67,10 @@ class PlanController extends Controller
     {
         if ($plan->is_default) {
             return response()->json(['message' => 'Negalite ištrinti default plano!'], 406);
+        }
+
+        if (Subscription::where('plan_id', $plan->id)->exists()) {
+            return response()->json(['message' => 'Negalima ištrinti plano, nes yra aktyvių prenumeratų!'], 406);
         }
 
         $plan->delete();

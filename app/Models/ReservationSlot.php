@@ -23,7 +23,7 @@ class ReservationSlot extends BaseModel
 
     public function court(): BelongsTo
     {
-        return $this->belongsTo(Court::class);
+        return $this->belongsTo(Court::class)->withTrashed();
     }
 
     public function scopeActive($query)
