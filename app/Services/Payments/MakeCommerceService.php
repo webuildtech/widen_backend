@@ -28,7 +28,7 @@ class MakeCommerceService
         $transaction = [
             'amount' => $payment->paid_amount,
             'currency' => 'EUR',
-            'reference' => $payment->id,
+            'reference' => 'test' . $payment->id,
             'transaction_url' => [
                 'return_url' => ['url' => $frontendUrl, 'method' => 'get'],
                 'cancel_url' => ['url' => $frontendUrl, 'method' => 'get'],
