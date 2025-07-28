@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SubscribeUserToNewsletter;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -13,8 +14,13 @@ class UserService
         $attributes['password'] = Hash::make($attributes['password']);
 
         $user = User::create($attributes);
+        $user->refresh();
 
-        return $user->fresh();
+        if($user->agreed_newsletter) {
+            SubscribeUserToNewsletter::dispatch($user->id);
+        }
+
+        return $user;
     }
 
     public function update(User $user, array $attributes): Model

@@ -358,6 +358,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IntervalPrice> $intervalPrices
+ * @property-read int|null $interval_prices_count
  * @property-read \App\Models\Plan|null $plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
@@ -575,6 +577,7 @@ namespace App\Models{
  * @property numeric $paid_amount
  * @property numeric $paid_amount_from_balance
  * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property int|null $discount_code_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -593,6 +596,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereDiscountCodeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereOwnerType($value)
@@ -915,6 +919,8 @@ namespace App\Models{
  * @property string|null $company_vat_code
  * @property string|null $company_address
  * @property string|null $company_phone
+ * @property int $agreed_terms
+ * @property int $agreed_newsletter
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
@@ -931,6 +937,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection $features
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
+ * @property-read mixed $has_subscription
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
  * @property-read int|null $invoices_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -953,6 +960,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAgreedNewsletter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAgreedTerms($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCompanyAddress($value)
