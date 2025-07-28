@@ -40,4 +40,8 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_CLIENT_REDIRECT')
     ],
+
+    'omnisend' => [
+        'api_key' => env('OMNISEND_API_KEY'),
+    ]
 ];
