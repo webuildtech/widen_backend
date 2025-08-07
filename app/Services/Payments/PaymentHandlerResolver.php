@@ -28,27 +28,11 @@ class PaymentHandlerResolver
 
         if (!$subscription) {
             $user->subscribeTo($payment->paymentable);
-            return;
-        }
-
-        if ($payment->paymentable_id === $subscription->plan_id) {
+        } elseif ($payment->paymentable_id === $subscription->plan_id) {
             $subscription->renew();
-            return;
+        } else {
+            $user->switchTo($payment->paymentable);
         }
-
-        $user->addBalance($payment->price_with_vat);
-
-        $priceDetails = applyDiscountAndCalculatePriceDetails($payment->paid_amount, 0);
-
-        $payment->update([
-            'paymentable_id' => null,
-            'paymentable_type' => null,
-            'discount' => 0,
-            'paid_amount_from_balance' => 0,
-            'price' => $priceDetails->price,
-            'vat' => $priceDetails->vat,
-            'price_with_vat' => $priceDetails->price_with_vat,
-        ]);
 
         Mail::queue(new PlanSubscribeMail($payment, $payment->renew));
     }

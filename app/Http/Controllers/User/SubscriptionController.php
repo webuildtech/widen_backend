@@ -48,12 +48,6 @@ class SubscriptionController extends Controller
 
         $user = auth()->user();
 
-        $subscription = $user->subscription;
-
-        if ($subscription && $subscription->plan_id !== $plan->id) {
-            return response()->json(['error' => 'Jau turite kita aktyvią prenumeratą!'], 405);
-        }
-
         $discountCode = null;
 
         if (is_string($data->discount_code)) {
@@ -66,7 +60,14 @@ class SubscriptionController extends Controller
             $discountCode = $result['discountCode'];
         }
 
-        $payment = $this->paymentService->createFromPlan($plan, $user, !!$subscription, $discountCode);
+        $subscription = $user->subscription;
+
+        $payment = $this->paymentService->createFromPlan(
+            $plan,
+            $user,
+            $subscription && $subscription->plan_id === $plan->id,
+            $discountCode
+        );
 
         if ($payment->paid_amount > 0) {
             $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
