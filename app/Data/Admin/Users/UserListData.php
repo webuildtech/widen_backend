@@ -2,7 +2,9 @@
 
 namespace App\Data\Admin\Users;
 
+use App\Models\User;
 use Carbon\Carbon;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -32,8 +34,29 @@ class UserListData extends Data
 
         public bool    $agreed_newsletter,
 
+        public ?string $plan,
+
         public Carbon  $updated_at,
     )
     {
+    }
+
+    public static function fromModel(User $user): self
+    {
+        return new self(
+            $user->id,
+            $user->first_name,
+            $user->last_name,
+            $user->email,
+            $user->balance,
+            $user->discount_on_everything,
+            $user->birthday ? Carbon::parse($user->birthday) : null,
+            $user->phone,
+            $user->is_company,
+            $user->company_name,
+            $user->agreed_newsletter,
+            $user->subscription?->plan->name,
+            $user->updated_at,
+        );
     }
 }
