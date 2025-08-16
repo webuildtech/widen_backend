@@ -92,10 +92,27 @@ class ReservationController extends Controller
 
     public function pay(Reservation $reservation): array
     {
-        if (!$reservation->is_paid) {
+        if (!$reservation->is_paid && !$reservation->canceled_at) {
             $reservation->update(['is_paid' => true, 'paid_at' => now(), 'payment_source' => 'admin']);
 
             $this->reservationService->refundSlots($reservation);
+        }
+
+        return [];
+    }
+
+    public function cancel(Reservation $reservation): array
+    {
+        if (!$reservation->canceled_at) {
+            $data = ['canceled_at' => now()];
+
+            if ($reservation->is_paid && $reservation->owner instanceof User) {
+                $reservation->owner->addBalance($reservation->price_with_vat);
+                $data['refunded_amount'] = $reservation->price_with_vat;
+            }
+
+            $reservation->update($data);
+            $reservation->slots()->delete();
         }
 
         return [];
