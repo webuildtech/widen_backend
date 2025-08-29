@@ -123,4 +123,40 @@ class ReservationService
             }
         });
     }
+
+    public function cancel(Reservation $reservation)
+    {
+        if (!$reservation->canceled_at) {
+            $data = ['canceled_at' => now()];
+
+            if ($reservation->is_paid && $reservation->owner instanceof User) {
+                $reservation->owner->addBalance($reservation->price_with_vat);
+                $data['refunded_amount'] = $reservation->price_with_vat;
+            }
+
+            $reservation->update($data);
+            $reservation->slots()->delete();
+        }
+    }
+
+    public function delete(Reservation $reservation)
+    {
+        if ($reservation->is_paid && $reservation->owner instanceof User) {
+            $reservation->owner->addBalance($reservation->price_with_vat);
+        }
+
+        $reservation->slots()->delete();
+        $reservation->delete();
+    }
+
+    public function bulkAction(Collection $reservations, string $action)
+    {
+        foreach ($reservations as $reservation) {
+            if ($action === 'cancel') {
+                $this->cancel($reservation);
+            } elseif ($action === 'delete') {
+                $this->delete($reservation);
+            }
+        }
+    }
 }

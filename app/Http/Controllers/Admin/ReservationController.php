@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Data\Admin\Reservations\ReservationBulkActionData;
 use App\Data\Admin\Reservations\ReservationCalendarData;
 use App\Data\Admin\Reservations\ReservationFilterData;
 use App\Data\Admin\Reservations\MultiReservationStoreData;
@@ -103,29 +104,24 @@ class ReservationController extends Controller
 
     public function cancel(Reservation $reservation): array
     {
-        if (!$reservation->canceled_at) {
-            $data = ['canceled_at' => now()];
-
-            if ($reservation->is_paid && $reservation->owner instanceof User) {
-                $reservation->owner->addBalance($reservation->price_with_vat);
-                $data['refunded_amount'] = $reservation->price_with_vat;
-            }
-
-            $reservation->update($data);
-            $reservation->slots()->delete();
-        }
+        $this->reservationService->cancel($reservation);
 
         return [];
     }
 
     public function destroy(Reservation $reservation): array
     {
-        if ($reservation->is_paid && $reservation->owner instanceof User) {
-            $reservation->owner->addBalance($reservation->price_with_vat);
-        }
+        $this->reservationService->delete($reservation);
 
-        $reservation->slots()->delete();
-        $reservation->delete();
+        return [];
+    }
+
+    public function bulkAction(ReservationBulkActionData $data)
+    {
+        $this->reservationService->bulkAction(
+            Reservation::whereIn('id', $data->ids)->get(),
+            $data->action
+        );
 
         return [];
     }

@@ -12,6 +12,8 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class ReservationCalendarData extends Data
 {
     public function __construct(
+        public int                   $id,
+
         public Carbon                $start_time,
 
         public Carbon                $end_time,
@@ -25,6 +27,9 @@ class ReservationCalendarData extends Data
         public float                 $price_with_vat,
 
         public bool                  $is_paid,
+
+        public ?Carbon               $canceled_at,
+
     )
     {
     }

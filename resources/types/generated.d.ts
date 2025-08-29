@@ -372,6 +372,7 @@ declare namespace App.Data.Admin.Reservations {
         time_blocks: Array<App.Data.Admin.Reservations.TimeBlockStoreData>;
     };
     export type ReservationCalendarData = {
+        id: number;
         start_time: string;
         end_time: string;
         court: App.Data.Admin.Courts.CourtSelectOptionData;
@@ -379,6 +380,7 @@ declare namespace App.Data.Admin.Reservations {
         owner: App.Data.Core.Owners.OwnerData;
         price_with_vat: number;
         is_paid: boolean;
+        canceled_at: string | null;
     };
     export type ReservationFilterData = {
         courts_ids?: Array<number>;
@@ -445,6 +447,7 @@ declare namespace App.Data.Admin.Users {
         is_company: boolean;
         company_name: string | null;
         agreed_newsletter: boolean;
+        plan: string | null;
         updated_at: string;
     };
     export type UserSelectOptionData = {
@@ -649,6 +652,11 @@ declare namespace App.Data.User.Invoices {
         price_with_vat: number;
     };
 }
+declare namespace App.Data.User.Newsletter {
+    export type NewsletterSubscribeData = {
+        email: string;
+    };
+}
 declare namespace App.Data.User.Payments {
     export type PaymentData = {
         status: App.Enums.PaymentStatus;
@@ -722,6 +730,9 @@ declare namespace App.Data.User.Reservations {
     };
 }
 declare namespace App.Data.User.Subscriptions {
+    export type SubscribeData = {
+        discount_code?: string | null;
+    };
     export type SubscriptionData = {
         plan_id: number;
         started_at: string;

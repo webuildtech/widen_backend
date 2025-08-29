@@ -73,6 +73,7 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::get('reservations/calendar', [ReservationController::class, 'calendar']);
+        Route::post('reservations/bulk-action', [ReservationController::class, 'bulkAction']);
         Route::apiResource('reservations', ReservationController::class)->except(['show', 'update']);
         Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel']);
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
