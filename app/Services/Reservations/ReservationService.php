@@ -78,6 +78,13 @@ class ReservationService
             throw ValidationException::withMessages(['error' => 'Veiksmas negalimas!']);
         }
 
+        if (!$reservation->is_paid) {
+            $reservation->update(['canceled_at' => now()]);
+            $reservation->slots()->delete();
+
+            return ['balance' => $user->balance];
+        }
+
         $now = now();
         $cancelBefore = $now->copy()->addHours($this->planCourtTypeRuleService->getCancelHoursBefore($user, $reservation->court->court_type_id));
 

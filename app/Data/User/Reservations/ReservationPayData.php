@@ -32,6 +32,7 @@ class ReservationPayData extends Data
                     withoutTrashed: true,
                     where: fn(Builder $builder) => $builder
                         ->where('is_paid', false)
+                        ->whereNull('canceled_at')
                         ->where('owner_type', 'user')
                         ->where('owner_id', $user->id),
                 )

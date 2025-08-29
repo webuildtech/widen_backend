@@ -45,6 +45,7 @@ class ReservationController extends Controller
                 $reservations->where('is_paid', false)
                     ->where('delete_after_failed_payment', false)
                     ->where('end_time', '>', now())
+                    ->whereNull('canceled_at')
                     ->orderBy('start_time');
                 break;
             case 'active':

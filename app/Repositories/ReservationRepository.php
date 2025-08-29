@@ -23,6 +23,7 @@ class ReservationRepository
     {
         return Reservation::whereDeleteAfterFailedPayment(false)
             ->whereIsPaid(false)
+            ->whereCanceledAt(null)
             ->whereOwnerType('user')
             ->where('start_time', $operator, $date)
             ->get();
