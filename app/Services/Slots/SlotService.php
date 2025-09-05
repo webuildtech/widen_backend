@@ -19,9 +19,11 @@ class SlotService
         );
 
         foreach ($period as $time) {
+            $end = $time->copy()->addMinutes($intervalMinutes)->format('H:i');
+
             $slots->push([
                 'start_time' => $time->format('H:i'),
-                'end_time' => $time->copy()->addMinutes($intervalMinutes)->format('H:i'),
+                'end_time' => $end === '00:00' ? '24:00' : $end,
             ]);
         }
 

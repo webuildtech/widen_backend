@@ -52,6 +52,8 @@ class ReservationController extends Controller
                 AllowedFilter::exact('court_id'),
                 AllowedFilter::exact('court.court_type_id'),
                 'is_paid',
+                AllowedFilter::scope('start_time_from'),
+                AllowedFilter::scope('end_time_to'),
                 AllowedFilter::scope('paid_at_between'),
                 AllowedFilter::scope('canceled_at_between'),
                 AllowedFilter::scope('updated_at_between'),

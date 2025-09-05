@@ -109,7 +109,7 @@ class ReservationService
 
     public function refundSlots(Reservation $reservation): void
     {
-        $reservation->slots->each(function (ReservationSlot $slot) use ($reservation) {
+        $reservation->slots->each(function (ReservationSlot $slot) {
             $refundSlot = ReservationSlot::whereCourtId($slot->court_id)
                 ->whereSlotStart($slot->slot_start)
                 ->whereSlotEnd($slot->slot_end)
@@ -118,6 +118,8 @@ class ReservationService
                 ->first();
 
             if ($refundSlot) {
+                $reservation = $refundSlot->reservation;
+
                 $refundSlot->update(['is_refunded' => true, 'try_sell' => false]);
 
                 $reservation->increment('refunded_amount', $refundSlot->price_with_vat);
