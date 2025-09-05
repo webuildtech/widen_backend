@@ -30,7 +30,8 @@ class LightAutomationService
 
             $inOnWindow = $this->isInAutoOnWindow($zone, $now);
             if (!$inOnWindow && $zone->active_scene !== 0) {
-                if ($zone->manual_override_until && $zone->manual_override_until->isPast() && $zone->manual_override_source === 'inferred') {
+
+                if ($zone->manual_override_until && $zone->manual_override_until->isPast() && ($zone->manual_override_source === 'inferred' || $zone->manual_override_source === 'admin')) {
                     $ok = $this->setScene($zone, 0, $dryRun);
 
                     $ok ? $turnedOff++ : $skipped++;
