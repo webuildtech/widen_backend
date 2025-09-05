@@ -18,9 +18,7 @@ class LightAutomationService
     {
         $turnedOn = $turnedOff = $skipped = 0;
 
-        $zones = LitecomZone::with('courts')
-            ->whereHas('courts')
-            ->get();
+        $zones = LitecomZone::with('courts')->get();
 
         foreach ($zones as $zone) {
             if ($zone->manual_override_until && $zone->manual_override_until->isFuture()) {
