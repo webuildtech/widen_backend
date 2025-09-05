@@ -21,6 +21,7 @@ use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Models\ReservationSlot;
 use App\Models\User;
+use App\Services\Litecom\LitecomManager;
 use Carbon\Carbon;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -31,7 +32,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->app->singleton(LitecomManager::class, function () {
+            return new LitecomManager(config('litecom'));
+        });
     }
 
     public function boot(): void

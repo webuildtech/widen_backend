@@ -60,6 +60,7 @@ declare namespace App.Data.Admin.Courts {
         court_type_id: number;
         logo: App.Data.Core.Media.MediaData | null;
         intervals_ids: Array<number>;
+        litecom_zones_ids: Array<number>;
     };
     export type CourtListData = {
         id: number;
@@ -83,6 +84,7 @@ declare namespace App.Data.Admin.Courts {
         active?: boolean;
         logoFile?: any;
         intervals_ids?: Array<number> | null;
+        litecom_zones_ids?: Array<number> | null;
     };
     export type CourtUpdateData = {
         name?: string;
@@ -93,6 +95,7 @@ declare namespace App.Data.Admin.Courts {
         logoFile?: any;
         deleteLogo?: boolean;
         intervals_ids?: Array<number> | null;
+        litecom_zones_ids?: Array<number> | null;
     };
 }
 declare namespace App.Data.Admin.Dashboard {
@@ -280,6 +283,41 @@ declare namespace App.Data.Admin.Invoices {
         updated_at: string;
     };
 }
+declare namespace App.Data.Admin.LitecomZones {
+    export type LitecomZoneData = {
+        id: number;
+        name: string;
+        auto_scene: string;
+        auto_turn_on_before: number;
+        auto_turn_off_after: number;
+    };
+    export type LitecomZoneListData = {
+        id: number;
+        name: string;
+        auto_scene: number;
+        auto_turn_on_before: number;
+        auto_turn_off_after: number;
+        active_scene: number;
+        manual_override_until: string | null;
+        manual_override_source: string | null;
+        force_auto_scene: boolean;
+        updated_at: string;
+    };
+    export type LitecomZoneOnData = {
+        scene: number;
+        manual_override_until: string | null;
+    };
+    export type LitecomZoneSelectOptionData = {
+        id: number;
+        name: string;
+    };
+    export type LitecomZoneUpdateData = {
+        name?: string;
+        auto_scene?: number;
+        auto_turn_on_before?: number;
+        auto_turn_off_after?: number;
+    };
+}
 declare namespace App.Data.Admin.Payments {
     export type PaymentListData = {
         id: number;
@@ -370,6 +408,10 @@ declare namespace App.Data.Admin.Reservations {
         date_to: string;
         force_create: boolean;
         time_blocks: Array<App.Data.Admin.Reservations.TimeBlockStoreData>;
+    };
+    export type ReservationBulkActionData = {
+        ids: Array<number>;
+        action: string;
     };
     export type ReservationCalendarData = {
         id: number;

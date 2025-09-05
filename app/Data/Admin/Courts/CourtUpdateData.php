@@ -39,10 +39,17 @@ class CourtUpdateData extends Data
 
         /** @var array<int> */
         public array|Optional|null   $intervals_ids,
+
+        /** @var array<int> */
+        public array|Optional|null   $litecom_zones_ids,
     )
     {
         if ($this->intervals_ids === null) {
             $this->intervals_ids = [];
+        }
+
+        if ($this->litecom_zones_ids === null) {
+            $this->litecom_zones_ids = [];
         }
     }
 
@@ -59,6 +66,13 @@ class CourtUpdateData extends Data
                     where: fn(Builder $builder) => $builder->where('date_to', '>=', now()),
                 )
             ],
+            'litecom_zones_ids.*' => [
+                'required',
+                new Exists(
+                    'litecom_zones',
+                    'id',
+                )
+            ]
         ];
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\FutureMemberController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\LitecomZoneController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PlanCourtTypeRuleController;
@@ -79,5 +80,15 @@ Route::prefix('admin')->group(function () {
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
 
         Route::get('future-members', [FutureMemberController::class, 'index']);
+
+        Route::controller(LitecomZoneController::class)->prefix('litecom-zones')->group(function () {
+            Route::get('', 'index');
+            Route::post('sync', 'sync');
+            Route::get('all', 'all');
+            Route::put('{litecomZone}/on', 'on');
+            Route::put('{litecomZone}/off', 'off');
+            Route::get('{litecomZone}', 'show');
+            Route::put('{litecomZone}', 'update');
+        });
     });
 });

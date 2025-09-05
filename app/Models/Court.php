@@ -43,6 +43,11 @@ class Court extends BaseModel implements HasMedia
         return $this->hasMany(ReservationSlot::class);
     }
 
+    public function litecomZones(): BelongsToMany
+    {
+        return $this->belongsToMany(LitecomZone::class);
+    }
+
     public function logo(): Attribute
     {
         return Attribute::get(fn() => $this->getFirstMedia('logo'));
@@ -51,6 +56,11 @@ class Court extends BaseModel implements HasMedia
     public function intervalsIds(): Attribute
     {
         return Attribute::get(fn() => $this->intervals->pluck('id')->toArray());
+    }
+
+    public function litecomZonesIds(): Attribute
+    {
+        return Attribute::get(fn() => $this->litecomZones->pluck('id')->toArray());
     }
 
     public function isAvailable(): Attribute

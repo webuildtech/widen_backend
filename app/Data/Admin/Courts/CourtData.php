@@ -25,7 +25,10 @@ class CourtData extends Data
         public ?MediaData $logo,
 
         /** @var array<int> */
-        public array      $intervals_ids
+        public array      $intervals_ids,
+
+        /** @var array<int> */
+        public array      $litecom_zones_ids
     )
     {
     }

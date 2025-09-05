@@ -107,6 +107,9 @@ namespace App\Models{
  * @property-read int|null $intervals_count
  * @property-read mixed $intervals_ids
  * @property-read mixed $is_available
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LitecomZone> $litecomZones
+ * @property-read int|null $litecom_zones_count
+ * @property-read mixed $litecom_zones_ids
  * @property-read mixed $logo
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
@@ -556,6 +559,50 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperInvoice {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $zone_id
+ * @property string $name
+ * @property string $connection
+ * @property int $auto_scene
+ * @property int $auto_turn_on_before
+ * @property int $auto_turn_off_after
+ * @property int $active_scene
+ * @property \Illuminate\Support\Carbon|null $manual_override_until
+ * @property string|null $manual_override_source
+ * @property bool $force_auto_scene
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Court> $courts
+ * @property-read int|null $courts_count
+ * @property-read mixed $courts_ids
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereActiveScene($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereAutoScene($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereAutoTurnOffAfter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereAutoTurnOnBefore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereConnection($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereForceAutoScene($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereManualOverrideSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereManualOverrideUntil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereZoneId($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperLitecomZone {}
 }
 
 namespace App\Models{
