@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->decimal('overdraft_limit')->default(100)->after('balance');
+            $table->decimal('overdraft_limit')->default(0)->after('balance');
         });
     }
 
