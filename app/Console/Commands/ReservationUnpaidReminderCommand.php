@@ -28,7 +28,7 @@ class ReservationUnpaidReminderCommand extends Command
         foreach ($daysBefore as $days) {
             $this->reservationRepository->getUnpaidForDate($date->clone()->addDays($days))
                 ->each(function (Reservation $reservation) use ($days) {
-                    if ($reservation->owner->balance - $reservation->price_with_vat < -100) {
+                    if ($reservation->owner->balance - $reservation->price_with_vat < -$reservation->owner->overdraft_limit) {
                         Mail::queue(new ReservationUnpaidReminderMail($reservation, $days));
                     }
                 });

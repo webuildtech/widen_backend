@@ -31,6 +31,7 @@ class UserController extends Controller
                 'last_name',
                 'email',
 //                'balance',
+                'overdraft_limit',
                 'discount_on_everything',
                 'birthday',
                 'phone',

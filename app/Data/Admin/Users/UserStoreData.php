@@ -31,6 +31,9 @@ class UserStoreData extends Data
 //        #[Min(-999999.99), Max(999999.99)]
 //        public float|Optional       $balance,
 
+        #[Min(0), Max(999999.99)]
+        public float|Optional       $overdraft_limit,
+
         #[Min(0), Max(100)]
         public float|Optional       $discount_on_everything,
 

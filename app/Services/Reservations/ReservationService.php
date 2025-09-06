@@ -150,8 +150,10 @@ class ReservationService
 
     public function delete(Reservation $reservation)
     {
-        if ($reservation->is_paid && $reservation->owner instanceof User) {
-            $reservation->owner->addBalance($reservation->price_with_vat);
+        if ($reservation->is_paid && $reservation->owner instanceof User && $reservation->refunded_amount !== $reservation->price_with_vat) {
+            $refundAmount = $reservation->price_with_vat - $reservation->refunded_amount;
+
+            $reservation->owner->addBalance($refundAmount);
         }
 
         $reservation->slots()->delete();

@@ -38,7 +38,7 @@ class ReservationDeleteCommand extends Command
                 );
 
                 if ($cancelBefore >= $reservation->start_time) {
-                    if ($reservation->owner->balance - $reservation->price_with_vat < -100) {
+                    if ($reservation->owner->balance - $reservation->price_with_vat < -$reservation->owner->overdraft_limit) {
                         $reservation->slots()->delete();
                         $reservation->delete();
                     } else {

@@ -299,8 +299,6 @@ declare namespace App.Data.Admin.LitecomZones {
         auto_turn_off_after: number;
         active_scene: number;
         manual_override_until: string | null;
-        manual_override_source: string | null;
-        force_auto_scene: boolean;
         updated_at: string;
     };
     export type LitecomZoneOnData = {
@@ -466,6 +464,7 @@ declare namespace App.Data.Admin.Users {
         first_name: string;
         last_name: string | null;
         email: string;
+        overdraft_limit: number;
         discount_on_everything: number;
         birthday: string | null;
         phone: string | null;
@@ -483,6 +482,7 @@ declare namespace App.Data.Admin.Users {
         last_name: string | null;
         email: string;
         balance: number;
+        overdraft_limit: number;
         discount_on_everything: number;
         birthday: string | null;
         phone: string | null;
@@ -500,6 +500,7 @@ declare namespace App.Data.Admin.Users {
         first_name: string;
         last_name?: string | null;
         email: string;
+        overdraft_limit?: number;
         discount_on_everything?: number;
         birthday?: string | null;
         phone?: string | null;
@@ -516,6 +517,7 @@ declare namespace App.Data.Admin.Users {
         first_name?: string;
         last_name?: string | null;
         email?: string;
+        overdraft_limit?: number;
         discount_on_everything?: number;
         birthday?: string | null;
         phone?: string | null;

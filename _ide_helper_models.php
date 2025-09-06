@@ -575,7 +575,6 @@ namespace App\Models{
  * @property int $active_scene
  * @property \Illuminate\Support\Carbon|null $manual_override_until
  * @property string|null $manual_override_source
- * @property bool $force_auto_scene
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Court> $courts
@@ -592,7 +591,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereAutoTurnOnBefore($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereConnection($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereForceAutoScene($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereManualOverrideSource($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LitecomZone whereManualOverrideUntil($value)
@@ -830,11 +828,13 @@ namespace App\Models{
  * @property-read int|null $slots_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation canceledAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation endTimeTo(string $end)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation paidAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation startTimeFrom(string $start)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCancellationReason($value)
@@ -957,6 +957,7 @@ namespace App\Models{
  * @property string|null $last_name
  * @property string $email
  * @property string $balance
+ * @property string $overdraft_limit
  * @property string $discount_on_everything
  * @property string|null $birthday
  * @property string|null $phone
@@ -1025,6 +1026,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsCompany($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereOverdraftLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)

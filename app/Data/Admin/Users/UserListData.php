@@ -22,6 +22,8 @@ class UserListData extends Data
 
         public float   $balance,
 
+        public float   $overdraft_limit,
+
         public float   $discount_on_everything,
 
         public ?Carbon $birthday,
@@ -49,6 +51,7 @@ class UserListData extends Data
             $user->last_name,
             $user->email,
             $user->balance,
+            $user->overdraft_limit,
             $user->discount_on_everything,
             $user->birthday ? Carbon::parse($user->birthday) : null,
             $user->phone,

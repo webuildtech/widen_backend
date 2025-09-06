@@ -60,7 +60,7 @@ $appUrl = env('APP_FRONTEND_URL');
                     </h1>
                     <p style="font-size: 16px; line-height: 24px; color: #475569; margin: 24px 0 0">
                       Norime priminti, jog turite neapmokėtą rezervaciją: <strong>{{ $reservation->start_time->format('Y-m-d H:i') }} - {{ $reservation->end_time->format('H:i') }}</strong>.<br><br>
-                      Jūsų balanso likučio nepakanka šiai sumai padengti, taip pat būtų viršytas leidžiamas balanso limitas (<strong>-100 eurų</strong>).<br><br>
+                      Jūsų balanso likučio nepakanka šiai sumai padengti, taip pat būtų viršytas leidžiamas balanso limitas (<strong>-{{ $reservation->owner->overdraft_limit }} €</strong>).<br><br>
                       Prašome kuo skubiau apmokėti, kitu atveju rezervacija bus atšaukta likus <strong>{{ $reservation->owner->cancel_before }}</strong> valandoms iki jos.
                     </p>
                     <div style="margin-top: 24px; margin-bottom: 0">
