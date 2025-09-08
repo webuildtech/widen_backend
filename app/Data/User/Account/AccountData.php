@@ -22,6 +22,8 @@ class AccountData extends Data
 
         public float   $balance,
 
+        public float   $overdraft_limit,
+
         public float   $discount_on_everything,
 
         public bool    $is_company,

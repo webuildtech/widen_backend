@@ -82,6 +82,27 @@ class PaymentService
         if ($owner instanceof User) {
             $paidAmountFromBalance = $allowMinus ? $priceWithVat : $owner->getDeductedAmount($priceWithVat);
             $owner->deductBalance($paidAmountFromBalance);
+
+            $paidAmount = $priceWithVat - $paidAmountFromBalance;
+
+            if ($paidAmount > 0) {
+                $additionalPaidFromBalance = 0;
+
+                if ($owner->balance - $paidAmount <= -$owner->overdraft_limit) {
+                    $availableAmount = $owner->balance + $owner->overdraft_limit;
+
+                    if ($availableAmount > 0) {
+                        $additionalPaidFromBalance = $availableAmount;
+                    }
+                } else {
+                    $additionalPaidFromBalance = $paidAmount;
+                }
+
+                if ($additionalPaidFromBalance > 0) {
+                    $paidAmountFromBalance += $additionalPaidFromBalance;
+                    $owner->deductBalance($additionalPaidFromBalance);
+                }
+            }
         }
 
         if ($discountCode) {
