@@ -35,7 +35,7 @@ class AuthController extends Controller
         return AuthData::from([
             "authUser" => $user,
             'accessToken' => $user->createToken(
-                'access_token', ['*'], Carbon::now()->addDays(request()->get('remember') ? 31 : 1)
+                'access_token', ['*'], Carbon::now()->addDays(request()->get('remember') ? 90 : 20)
             )->plainTextToken
         ]);
     }
@@ -46,7 +46,7 @@ class AuthController extends Controller
 
         return AuthData::from([
             "authUser" => $user,
-            'accessToken' => $user->createToken('access_token', ['*'], Carbon::now()->addDay())->plainTextToken
+            'accessToken' => $user->createToken('access_token', ['*'], Carbon::now()->addDays(20))->plainTextToken
         ]);
     }
 

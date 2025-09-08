@@ -6,7 +6,7 @@ trait HasBalance
 {
     public function getDeductedAmount(float $totalPrice): float
     {
-        return min($this->balance, $totalPrice);
+        return max(0, min($this->balance, $totalPrice));
     }
 
     public function addBalance(float $amount): void

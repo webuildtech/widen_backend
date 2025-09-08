@@ -26,7 +26,7 @@ class SocialAuthController extends Controller
 
             return AuthData::from([
                 "authUser" => $user,
-                'accessToken' => $user->createToken('access_token', ['*'], Carbon::now()->addDay())->plainTextToken
+                'accessToken' => $user->createToken('access_token', ['*'], Carbon::now()->addDays(90))->plainTextToken
             ]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Nepavyko prisijungti, bandykite dar kartą.'], 406);
