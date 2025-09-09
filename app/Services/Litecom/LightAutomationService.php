@@ -51,7 +51,7 @@ class LightAutomationService
                 if ($zone->active_scene === 0) {
                     $ok = $this->setScene($zone, $zone->auto_scene, $dryRun);
 
-                    $ok ? $turnedOff++ : $skipped++;
+                    $ok ? $turnedOn++ : $skipped++;
                 } else {
                     $skipped++;
                 }
@@ -117,7 +117,7 @@ class LightAutomationService
         $opensAt = $this->nextAutoOnOpensAt($zone, $now);
 
         if ($opensAt && $opensAt->gt($now)) {
-            $until = $opensAt->copy()->subMinutes(1);
+            $until = $opensAt->copy();
 
             $maxCap = $now->copy()->addHours(2);
 
