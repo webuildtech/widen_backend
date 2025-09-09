@@ -13,6 +13,7 @@ use App\Models\Guest;
 use App\Models\Interval;
 use App\Models\IntervalPrice;
 use App\Models\Invoice;
+use App\Models\LitecomZone;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\PlanCourtTypeRule;
@@ -60,7 +61,8 @@ class AppServiceProvider extends ServiceProvider
             'guest' => Guest::class,
             'downtime' => Downtime::class,
             'discountCode' => DiscountCode::class,
-            'invoice' => Invoice::class
+            'invoice' => Invoice::class,
+            'litecomZone' => LitecomZone::class
         ]);
 
         Carbon::macro('parseWithAppTimezone', fn($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));

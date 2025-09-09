@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasDateScopes;
+use App\Models\Concerns\LogsSystemActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class LitecomZone extends Model
 {
     use HasDateScopes;
+    use LogsSystemActivity;
 
     protected $guarded = [];
 
