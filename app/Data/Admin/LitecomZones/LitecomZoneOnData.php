@@ -20,5 +20,8 @@ class LitecomZoneOnData extends Data
         public ?Carbon $manual_override_until,
     )
     {
+        if (!$this->manual_override_until) {
+            $this->manual_override_until = Carbon::now()->addHours(2);
+        }
     }
 }

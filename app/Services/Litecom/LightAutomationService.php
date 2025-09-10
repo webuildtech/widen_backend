@@ -5,6 +5,7 @@ namespace App\Services\Litecom;
 use App\Models\LitecomZone;
 use App\Models\Reservation;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 class LightAutomationService
 {
@@ -18,6 +19,10 @@ class LightAutomationService
     {
         $turnedOn = $turnedOff = $skipped = 0;
 
+        $windowTolerance = 1;
+
+        $nowAligned = $now->copy()->second(0)->microsecond(0);
+
         $zones = LitecomZone::with('courts')->get();
 
         foreach ($zones as $zone) {
@@ -26,148 +31,104 @@ class LightAutomationService
                 continue;
             }
 
-            $inOnWindow = $this->isInAutoOnWindow($zone, $now);
-            if (!$inOnWindow && $zone->active_scene !== 0) {
+            $inOnWindow = $this->isInAutoOnWindow($zone, $nowAligned);
+            $hasActive = $this->hasActiveReservationNow($zone, $nowAligned);
 
-                if ($zone->manual_override_until && $zone->manual_override_until->isPast() && ($zone->manual_override_source === 'inferred' || $zone->manual_override_source === 'admin')) {
+            $clearedExpiredOverride = false;
+            if ($zone->manual_override_until && $zone->manual_override_until->isPast()) {
+                $zone->forceFill([
+                    'manual_override_until' => null,
+                    'manual_override_source' => null,
+                ])->saveQuietly();
+                $clearedExpiredOverride = true;
+
+                if (!$hasActive && !$inOnWindow && $zone->active_scene !== 0) {
+                    $inWait = $this->endedWithinWait($zone, $nowAligned, $zone->auto_turn_off_after);
+
+                    if (!$inWait) {
+                        $ok = $this->setScene($zone, 0, $dryRun);
+                        $ok ? $turnedOff++ : $skipped++;
+                        continue;
+                    }
+                }
+            }
+
+            if ($hasActive || $inOnWindow) {
+                if ($zone->active_scene !== $zone->auto_scene) {
+                    $ok = $this->setScene($zone, $zone->auto_scene, $dryRun);
+                    $ok ? $turnedOn++ : $skipped++;
+                } else {
+                    $skipped++;
+                }
+
+                continue;
+            }
+
+            $endFrom = $nowAligned->copy()->subMinutes($zone->auto_turn_off_after + $windowTolerance);
+            $endTo = $nowAligned->copy()->subMinutes($zone->auto_turn_off_after);
+
+            if ($this->endedWithinWindowExists($zone, $endFrom, $endTo)) {
+                if ($zone->active_scene === 0) {
+                    $skipped++;
+                } else {
                     $ok = $this->setScene($zone, 0, $dryRun);
-
                     $ok ? $turnedOff++ : $skipped++;
-                    continue;
                 }
+                continue;
+            }
 
-                if (!$zone->manual_override_until || $zone->manual_override_until->isPast()) {
-                    $zone->forceFill([
-                        'manual_override_until' => $this->inferManualOverrideUntil($zone, $now),
-                        'manual_override_source' => 'inferred',
-                    ])->saveQuietly();
-                }
+            if (!$clearedExpiredOverride && $zone->active_scene !== 0 && !$this->endedWithinWait($zone, $nowAligned, $zone->auto_turn_off_after)) {
+                $zone->forceFill([
+                    'manual_override_until' => $nowAligned->copy()->addHours(2),
+                    'manual_override_source' => 'device',
+                ])->saveQuietly();
 
                 $skipped++;
                 continue;
             }
 
-            if ($inOnWindow) {
-                if ($zone->active_scene === 0) {
-                    $ok = $this->setScene($zone, $zone->auto_scene, $dryRun);
-
-                    $ok ? $turnedOn++ : $skipped++;
-                } else {
-                    $skipped++;
-                }
-            }
-
-            $windowTolerance = 1;
-            $endFrom = $now->copy()->subMinutes($zone->auto_turn_off_after + $windowTolerance);
-            $endTo = $now->copy()->subMinutes($zone->auto_turn_off_after);
-
-            $offCandidates = $this->reservationsForZoneEndedWithin($zone, $endFrom, $endTo);
-
-            foreach ($offCandidates as $res) {
-                $end = $res->end_time;
-                $targetOffAt = $end->copy()->addMinutes($zone->auto_turn_off_after);
-
-                if ($this->shouldKeepOnUntilNext($zone, $end, $targetOffAt, $zone->auto_turn_on_before)) {
-                    $skipped++;
-                    continue;
-                }
-
-                if ($zone->manual_override_until && $zone->manual_override_until->isFuture()) {
-                    $skipped++;
-                    continue;
-                }
-
-                if ($zone->active_scene === 0) {
-                    $skipped++;
-                    continue;
-                }
-
-                $ok = $this->setScene($zone, 0, $dryRun);
-
-                $ok ? $turnedOff++ : $skipped++;
-            }
+            $skipped++;
         }
 
         return compact('turnedOn', 'turnedOff', 'skipped');
     }
 
+    protected function reservations(LitecomZone $zone): Builder
+    {
+        return Reservation::query()->whereNull('canceled_at')->whereIn('court_id', $zone->courts_ids);
+    }
+
     protected function isInAutoOnWindow(LitecomZone $zone, CarbonInterface $now): bool
     {
-        return Reservation::query()
-            ->whereNull('canceled_at')
-            ->whereIn('court_id', $zone->courts_ids)
+        return $this->reservations($zone)
             ->whereBetween('start_time', [$now, $now->copy()->addMinutes($zone->auto_turn_on_before)])
             ->exists();
     }
 
-    protected function nextAutoOnOpensAt(LitecomZone $zone, CarbonInterface $now): ?CarbonInterface
+    protected function hasActiveReservationNow(LitecomZone $zone, CarbonInterface $now): bool
     {
-        $next = Reservation::query()
-            ->whereNull('canceled_at')
-            ->where('start_time', '>', $now)
-            ->whereIn('court_id', $zone->courts_ids)
-            ->orderBy('start_time')
-            ->first();
-
-        return $next?->start_time->copy()->subMinutes($zone->auto_turn_on_before);
+        return $this->reservations($zone)
+            ->where('start_time', '<=', $now)
+            ->where('end_time', '>', $now)
+            ->exists();
     }
 
-    protected function inferManualOverrideUntil(LitecomZone $zone, CarbonInterface $now): CarbonInterface
+    protected function endedWithinWindowExists(LitecomZone $zone, CarbonInterface $from, CarbonInterface $to): bool
     {
-        $opensAt = $this->nextAutoOnOpensAt($zone, $now);
-
-        if ($opensAt && $opensAt->gt($now)) {
-            $until = $opensAt->copy();
-
-            $maxCap = $now->copy()->addHours(2);
-
-            return $until->min($maxCap);
-        }
-
-        return $now->copy()->addHours(2);
-    }
-
-    protected function shouldKeepOnUntilNext(
-        LitecomZone     $zone,
-        CarbonInterface $endedAt,
-        CarbonInterface $targetOffAt,
-        int             $onWindowMinutes
-    ): bool
-    {
-        $next = Reservation::query()
-            ->whereNull('canceled_at')
-            ->where('start_time', '>=', $endedAt)
-            ->whereIn('court_id', $zone->courts_ids)
-            ->orderBy('start_time')
-            ->first();
-
-        if (!$next) {
-            return false;
-        }
-
-        $nextStart = $next->start_time;
-        $nextOnOpensAt = $nextStart->copy()->subMinutes($onWindowMinutes);
-
-        if ($nextStart->lte($targetOffAt)) {
-            return true;
-        }
-        if ($nextOnOpensAt->lte($targetOffAt)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function reservationsForZoneEndedWithin(LitecomZone $zone, CarbonInterface $from, CarbonInterface $to)
-    {
-        return Reservation::query()
-            ->whereNull('canceled_at')
+        return $this->reservations($zone)
             ->whereBetween('end_time', [$from, $to])
-            ->whereIn('court_id', $zone->courts_ids)
-            ->orderBy('end_time')
-            ->get();
+            ->exists();
     }
 
+    protected function endedWithinWait(LitecomZone $zone, CarbonInterface $now, int $waitMinutes): bool
+    {
+        $from = $now->copy()->subMinutes($waitMinutes);
+
+        return $this->reservations($zone)
+            ->where('end_time', '>', $from)
+            ->where('end_time', '<=', $now)
+            ->exists();
+    }
 
     protected function setScene(LitecomZone $zone, int $scene, bool $dryRun): bool
     {

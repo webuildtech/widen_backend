@@ -49,7 +49,7 @@ class LitecomService
         $hasOverride = $date instanceof Carbon && $date->isFuture();
 
         if ($hasOverride) {
-            $attrs['manual_override_until']  = $date;
+            $attrs['manual_override_until']  = $date->setSeconds(0)->setMilliseconds(0);
             $attrs['manual_override_source'] = 'admin';
         } else {
             $attrs['manual_override_until']  = null;
