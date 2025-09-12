@@ -148,6 +148,24 @@ class ReservationService
         }
     }
 
+    public function cancelAllSame(Reservation $reservation): int
+    {
+        $reservations = Reservation::whereOwnerType('user')
+            ->whereOwnerId($reservation->owner_id)
+            ->where('court_id', $reservation->court_id)
+            ->whereDate('start_time', '>=', $reservation->start_time)
+            ->whereTime('start_time', '=', $reservation->start_time)
+            ->whereTime('end_time', '=', $reservation->end_time)
+            ->whereNull('canceled_at')
+            ->whereIsPaid(false)
+            ->whereRaw('DAYOFWEEK(start_time) = ?', [$reservation->start_time->dayOfWeek + 1])
+            ->get();
+
+        $reservations->each(fn(Reservation $res) => $this->cancel($res));
+
+        return $reservations->count();
+    }
+
     public function delete(Reservation $reservation)
     {
         if ($reservation->is_paid && $reservation->owner instanceof User && $reservation->refunded_amount !== $reservation->price_with_vat) {

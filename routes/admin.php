@@ -77,6 +77,7 @@ Route::prefix('admin')->group(function () {
         Route::post('reservations/bulk-action', [ReservationController::class, 'bulkAction']);
         Route::apiResource('reservations', ReservationController::class)->except(['show', 'update']);
         Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel']);
+        Route::post('reservations/{reservation}/cancel-all-same', [ReservationController::class, 'cancelAllSame']);
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
 
         Route::get('future-members', [FutureMemberController::class, 'index']);

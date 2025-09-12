@@ -111,6 +111,13 @@ class ReservationController extends Controller
         return [];
     }
 
+    public function cancelAllSame(Reservation $reservation): array
+    {
+        $quantity = $this->reservationService->cancelAllSame($reservation);
+
+        return ['quantity' => $quantity];
+    }
+
     public function destroy(Reservation $reservation): array
     {
         $this->reservationService->delete($reservation);
