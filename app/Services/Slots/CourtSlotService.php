@@ -63,8 +63,9 @@ class CourtSlotService
 
             foreach ($generatedSlots as $slot) {
                 $slotDateTime = $date->copy()->setTimeFromTimeString($slot['start_time']);
+                $slotEndDateTime = $date->copy()->setTimeFromTimeString($slot['end_time']);
 
-                if ($this->courtSlotAvailabilityChecker->isAvailable($slotDateTime, $reservedSlots, $downtimeSlots, $planSlots)) {
+                if ($this->courtSlotAvailabilityChecker->isAvailable($slotDateTime, $slotEndDateTime, $reservedSlots, $downtimeSlots, $planSlots)) {
                     $slots->push(
                         $this->createSlot($court, $intervalPrice, $slotDateTime, $slot, $specialPrice)
                     );

@@ -78,6 +78,7 @@ class ReservationController extends Controller
     public function calendar(ReservationFilterData $data)
     {
         $reservationTimes = Reservation::with(['court', 'owner'])
+            ->orderBy('court_id')
             ->whereCanceledAt(null)
             ->whereDate('start_time', '>=', $data->date_from)
             ->whereDate('end_time', '<=', $data->date_to);

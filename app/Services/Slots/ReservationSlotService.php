@@ -83,27 +83,28 @@ class ReservationSlotService
 
     public function merge(Collection $slots): Collection
     {
-        $groupedSlots = $slots
+        $grouped = $slots
             ->sortBy([['date', 'asc'], ['court_id', 'asc'], ['start_time', 'asc']])
-            ->groupBy(fn($slot) => $slot['date'] . '-' . $slot['court_id']);
+            ->groupBy(fn($s) => $s['date'] . '-' . $s['court_id']);
 
-        $mergedBlocks = collect();
+        return $grouped->flatMap(function (Collection $group) {
+            $merged = collect();
 
-        foreach ($groupedSlots as $group) {
             foreach ($group as $slot) {
-                $lastIndex = $mergedBlocks->keys()->last();
-                $last = $lastIndex !== null ? $mergedBlocks->get($lastIndex) : null;
+                $lastKey = $merged->keys()->last();
+                $last = $lastKey !== null ? $merged->get($lastKey) : null;
 
                 if ($last && $last['end_time'] === $slot['start_time']) {
                     $last['slots'][] = $slot;
-                    $mergedBlocks->put($lastIndex, [...$last, 'end_time' => $slot['end_time']]);
+
+                    $merged->put($lastKey, [...$last, 'end_time' => $slot['end_time']]);
                 } else {
-                    $mergedBlocks->push([...$slot, 'slots' => [$slot]]);
+                    $merged->push([...$slot, 'slots' => [$slot]]);
                 }
             }
-        }
 
-        return $mergedBlocks;
+            return $merged->values();
+        })->values();
     }
 
     private function generateSlotKey($slot): string
