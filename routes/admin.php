@@ -36,6 +36,7 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('admins', AdminController::class);
 
         Route::get('users/all', [UserController::class, 'all']);
+        Route::get('users/export', [UserController::class, 'export']);
         Route::apiResource('users', UserController::class);
 
         Route::get('plans/all', [PlanController::class, 'all']);
