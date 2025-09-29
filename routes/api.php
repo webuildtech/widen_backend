@@ -6,6 +6,7 @@ use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CourtController;
 use App\Http\Controllers\User\CourtTypeController;
 use App\Http\Controllers\User\DiscountCodeController;
+use App\Http\Controllers\User\Forms\BeginnerFormController;
 use App\Http\Controllers\User\FutureMemberController;
 use App\Http\Controllers\User\InvoiceController;
 use App\Http\Controllers\User\NewsletterController;
@@ -82,3 +83,7 @@ Route::middleware(['auth:user'])->group(function () {
 Route::post('future-members', [FutureMemberController::class, 'store']);
 
 Route::post('newsletter', NewsletterController::class);
+
+Route::prefix('forms')->group(function () {
+    Route::post('beginners', BeginnerFormController::class);
+});

@@ -7,6 +7,7 @@ use App\Models\Court;
 use App\Models\CourtType;
 use App\Models\DiscountCode;
 use App\Models\Downtime;
+use App\Models\Forms\BeginnerForm;
 use App\Models\FutureMember;
 use App\Models\Group;
 use App\Models\Guest;
@@ -62,7 +63,8 @@ class AppServiceProvider extends ServiceProvider
             'downtime' => Downtime::class,
             'discountCode' => DiscountCode::class,
             'invoice' => Invoice::class,
-            'litecomZone' => LitecomZone::class
+            'litecomZone' => LitecomZone::class,
+            'beginnerForm' => BeginnerForm::class,
         ]);
 
         Carbon::macro('parseWithAppTimezone', fn($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));

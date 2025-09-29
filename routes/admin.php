@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CourtTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\Admin\DowntimeController;
+use App\Http\Controllers\Admin\Forms\BeginnerFormController;
 use App\Http\Controllers\Admin\FutureMemberController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
@@ -82,6 +83,10 @@ Route::prefix('admin')->group(function () {
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
 
         Route::get('future-members', [FutureMemberController::class, 'index']);
+
+        Route::prefix('forms')->group(function () {
+            Route::get('beginners', [BeginnerFormController::class, 'index']);;
+        });
 
         Route::controller(LitecomZoneController::class)->prefix('litecom-zones')->group(function () {
             Route::get('', 'index');

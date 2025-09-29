@@ -179,6 +179,18 @@ declare namespace App.Data.Admin.Downtimes {
         updated_at: string;
     };
 }
+declare namespace App.Data.Admin.Forms {
+    export type BeginnerFormListData = {
+        email: string;
+        first_name: string;
+        last_name: string;
+        phone: string;
+        age: number;
+        groups: string;
+        marketing_consent: boolean;
+        updated_at: string;
+    };
+}
 declare namespace App.Data.Admin.FutureMembers {
     export type FutureMemberListData = {
         email: string;
@@ -578,6 +590,7 @@ declare namespace App.Data.User.Account {
         birthday: string | null;
         phone: string | null;
         balance: number;
+        overdraft_limit: number;
         discount_on_everything: number;
         is_company: boolean;
         company_name: string | null;
@@ -665,6 +678,18 @@ declare namespace App.Data.User.DiscountCodes {
         code: string;
         type: App.Enums.DiscountCodeType;
         value: number;
+    };
+}
+declare namespace App.Data.User.Forms {
+    export type BeginnerFormStoreData = {
+        email: string;
+        first_name: string;
+        last_name: string;
+        phone: string;
+        age: number;
+        groups: string;
+        marketing_consent: boolean;
+        service_consent: boolean;
     };
 }
 declare namespace App.Data.User.FutureMembers {
