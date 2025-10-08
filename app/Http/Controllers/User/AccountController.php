@@ -6,11 +6,13 @@ use App\Data\User\Account\AccountBalanceTopUpData;
 use App\Data\User\Account\AccountData;
 use App\Data\User\Account\AccountPasswordChangeData;
 use App\Data\User\Account\AccountUpdateData;
+use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use RuntimeException;
 
 class AccountController extends Controller
 {
@@ -47,8 +49,16 @@ class AccountController extends Controller
 
         $payment = $this->paymentService->createFromAmount($data->amount, $user);
 
-        $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
+        try {
+            $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
 
-        return response()->json(['url' => $url], 201);
+            return response()->json(['url' => $url], 201);
+        } catch (RuntimeException $e) {
+            $this->paymentService->cancel($payment->refresh(), PaymentStatus::CANCELLED);
+
+            return response()->json([
+                'message' => 'Atsiprašome, šiuo metu negalime susisiekti su mokėjimo paslaugų teikėju. Prašome pabandyti vėliau.'
+            ], 500);
+        }
     }
 }

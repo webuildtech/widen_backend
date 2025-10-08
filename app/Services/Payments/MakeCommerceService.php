@@ -3,7 +3,10 @@
 namespace App\Services\Payments;
 
 use App\Models\Payment;
+use Exception;
+use Log;
 use Maksekeskus\Maksekeskus;
+use RuntimeException;
 
 class MakeCommerceService
 {
@@ -42,19 +45,25 @@ class MakeCommerceService
             ];
         }
 
-        $transaction = $this->client->createTransaction([
-            'transaction' => $transaction,
-            'customer' => [
-                'email' => $payment->owner->email,
-                'ip' => $ip,
-                'country' => 'LT',
-                'locale' => 'LT'
-            ]
-        ]);
+        try {
+            $transaction = $this->client->createTransaction([
+                'transaction' => $transaction,
+                'customer' => [
+                    'email' => $payment->owner->email,
+                    'ip' => $ip,
+                    'country' => 'LT',
+                    'locale' => 'LT'
+                ]
+            ]);
 
-        $payment->update(['transaction_id' => $transaction->id]);
+            $payment->update(['transaction_id' => $transaction->id]);
 
-        return $transaction->payment_methods->other[0]->url;
+            return $transaction->payment_methods->other[0]->url;
+        } catch (Exception $e) {
+            Log::error('MakeCommerce error: ' . $e->getMessage());
+
+            throw new RuntimeException('MakeCommerce accessibility issues');
+        }
     }
 
     public function verify(array $values): bool

@@ -2,6 +2,7 @@
 
 namespace App\Responders\Reservations;
 
+use App\Enums\PaymentStatus;
 use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\ReservationGroup;
@@ -10,6 +11,7 @@ use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
 use App\Support\ServiceResponse;
 use Illuminate\Http\Request;
+use RuntimeException;
 
 class ReservationPaymentResponder
 {
@@ -24,9 +26,18 @@ class ReservationPaymentResponder
         $payment = $this->paymentService->createFromReservationGroup($group, $owner, false, $discountCode);
 
         if ($payment->paid_amount > 0) {
-            $url = $this->makeCommerceService->createTransaction($payment, $this->request->ip());
+            try {
+                $url = $this->makeCommerceService->createTransaction($payment, $this->request->ip());
 
-            return ServiceResponse::success(['url' => $url], 201);
+                return ServiceResponse::success(['url' => $url], 201);
+            } catch (RuntimeException $e) {
+                $this->paymentService->cancel($payment->refresh(), PaymentStatus::CANCELLED);
+
+                return ServiceResponse::error(
+                    'Atsiprašome, šiuo metu negalime susisiekti su mokėjimo paslaugų teikėju. Prašome pabandyti vėliau.',
+                    500
+                );
+            }
         }
 
         $this->paymentService->approve($payment);

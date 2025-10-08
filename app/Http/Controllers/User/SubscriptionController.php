@@ -5,12 +5,14 @@ namespace App\Http\Controllers\User;
 use App\Data\User\Plans\PlanData;
 use App\Data\User\Subscriptions\SubscribeData;
 use App\Data\User\Subscriptions\SubscriptionData;
+use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Services\DiscountCodeService;
 use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
 use Illuminate\Http\JsonResponse;
+use RuntimeException;
 
 class SubscriptionController extends Controller
 {
@@ -70,9 +72,17 @@ class SubscriptionController extends Controller
         );
 
         if ($payment->paid_amount > 0) {
-            $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
+            try {
+                $url = $this->makeCommerceService->createTransaction($payment, request()->ip());
 
-            return response()->json(['url' => $url], 201);
+                return response()->json(['url' => $url], 201);
+            } catch (RuntimeException $e) {
+                $this->paymentService->cancel($payment->refresh(), PaymentStatus::CANCELLED);
+
+                return response()->json([
+                    'message' => 'Atsiprašome, šiuo metu negalime susisiekti su mokėjimo paslaugų teikėju. Prašome pabandyti vėliau.'
+                ], 500);
+            }
         }
 
         $payment = $this->paymentService->approve($payment);
