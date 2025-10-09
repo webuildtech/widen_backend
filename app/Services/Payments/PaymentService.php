@@ -45,6 +45,8 @@ class PaymentService
 
             $price -= $discount;
             $totalDiscount += $discount;
+
+            $discountCode->increment('used');
         }
 
         $priceDetails = applyDiscountAndCalculatePriceDetails($price);
@@ -53,6 +55,7 @@ class PaymentService
         $user->deductBalance($paidAmountFromBalance);
 
         $payment = new Payment([
+            'discount_code_id' => $discountCode?->id,
             'renew' => $renew,
             'price' => $priceDetails->price,
             'vat' => $priceDetails->vat,
