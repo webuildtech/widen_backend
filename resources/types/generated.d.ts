@@ -50,6 +50,38 @@ declare namespace App.Data.Admin.Auth {
         remember?: boolean;
     };
 }
+declare namespace App.Data.Admin.Availability {
+    export type AvailabilityMainStatsData = {
+        yesterday: App.Data.Admin.Availability.AvailabilityStatsWithCourtTypesData;
+        today: App.Data.Admin.Availability.AvailabilityStatsWithCourtTypesData;
+        tomorrow: App.Data.Admin.Availability.AvailabilityStatsWithCourtTypesData;
+        months: App.Data.Admin.Availability.AvailabilityMonthsStatsData;
+    };
+    export type AvailabilityMonthsStatsData = {
+        labels: Array<string>;
+        data: Array<App.Data.Admin.Availability.AvailabilityStatsWithCourtTypesData>;
+    };
+    export type AvailabilityStatsData = {
+        total: number;
+        reserved: number;
+        reserved_pct: number;
+        blocked: number;
+        blocked_pct: number;
+        free: number;
+        free_pct: number;
+        occupied: number;
+        occupied_pct: number;
+    };
+    export type AvailabilityStatsWithCourtTypesData = {
+        overall: App.Data.Admin.Availability.AvailabilityStatsData;
+        by_court_type: Array<App.Data.Admin.Availability.AvailabilityStatsData> | null;
+    };
+    export type StatsFilterData = {
+        court_type_id?: number;
+        date_from: string;
+        date_to?: string;
+    };
+}
 declare namespace App.Data.Admin.Courts {
     export type CourtData = {
         id: number;

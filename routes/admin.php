@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\AvailabilityController;
 use App\Http\Controllers\Admin\CourtController;
 use App\Http\Controllers\Admin\CourtTypeController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -96,6 +97,11 @@ Route::prefix('admin')->group(function () {
             Route::put('{litecomZone}/off', 'off');
             Route::get('{litecomZone}', 'show');
             Route::put('{litecomZone}', 'update');
+        });
+
+        Route::prefix('availability')->group(function () {
+            Route::get('stats', [AvailabilityController::class, 'stats']);
+            Route::get('stats-by-interval', [AvailabilityController::class, 'statsByInterval']);
         });
     });
 });

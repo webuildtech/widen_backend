@@ -8,6 +8,7 @@ use App\Data\Admin\Courts\CourtSelectOptionData;
 use App\Data\Admin\Courts\CourtStoreData;
 use App\Data\Admin\Courts\CourtUpdateData;
 use App\Http\Controllers\Controller;
+use App\Models\AvailabilitySlot;
 use App\Models\Court;
 use App\Services\CourtService;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -70,6 +71,11 @@ class CourtController extends Controller
         $court->intervals()->detach();
 
         $court->downtimes()->delete();
+
+        AvailabilitySlot::query()
+            ->where('court_id', $court->id)
+            ->where('date', '>=', now()->toDateString())
+            ->delete();
 
         $court->delete();
 
