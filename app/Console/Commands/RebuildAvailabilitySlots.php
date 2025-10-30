@@ -158,7 +158,7 @@ class RebuildAvailabilitySlots extends Command
 
         $reservationsByDate = $court->reservationSlots()
             ->active()
-            ->whereBetween('slot_start', [$timeWindowStart, $yesterdayEnd])
+            ->whereBetween('slot_start', [Carbon::parse($timeWindowStart)->startOfDay(), $yesterdayEnd])
             ->get(['slot_start', 'slot_end'])
             ->groupBy(fn($r) => $r->slot_start->toDateString())
             ->map(fn(Collection $group) => $group->mapWithKeys(
