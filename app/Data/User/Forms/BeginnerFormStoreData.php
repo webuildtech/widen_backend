@@ -44,16 +44,10 @@ class BeginnerFormStoreData extends Data
     {
         return [
             'groups' => Rule::in([
-                'Darbo dienomis: 07:00 - 08:00 (30 EUR)',
-                '(TIK MOTERIMS) Darbo dienomis: 07:00 - 08:00 (30 EUR)',
-                'Darbo dienomis: 10:00 - 11:00 (30 EUR)',
-                '(TIK MOTERIMS) Darbo dienomis: 10:00 - 11:00 (30 EUR)',
-                'Darbo dienomis: 12:00 - 13:00 (30 EUR)',
-                '(TIK MOTERIMS) Darbo dienomis: 12:00 - 13:00 (30 EUR)',
-                'Savaitgaliais: 09:00 - 10:00 (30 EUR)',
-                '(TIK MOTERIMS) Savaitgaliais: 09:00 - 10:00 (30 EUR)',
-                'Savaitgaliais: 10:00 - 11:00 (30 EUR)',
-                '(TIK MOTERIMS) Savaitgaliais: 10:00 - 11:00 (30 EUR)'
+                'Savaitgaliais: 11:00 - 12:00 (30 EUR)',
+                '(TIK MOTERIMS) Savaitgaliais: 11:00 - 12:00 (30 EUR)',
+                'Savaitgaliais: 12:00 - 13:00 (30 EUR)',
+                '(TIK MOTERIMS) Savaitgaliais: 12:00 - 13:00 (30 EUR)'
             ]),
         ];
     }

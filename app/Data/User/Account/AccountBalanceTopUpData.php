@@ -11,7 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class AccountBalanceTopUpData extends Data
 {
     public function __construct(
-        #[Min(1), Max(1000)]
+        #[Min(1), Max(10000)]
         public float $amount,
     )
     {
