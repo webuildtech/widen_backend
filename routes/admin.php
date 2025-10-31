@@ -74,6 +74,7 @@ Route::prefix('admin')->group(function () {
 
         Route::controller(InvoiceController::class)->prefix('invoices')->group(function () {
             Route::get('', 'index');
+            Route::get('export', 'export');
             Route::get('{invoice}/download', 'download');
         });
 

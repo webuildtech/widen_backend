@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Data\Admin\Invoices\InvoiceExportData;
 use App\Data\Admin\Invoices\InvoiceListData;
+use App\Exports\InvoicesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -49,5 +52,12 @@ class InvoiceController extends Controller
         }
 
         return response()->download(storage_path('app' . $invoice->path));
+    }
+
+    public function export(InvoiceExportData $dto)
+    {
+        $filename = sprintf('saskaitos_%s_%s.xlsx', $dto->date_from->format('Ymd'), $dto->date_to->format('Ymd'));
+
+        return Excel::download(new InvoicesExport($dto->date_from, $dto->date_to), $filename);
     }
 }
