@@ -20,7 +20,8 @@ use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PlanCourtTypeRuleController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SubscriptionController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\Users\UserBalanceEntryController;
+use App\Http\Controllers\Admin\Users\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -37,9 +38,15 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('admins', AdminController::class);
 
-        Route::get('users/all', [UserController::class, 'all']);
-        Route::get('users/export', [UserController::class, 'export']);
-        Route::apiResource('users', UserController::class);
+        Route::prefix('users')->group(function () {
+            Route::get('all', [UserController::class, 'all']);
+            Route::get('export', [UserController::class, 'export']);
+
+            Route::apiResource('', UserController::class, ['parameters' => ['' => 'user']]);
+
+            Route::get('{user}/balance-entries', [UserBalanceEntryController::class, 'index']);
+            Route::post('{user}/balance-entries', [UserBalanceEntryController::class, 'store']);
+        });
 
         Route::get('plans/all', [PlanController::class, 'all']);
         Route::apiResource('plans', PlanController::class);

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Users;
 
+use App\Data\Admin\Users\UserData;
 use App\Data\Admin\Users\UserListData;
 use App\Data\Admin\Users\UserSelectOptionData;
 use App\Data\Admin\Users\UserStoreData;
 use App\Data\Admin\Users\UserUpdateData;
-use App\Data\Admin\Users\UserData;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\UserService;
+use App\Services\Users\UserService;
 use LucasDotVin\Soulbscription\Models\Subscription;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -32,7 +32,7 @@ class UserController extends Controller
                 'first_name',
                 'last_name',
                 'email',
-//                'balance',
+                'balance',
                 'overdraft_limit',
                 'discount_on_everything',
                 'birthday',

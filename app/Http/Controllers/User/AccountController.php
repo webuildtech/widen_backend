@@ -10,7 +10,7 @@ use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
-use App\Services\UserService;
+use App\Services\Users\UserService;
 use Illuminate\Http\JsonResponse;
 use RuntimeException;
 

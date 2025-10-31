@@ -503,6 +503,17 @@ declare namespace App.Data.Admin.Subscriptions {
     };
 }
 declare namespace App.Data.Admin.Users {
+    export type UserBalanceEntryListData = {
+        amount: number;
+        admin: string;
+        before_balance: number;
+        after_balance: number;
+        created_at: string;
+    };
+    export type UserBalanceEntryStoreData = {
+        amount: number;
+        reason: string | null;
+    };
     export type UserData = {
         id: number;
         first_name: string;

@@ -9,6 +9,7 @@ use App\Models\Concerns\LogsSystemActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,5 +75,10 @@ class User extends Authenticatable
     public function invoices(): MorphMany
     {
         return $this->morphMany(Invoice::class, 'owner');
+    }
+
+    public function balanceEntries(): HasMany
+    {
+        return $this->hasMany(UserBalanceEntry::class);
     }
 }

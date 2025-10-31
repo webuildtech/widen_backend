@@ -9,7 +9,7 @@ use App\Data\User\Auth\PasswordResetData;
 use App\Data\User\Auth\RegisterData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\UserService;
+use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Users;
 
 use App\Jobs\SubscribeUserToNewsletter;
 use App\Models\User;

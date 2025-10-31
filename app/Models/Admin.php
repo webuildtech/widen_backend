@@ -38,4 +38,9 @@ class Admin extends Authenticatable
     {
         return Attribute::get(fn() => $this->getRoleNames()->first());
     }
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::get(fn() => trim("{$this->first_name} {$this->last_name}"));
+    }
 }

@@ -6,7 +6,7 @@ use App\Data\User\Auth\AuthData;
 use App\Data\User\Auth\SocialData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\SocialService;
+use App\Services\Users\SocialService;
 use Carbon\Carbon;
 use Laravel\Socialite\Facades\Socialite;
 
