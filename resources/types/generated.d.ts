@@ -315,6 +315,10 @@ declare namespace App.Data.Admin.Intervals {
     };
 }
 declare namespace App.Data.Admin.Invoices {
+    export type InvoiceExportData = {
+        date_from: string;
+        date_to: string;
+    };
     export type InvoiceListData = {
         id: number;
         number: number;

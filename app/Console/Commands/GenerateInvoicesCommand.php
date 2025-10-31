@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\InvoiceGenerateMail;
 use App\Models\Guest;
 use App\Models\User;
 use App\Services\Payments\InvoiceService;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 
 class GenerateInvoicesCommand extends Command
 {
@@ -49,7 +51,9 @@ class GenerateInvoicesCommand extends Command
         $priceWithVat = $reservation->sum('price_with_vat') - $reservation->sum('refunded_amount') + $payments->sum('price_with_vat');
 
         if ($priceWithVat > 0) {
-            $invoiceService->create($entity, $invoiceDate, $priceWithVat);
+            $invoice = $invoiceService->create($entity, $invoiceDate, $priceWithVat);
+
+            Mail::queue(new InvoiceGenerateMail($invoice));
         }
     }
 }

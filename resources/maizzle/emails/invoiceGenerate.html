@@ -1,0 +1,30 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-blumine-900 font-semibold">
+      Sveiki, @{{ $invoice->owner->first_name }},
+    </h1>
+
+    <p class="m-0 text-base/6 text-blumine-600">
+      Pateikiame jums informacinę sąskaitą faktūrą už @{{$dateName}}.
+    </p>
+
+    <ul class="list-disc">
+      <li>
+        <strong>Sąskaitos numeris:</strong> SS @{{ $invoice->number }}
+      </li>
+      <li>
+        <strong>Laikotarpis:</strong> @{{\Carbon\Carbon::parse($invoice->date)->startOfMonth()->format('Y-m-d')}} – @{{ $invoice->date }}
+      </li>
+      <li>
+        <strong>Bendra suma:</strong> @{{ $invoice->price_with_vat }} €
+      </li>
+      <li>
+        <strong>Išrašymo data:</strong> @{{ $invoice->date }}
+      </li>
+    </ul>
+
+    <x-button href="@{{ $appUrl }}/dashboard/invoices" class="bg-blumine-700 hover:bg-blumine-800">
+      Prietaisų skydelis
+    </x-button>
+  </div>
+</x-main>
