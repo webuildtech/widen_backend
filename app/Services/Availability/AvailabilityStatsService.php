@@ -12,7 +12,9 @@ class AvailabilityStatsService
     public function getStatsByIntervalCourtType(
         CarbonImmutable|Carbon $startDate,
         CarbonImmutable|Carbon $endDate = null,
-        int                    $courtTypeId = null
+        int                    $courtTypeId = null,
+        string                 $timeFrom = null,
+        string                 $timeTo = null
     ): array
     {
         $start = $startDate->toDateString();
@@ -22,11 +24,17 @@ class AvailabilityStatsService
             [$start, $end] = [$end, $start];
         }
 
+        if ($timeFrom && $timeTo && $timeTo < $timeFrom) {
+            [$timeFrom, $timeTo] = [$timeTo, $timeFrom];
+        }
+
         $query = AvailabilitySlot::query()
             ->when($end,
                 fn($q) => $q->whereBetween('date', [$start, $end]),
                 fn($q) => $q->whereDate('date', $start)
             )
+            ->when($timeFrom, fn($q) => $q->where('start_time', '>=', $timeFrom))
+            ->when($timeTo, fn($q) => $q->where('end_time', '<=', $timeTo))
             ->select([
                 'court_type_id',
                 DB::raw('COUNT(*) AS total'),

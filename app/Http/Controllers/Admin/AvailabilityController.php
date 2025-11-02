@@ -49,7 +49,9 @@ class AvailabilityController extends Controller
         $stats = $this->availabilityStatsService->getStatsByIntervalCourtType(
             $data->date_from,
             $data->date_to instanceof Optional ? null : $data->date_to,
-            $data->court_type_id instanceof Optional ? null : $data->court_type_id
+            $data->court_type_id instanceof Optional ? null : $data->court_type_id,
+            $data->time_from instanceof Optional ? null : $data->time_from,
+            $data->time_to instanceof Optional ? null : $data->time_to
         );
 
         return AvailabilityStatsWithCourtTypesData::from($stats);

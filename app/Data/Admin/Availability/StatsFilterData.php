@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
 use Spatie\LaravelData\Attributes\Validation\Date;
 use Spatie\LaravelData\Attributes\Validation\Exists;
+use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\LaravelData\Support\Validation\References\FieldReference;
@@ -23,6 +24,12 @@ class StatsFilterData extends Data
 
         #[Date, AfterOrEqual(new FieldReference('date_from'))]
         public Carbon|Optional $date_to,
+
+        #[Regex('/^((?:[01]\d|2[0-3]):(?:00|30)|24:00)$/')]
+        public string|Optional $time_from,
+
+        #[Regex('/^((?:[01]\d|2[0-3]):(?:00|30)|24:00)$/')]
+        public string|Optional $time_to,
     )
     {
     }
