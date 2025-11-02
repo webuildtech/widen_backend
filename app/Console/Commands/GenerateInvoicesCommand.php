@@ -7,6 +7,7 @@ use App\Models\Guest;
 use App\Models\User;
 use App\Services\Payments\InvoiceService;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +20,7 @@ class GenerateInvoicesCommand extends Command
     public function handle(InvoiceService $invoiceService): void
     {
         $interval = $this->getCurrentMonthInterval();
-        $invoiceDate = now()->subMonth()->endOfMonth();
+        $invoiceDate = now()->subMonthNoOverflow()->endOfMonth();
 
         User::where($this->filterEntitiesWithRelevantData($interval))
             ->get()
@@ -32,7 +33,7 @@ class GenerateInvoicesCommand extends Command
 
     private function getCurrentMonthInterval(): array
     {
-        return [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()];
+        return [now()->subMonthNoOverflow()->startOfMonth(), now()->subMonthNoOverflow()->endOfMonth()];
     }
 
     private function filterEntitiesWithRelevantData(array $interval): Closure
