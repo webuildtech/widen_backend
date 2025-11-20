@@ -16,7 +16,7 @@ class IntervalPriceService
 
                 if ($user->subscription) {
                     $builder->orWhereHas('plan', fn(Builder $query) =>
-                        $query->where('plans.id', $user->subscription->plan_id)
+                        $query->where('plans.id', $user->subscription->plan->plan_id)
                     );
                 }
             })

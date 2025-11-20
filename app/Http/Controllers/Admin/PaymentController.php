@@ -17,6 +17,9 @@ class PaymentController extends Controller
     {
         $payments = QueryBuilder::for(Payment::class)
             ->where('status', PaymentStatus::PAID->value)
+            ->where(function ($query) {
+                $query->where('price', '>', 0)->orWhere('discount', '>', 0);
+            })
             ->with('owner')
             ->defaultSort('-paid_at')
             ->allowedSorts([

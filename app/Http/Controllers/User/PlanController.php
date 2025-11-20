@@ -12,8 +12,8 @@ class PlanController extends Controller
     {
         $plans = Plan::whereIsDefault(false)
             ->whereIsActive(true)
-            ->with('courtTypeRules')
-            ->orderBy('price')
+            ->with(['courtTypeRules', 'prices', 'features', 'features.subFeatures'])
+            ->whereHas('prices')
             ->get();
 
         return PlanData::collect($plans);

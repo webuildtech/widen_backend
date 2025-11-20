@@ -14,7 +14,8 @@ class SubscriptionController extends Controller
     {
         $subscriptions = QueryBuilder::for(Subscription::class)
             ->withoutGlobalScopes()
-            ->whereNull('deleted_at')
+            ->with('plan.plan')
+            ->whereNull(['deleted_at', 'suppressed_at'])
             ->defaultSort('expired_at')
             ->allowedSorts([
                 'subscriber_id',
@@ -23,7 +24,7 @@ class SubscriptionController extends Controller
                 'expired_at',
             ])
             ->allowedFilters([
-                AllowedFilter::exact('plan_id'),
+                AllowedFilter::exact('plan_id', 'plan.plan_id'),
             ])
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());

@@ -28,6 +28,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read mixed $full_name
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
@@ -65,6 +66,37 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperAdmin {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $court_id
+ * @property int $court_type_id
+ * @property string $date
+ * @property string $day
+ * @property string $start_time
+ * @property string $end_time
+ * @property int $is_reserved
+ * @property int $is_blocked
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereCourtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereCourtTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereIsBlocked($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereIsReserved($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereStartTime($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperAvailabilitySlot {}
 }
 
 namespace App\Models{
@@ -279,7 +311,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Plan> $plans
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanPrice> $plans
  * @property-read int|null $plans_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $tickets
  * @property-read int|null $tickets_count
@@ -303,6 +335,50 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperFeature {}
+}
+
+namespace App\Models\Forms{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property int|null $age
+ * @property string|null $phone
+ * @property string|null $email
+ * @property array<array-key, mixed>|null $groups
+ * @property int $marketing_consent
+ * @property int $service_consent
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereAge($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereGroups($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereMarketingConsent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereServiceConsent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BeginnerForm withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperBeginnerForm {}
 }
 
 namespace App\Models{
@@ -577,6 +653,8 @@ namespace App\Models{
  * @property string|null $manual_override_source
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Court> $courts
  * @property-read int|null $courts_count
  * @property-read mixed $courts_ids
@@ -671,42 +749,38 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $is_default
- * @property int $grace_days
  * @property string $name
  * @property string $type
- * @property int|null $periodicity
- * @property string|null $periodicity_type
- * @property string $price
  * @property int $is_active
+ * @property int $is_popular
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanCourtTypeRule> $courtTypeRules
  * @property-read int|null $court_type_rules_count
- * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanFeature> $features
  * @property-read int|null $features_count
- * @property-read mixed $has_grace_days
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
  * @property-read \App\Models\Payment|null $payment
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Subscription> $subscriptions
- * @property-read int|null $subscriptions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanPrice> $prices
+ * @property-read int|null $prices_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan global(string $text)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereGraceDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsDefault($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsPopular($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePeriodicity($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePeriodicityType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan withTrashed()
@@ -792,6 +866,78 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperPlanCourtTypeRuleSlot {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $plan_id
+ * @property string $label
+ * @property int|null $parent_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PlanFeature> $subFeatures
+ * @property-read int|null $sub_features_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanFeature whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPlanFeature {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $plan_id
+ * @property int $grace_days
+ * @property int|null $periodicity
+ * @property string|null $periodicity_type
+ * @property string|null $previous_price
+ * @property string $price
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \LucasDotVin\Soulbscription\Models\FeaturePlan|null $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
+ * @property-read int|null $features_count
+ * @property-read mixed $has_grace_days
+ * @property-read \App\Models\Plan $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Subscription> $subscriptions
+ * @property-read int|null $subscriptions_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice whereGraceDays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice wherePeriodicity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice wherePeriodicityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice wherePreviousPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPlanPrice {}
 }
 
 namespace App\Models{
@@ -977,6 +1123,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserBalanceEntry> $balanceEntries
+ * @property-read int|null $balance_entries_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureConsumption> $featureConsumptions
  * @property-read int|null $feature_consumptions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $featureTickets
@@ -1037,5 +1185,47 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperUser {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int|null $admin_id
+ * @property numeric $amount
+ * @property numeric $before_balance
+ * @property numeric $after_balance
+ * @property string $source
+ * @property string|null $reason
+ * @property array<array-key, mixed>|null $meta
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Admin|null $admin
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereAfterBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereBeforeBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereMeta($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserBalanceEntry withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperUserBalanceEntry {}
 }
 

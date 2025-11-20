@@ -8,6 +8,7 @@ use App\Data\User\Subscriptions\SubscriptionData;
 use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use App\Models\PlanPrice;
 use App\Services\DiscountCodeService;
 use App\Services\Payments\MakeCommerceService;
 use App\Services\Payments\PaymentService;
@@ -32,7 +33,7 @@ class SubscriptionController extends Controller
 
         if ($subscription) {
             return SubscriptionData::from([
-                'plan_id' => $subscription->plan_id,
+                'plan_price_id' => $subscription->plan_id,
                 'started_at' => $subscription->started_at,
                 'expired_at' => $subscription->expired_at,
                 'cancelled_at' => $subscription->cancelled_at,
@@ -42,9 +43,9 @@ class SubscriptionController extends Controller
         return response()->json([], 404);
     }
 
-    public function subscribe(SubscribeData $data, Plan $plan): JsonResponse
+    public function subscribe(SubscribeData $data, PlanPrice $planPrice): JsonResponse
     {
-        if ($plan->is_default) {
+        if ($planPrice->plan->is_default) {
             return response()->json(['error' => 'Šio plano prenumeruoti negalima.'], 405);
         }
 
@@ -64,10 +65,10 @@ class SubscriptionController extends Controller
 
         $subscription = $user->subscription;
 
-        $payment = $this->paymentService->createFromPlan(
-            $plan,
+        $payment = $this->paymentService->createFromPlanPrice(
+            $planPrice,
             $user,
-            $subscription && $subscription->plan_id === $plan->id,
+            $subscription && $subscription->plan_id === $planPrice->id,
             $discountCode
         );
 

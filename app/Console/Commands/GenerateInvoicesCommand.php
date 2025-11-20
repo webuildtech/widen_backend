@@ -40,14 +40,14 @@ class GenerateInvoicesCommand extends Command
     {
         return function (Builder $query) use ($interval) {
             $query->whereHas('reservations', fn($q) => $q->whereIsPaid(true)->whereBetween('end_time', $interval))
-                ->orWhereHas('payments', fn($q) => $q->whereStatus('paid')->wherePaymentableType('plan')->whereBetween('paid_at', $interval));
+                ->orWhereHas('payments', fn($q) => $q->whereStatus('paid')->wherePaymentableType('planPrice')->whereBetween('paid_at', $interval));
         };
     }
 
     private function generateInvoice(User|Guest $entity, array $interval, Carbon $invoiceDate, InvoiceService $invoiceService): void
     {
         $reservation = $entity->reservations()->whereIsPaid(true)->whereBetween('end_time', $interval);
-        $payments = $entity->payments()->whereStatus('paid')->wherePaymentableType('plan')->whereBetween('paid_at', $interval);
+        $payments = $entity->payments()->whereStatus('paid')->wherePaymentableType('planPrice')->whereBetween('paid_at', $interval);
 
         $priceWithVat = $reservation->sum('price_with_vat') - $reservation->sum('refunded_amount') + $payments->sum('price_with_vat');
 

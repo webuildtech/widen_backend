@@ -14,13 +14,13 @@ class PaymentHandlerResolver
     public function handle(Payment $payment): void
     {
         match ($payment->paymentable_type) {
-            'plan' => $this->handlePlan($payment),
+            'planPrice' => $this->handlePlanPrice($payment),
             'reservationGroup' => $this->handleReservationGroup($payment),
             default => $this->handleDefault($payment)
         };
     }
 
-    private function handlePlan(Payment $payment): void
+    private function handlePlanPrice(Payment $payment): void
     {
         $user = $payment->owner;
 

@@ -66,7 +66,7 @@ $appUrl = env('APP_FRONTEND_URL');
                     </h3>
                     <ul style="list-style-type: disc; margin-top: 24px; margin-bottom: 0">
                       <li>
-                        <strong>Pavadinimas:</strong> {{ $payment->paymentable->name }}
+                        <strong>Pavadinimas:</strong> {{ $payment->paymentable->plan->name }}
                       </li>
                       <li>
                         <strong>Kaina:</strong> {{ $payment->price_with_vat }} €

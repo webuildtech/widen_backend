@@ -31,7 +31,7 @@ class AutoPlansRenewCommand extends Command
                 $priceDetails = applyDiscountAndCalculatePriceDetails($subscription->plan->price, $user->discount_on_everything);
 
                 if ($user->balance >= $priceDetails->price_with_vat) {
-                    $payment = $this->paymentService->createFromPlan($subscription->plan, $user);
+                    $payment = $this->paymentService->createFromPlanPrice($subscription->plan, $user);
 
                     if ($payment->paid_amount > 0) {
                         $this->paymentService->cancel($payment, PaymentStatus::CANCELLED);

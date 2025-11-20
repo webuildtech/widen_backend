@@ -32,7 +32,7 @@ class IncomeService
 
         $sources->push([
             'label' => 'Prenumeratos',
-            'query' => Payment::whereStatus('paid')->wherePaymentableType('plan'),
+            'query' => Payment::whereStatus('paid')->wherePaymentableType('planPrice'),
             'has_refunds' => false,
         ]);
 

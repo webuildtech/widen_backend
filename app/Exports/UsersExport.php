@@ -31,7 +31,7 @@ class UsersExport implements WithHeadings, FromCollection, ShouldAutoSize, WithS
             $user->is_company ? $user->company_address : null,
             $user->is_company ? $user->company_phone : null,
             $user->agreed_newsletter ? 'Taip' : 'Ne',
-            $user->subscription?->plan?->name ?? null,
+            $user->subscription?->plan?->plan->name ?? null,
         ]);
     }
 

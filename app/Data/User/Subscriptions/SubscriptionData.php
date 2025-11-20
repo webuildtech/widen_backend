@@ -10,7 +10,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class SubscriptionData extends Data
 {
     public function __construct(
-        public int     $plan_id,
+        public int     $plan_price_id,
 
         public Carbon  $started_at,
 

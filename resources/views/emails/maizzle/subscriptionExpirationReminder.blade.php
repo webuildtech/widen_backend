@@ -59,7 +59,7 @@ $appUrl = env('APP_FRONTEND_URL');
                       Sveiki, {{ $user->first_name }},
                     </h1>
                     <p style="font-size: 16px; line-height: 24px; color: #475569; margin: 24px 0 0">
-                      Norime priminti, kad jūsų planas <strong>„{{ $user->subscription->plan->name}}“</strong> nustos galioti
+                      Norime priminti, kad jūsų planas <strong>„{{ $user->subscription->plan->plan->name}}“</strong> nustos galioti
                       <strong>{{ $days > 1 ? 'po ' . $days . ' dienų' : 'rytoj'}}</strong> tai yra {{ $user->subscription->expired_at }}.
                       Jei jūsų balanso likutis pakankamas, planas prasitęs automatiškai {{ $user->subscription->expired_at->addSecond() }}. Tačiau jei balanso likutis per mažas, turite jį pratęsti patys.
                     </p>

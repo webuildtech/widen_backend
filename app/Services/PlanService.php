@@ -2,19 +2,21 @@
 
 namespace App\Services;
 
+use App\Data\Admin\Plans\Features\PlanFeatureInsertData;
+use App\Data\Admin\Plans\Prices\PlanPriceInsertData;
 use App\Enums\Day;
 use App\Models\CourtType;
 use App\Models\Plan;
+use App\Models\PlanFeature;
 use App\Models\User;
 use App\Services\Slots\PlanCourtTypeRuleSlotService;
-use LucasDotVin\Soulbscription\Enums\PeriodicityType;
 
 class PlanService
 {
     public function getByUser(User $user = null): Plan
     {
         if ($user && $user->subscription) {
-            return $user->subscription->plan;
+            return $user->subscription->plan->plan;
         }
 
         return Plan::whereIsDefault(true)->first();
@@ -24,9 +26,8 @@ class PlanService
     {
         $plan = Plan::create([
             ...$attributes,
-            'periodicity' => 1,
-            'periodicity_type' => PeriodicityType::Year,
             'is_active' => $attributes['is_active'] ?? 0,
+            'is_popular' => $attributes['is_popular'] ?? 0,
         ]);
 
         $this->initializeDefaults($plan);
@@ -53,5 +54,59 @@ class PlanService
                 }
             }
         });
+    }
+
+    /**
+     * @param Plan $plan
+     * @var $features array<int, PlanFeatureInsertData>
+     */
+    public function syncFeatures(Plan $plan, array $features): void
+    {
+        $ids = [];
+
+        foreach ($features as $featureData) {
+            $feature = $plan->features()->updateOrCreate(
+                ['id' => $featureData->id],
+                ['label' => $featureData->label]
+            );
+
+            $ids[] = $feature->id;
+
+            foreach ($featureData->subFeatures as $subFeatureData) {
+                $subFeature = $feature->subFeatures()->updateOrCreate(
+                    ['id' => $subFeatureData->id, 'plan_id' => $plan->id],
+                    ['label' => $subFeatureData->label]
+                );
+
+                $ids[] = $subFeature->id;
+            }
+        }
+
+        PlanFeature::wherePlanId($plan->id)->whereNotIn('id', $ids)->delete();
+    }
+
+    /**
+     * @param Plan $plan
+     * @var $prices array<int, PlanPriceInsertData>
+     */
+    public function syncPrices(Plan $plan, array $prices): void
+    {
+        $ids = [];
+
+        foreach ($prices as $priceData) {
+            $price = $plan->prices()->updateOrCreate(
+                ['id' => $priceData->id],
+                [
+                    'price' => $priceData->price,
+                    'previous_price' => $priceData->previous_price,
+                    'periodicity' => 1,
+                    'periodicity_type' => $priceData->periodicity_type
+                ]
+            );
+
+            $ids[] = $price->id;
+        }
+
+        $plan->prices()->whereNotIn('id', $ids)->delete();
     }
 }

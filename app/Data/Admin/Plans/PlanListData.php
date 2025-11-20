@@ -2,6 +2,7 @@
 
 namespace App\Data\Admin\Plans;
 
+use App\Data\Admin\Plans\Prices\PlanPriceData;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -16,11 +17,14 @@ class PlanListData extends Data
 
         public string $type,
 
-        public float  $price,
-
         public bool   $is_active,
 
+        public bool   $is_popular,
+
         public bool   $is_default,
+
+        /** @var array<int, PlanPriceData> */
+        public array  $prices,
 
         public Carbon $updated_at,
     )

@@ -17,7 +17,7 @@ return [
 
         'feature_plan' => \LucasDotVin\Soulbscription\Models\FeaturePlan::class,
 
-        'plan' => \App\Models\Plan::class,
+        'plan' => \App\Models\PlanPrice::class,
 
         'subscriber' => [
             'uses_uuid' => env('SOULBSCRIPTION_SUBSCRIBER_USES_UUID', false),

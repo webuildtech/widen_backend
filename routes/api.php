@@ -29,6 +29,10 @@ Route::post('/discount-codes/check', [DiscountCodeController::class, 'check']);
 
 Route::post('contact-us', [ContactUsController::class, 'store']);
 
+Route::prefix('plans')->group(function () {
+    Route::get('', [PlanController::class, 'index']);
+});
+
 Route::prefix('payments')->group(function () {
     Route::post('validate', [PaymentController::class, 'validate']);
     Route::post('callback', [PaymentController::class, 'callback']);
@@ -61,13 +65,9 @@ Route::middleware(['auth:user'])->group(function () {
             ->middleware('can:cancel,reservation');
     });
 
-    Route::prefix('plans')->group(function () {
-        Route::get('', [PlanController::class, 'index']);
-    });
-
     Route::prefix('subscriptions')->group(function () {
         Route::get('current', [SubscriptionController::class, 'current']);
-        Route::post('subscribe/{plan}', [SubscriptionController::class, 'subscribe']);
+        Route::post('subscribe/{planPrice}', [SubscriptionController::class, 'subscribe']);
     });
 
     Route::prefix('payments')->group(function () {

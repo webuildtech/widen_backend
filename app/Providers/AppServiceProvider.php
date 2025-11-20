@@ -19,6 +19,8 @@ use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\PlanCourtTypeRule;
 use App\Models\PlanCourtTypeRuleSlot;
+use App\Models\PlanFeature;
+use App\Models\PlanPrice;
 use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Models\ReservationSlot;
@@ -53,6 +55,8 @@ class AppServiceProvider extends ServiceProvider
             'intervalPrice' => IntervalPrice::class,
             'payment' => Payment::class,
             'plan' => Plan::class,
+            'planPrice' => PlanPrice::class,
+            'planFeature' => PlanFeature::class,
             'planCourtTypeRule' => PlanCourtTypeRule::class,
             'planCourtTypeRuleSlot' => PlanCourtTypeRuleSlot::class,
             'reservation' => Reservation::class,

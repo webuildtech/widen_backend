@@ -80,6 +80,8 @@ declare namespace App.Data.Admin.Availability {
         court_type_id?: number;
         date_from: string;
         date_to?: string;
+        time_from?: string;
+        time_to?: string;
     };
 }
 declare namespace App.Data.Admin.Courts {
@@ -411,17 +413,20 @@ declare namespace App.Data.Admin.Plans {
         id: number;
         name: string;
         type: string;
-        price: number;
         is_active: boolean;
+        is_popular: boolean;
         is_default: boolean;
+        features: Array<App.Data.Admin.Plans.Features.PlanFeatureData>;
+        prices: Array<App.Data.Admin.Plans.Prices.PlanPriceData>;
     };
     export type PlanListData = {
         id: number;
         name: string;
         type: string;
-        price: number;
         is_active: boolean;
+        is_popular: boolean;
         is_default: boolean;
+        prices: Array<App.Data.Admin.Plans.Prices.PlanPriceData>;
         updated_at: string;
     };
     export type PlanSelectOptionData = {
@@ -431,14 +436,53 @@ declare namespace App.Data.Admin.Plans {
     export type PlanStoreData = {
         name: string;
         type: string;
-        price: number;
         is_active?: boolean;
+        is_popular?: boolean;
+        features: Array<App.Data.Admin.Plans.Features.PlanFeatureInsertData>;
+        prices: Array<App.Data.Admin.Plans.Prices.PlanPriceInsertData>;
     };
     export type PlanUpdateData = {
         name?: string;
         type?: string;
         price?: number;
         is_active?: boolean;
+        is_popular?: boolean;
+        features: Array<App.Data.Admin.Plans.Features.PlanFeatureInsertData>;
+        prices: Array<App.Data.Admin.Plans.Prices.PlanPriceInsertData>;
+    };
+}
+declare namespace App.Data.Admin.Plans.Features {
+    export type PlanFeatureData = {
+        id: number;
+        label: string;
+        subFeatures: Array<App.Data.Admin.Plans.Features.PlanSubFeatureData>;
+    };
+    export type PlanFeatureInsertData = {
+        id: number | null;
+        label: string;
+        subFeatures?: Array<App.Data.Admin.Plans.Features.PlanSubFeatureInsertData>;
+    };
+    export type PlanSubFeatureData = {
+        id: number;
+        label: string;
+    };
+    export type PlanSubFeatureInsertData = {
+        id: number | null;
+        label: string;
+    };
+}
+declare namespace App.Data.Admin.Plans.Prices {
+    export type PlanPriceData = {
+        id: number;
+        periodicity_type: string;
+        previous_price: number | null;
+        price: number;
+    };
+    export type PlanPriceInsertData = {
+        id: number | null;
+        periodicity_type: string;
+        previous_price: number | null;
+        price: number;
     };
 }
 declare namespace App.Data.Admin.Reservations {
@@ -500,6 +544,7 @@ declare namespace App.Data.Admin.Subscriptions {
     export type SubscriptionListData = {
         id: number;
         plan: App.Data.Admin.Plans.PlanSelectOptionData | null;
+        periodicity_type: string;
         subscriber: App.Data.Admin.Users.UserSelectOptionData | null;
         started_at: string;
         expired_at: string;
@@ -798,11 +843,29 @@ declare namespace App.Data.User.PlanCourtTypeRules {
 }
 declare namespace App.Data.User.Plans {
     export type PlanData = {
-        id: number;
         name: string;
         type: string;
-        price: number;
+        is_popular: boolean;
         courtTypeRules: Array<App.Data.User.PlanCourtTypeRules.PlanCourtTypeRuleData>;
+        features: Array<App.Data.User.Plans.Features.PlanFeatureData>;
+        prices: Array<App.Data.User.Plans.Prices.PlanPriceData>;
+    };
+}
+declare namespace App.Data.User.Plans.Features {
+    export type PlanFeatureData = {
+        label: string;
+        subFeatures: Array<App.Data.User.Plans.Features.PlanSubFeatureData>;
+    };
+    export type PlanSubFeatureData = {
+        label: string;
+    };
+}
+declare namespace App.Data.User.Plans.Prices {
+    export type PlanPriceData = {
+        id: number;
+        periodicity_type: string;
+        previous_price: number | null;
+        price: number;
     };
 }
 declare namespace App.Data.User.Reservations {
@@ -850,7 +913,7 @@ declare namespace App.Data.User.Subscriptions {
         discount_code?: string | null;
     };
     export type SubscriptionData = {
-        plan_id: number;
+        plan_price_id: number;
         started_at: string;
         expired_at: string;
         cancelled_at: string | null;

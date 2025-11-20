@@ -10,7 +10,10 @@ use App\Data\Admin\Plans\PlanUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Services\PlanService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 use LucasDotVin\Soulbscription\Models\Subscription;
+use Spatie\LaravelData\Optional;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -25,10 +28,10 @@ class PlanController extends Controller
     public function index()
     {
         $plans = QueryBuilder::for(Plan::class)
+            ->with('prices')
             ->allowedSorts([
                 'name',
                 'type',
-                'price',
                 'active',
                 'updated_at'
             ])
@@ -46,21 +49,33 @@ class PlanController extends Controller
 
     public function store(PlanStoreData $data): PlanData
     {
-        $plan = $this->planService->create($data->toArray());
+        $plan = $this->planService->create($data->except('features', 'prices')->toArray());
 
-        return PlanData::from($plan);
+        $this->planService->syncFeatures($plan, $data->features);
+        $this->planService->syncPrices($plan, $data->prices);
+
+        return PlanData::from($plan->load(['prices', 'features', 'features.subFeatures']));
     }
 
     public function show(Plan $plan): PlanData
     {
-        return PlanData::from($plan);
+        return PlanData::from($plan->load(['prices', 'features', 'features.subFeatures']));
     }
 
-    public function update(PlanUpdateData $data, Plan $plan): PlanData
+    public function update(PlanUpdateData $data, Plan $plan): JsonResponse|PlanData
     {
-        $plan->update($data->all());
+        $ids = $plan->prices()->whereNotIn('id', Arr::pluck($data->prices, 'id'))->pluck('id');
 
-        return PlanData::from($plan);
+        if (Subscription::whereIn('plan_id', $ids)->exists()) {
+            return response()->json(['message' => 'Negalima ištrinti plano kainos, nes yra aktyvių prenumeratų!'], 406);
+        }
+
+        $plan->update($data->except('features', 'prices')->all());
+
+        $this->planService->syncFeatures($plan, $data->features);
+        $this->planService->syncPrices($plan, $data->prices);
+
+        return PlanData::from($plan->load(['prices', 'features', 'features.subFeatures']));
     }
 
     public function destroy(Plan $plan)
@@ -69,7 +84,7 @@ class PlanController extends Controller
             return response()->json(['message' => 'Negalite ištrinti default plano!'], 406);
         }
 
-        if (Subscription::where('plan_id', $plan->id)->exists()) {
+        if (Subscription::whereIn('plan_id', $plan->prices()->pluck('id'))->exists()) {
             return response()->json(['message' => 'Negalima ištrinti plano, nes yra aktyvių prenumeratų!'], 406);
         }
 
@@ -80,6 +95,6 @@ class PlanController extends Controller
 
     public function all()
     {
-        return PlanSelectOptionData::collect(Plan::all());
+        return PlanSelectOptionData::collect(Plan::whereIsDefault(false)->get());
     }
 }

@@ -4,17 +4,13 @@ namespace App\Services\Payments;
 
 use App\Enums\DiscountCodeType;
 use App\Enums\PaymentStatus;
-use App\Mail\BalanceTopUpMail;
-use App\Mail\PlanSubscribeMail;
-use App\Mail\ReservationPaidMail;
 use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\Payment;
-use App\Models\Plan;
+use App\Models\PlanPrice;
 use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 
 class PaymentService
 {
@@ -22,9 +18,9 @@ class PaymentService
         protected PaymentHandlerResolver $paymentHandlerResolver
     ) {}
 
-    public function createFromPlan(Plan $plan, User $user, bool $renew = false, DiscountCode $discountCode = null): Payment
+    public function createFromPlanPrice(PlanPrice $planPrice, User $user, bool $renew = false, DiscountCode $discountCode = null): Payment
     {
-        $price = $plan->price;
+        $price = $planPrice->price;
         $totalDiscount = 0;
 
         if ($user->discount_on_everything > 0) {
@@ -65,7 +61,7 @@ class PaymentService
             'paid_amount_from_balance' => $paidAmountFromBalance
         ]);
 
-        $payment->paymentable()->associate($plan);
+        $payment->paymentable()->associate($planPrice);
         $user->payments()->save($payment);
 
         return $payment;

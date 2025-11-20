@@ -58,7 +58,7 @@ class UserListData extends Data
             $user->is_company,
             $user->company_name,
             $user->agreed_newsletter,
-            $user->subscription?->plan->name,
+            $user->subscription?->plan?->plan->name,
             $user->updated_at,
         );
     }

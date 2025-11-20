@@ -27,7 +27,7 @@ class UserController extends Controller
     public function index()
     {
         $users = QueryBuilder::for(User::class)
-            ->with(['subscription.plan'])
+            ->with(['subscription.plan.plan'])
             ->allowedSorts([
                 'first_name',
                 'last_name',

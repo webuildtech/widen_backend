@@ -5,43 +5,15 @@ namespace App\Models;
 use App\Models\Concerns\HasPlanScopes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Carbon;
-use LucasDotVin\Soulbscription\Enums\PeriodicityType;
-use LucasDotVin\Soulbscription\Models\Plan as PlanBase;
 
 /**
  * @mixin IdeHelperPlan
  */
-class Plan extends PlanBase
+class Plan extends BaseModel
 {
     use HasPlanScopes;
 
-    protected $fillable = [
-        'grace_days',
-        'name',
-        'type',
-        'is_active',
-        'is_default',
-        'price',
-        'periodicity_type',
-        'periodicity',
-    ];
-
-    public function calculateNextRecurrenceEnd(Carbon|string $start = null): Carbon
-    {
-        if (empty($start)) {
-            $start = now();
-        }
-
-        if (is_string($start)) {
-            $start = Carbon::parse($start);
-        }
-
-        $recurrences = max(PeriodicityType::getDateDifference(from: $start, to: now(), unit: $this->periodicity_type), 0);
-        $expirationDate = $start->copy()->add($this->periodicity_type, $this->periodicity + $recurrences)->endOfDay();
-
-        return $expirationDate;
-    }
+    protected $guarded = [];
 
     public function groups(): HasMany
     {
@@ -56,5 +28,15 @@ class Plan extends PlanBase
     public function courtTypeRules(): HasMany
     {
         return $this->hasMany(PlanCourtTypeRule::class);
+    }
+
+    public function features(): HasMany
+    {
+        return $this->hasMany(PlanFeature::class)->whereNull('parent_id');
+    }
+
+    public function prices(): HasMany
+    {
+        return $this->hasMany(PlanPrice::class);
     }
 }
