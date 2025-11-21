@@ -16,6 +16,10 @@ declare namespace App.Data.Admin.Admins {
         phone: string | null;
         updated_at: string;
     };
+    export type AdminSelectOptionData = {
+        id: number;
+        full_name: string;
+    };
     export type AdminStoreData = {
         first_name: string;
         last_name: string;
@@ -554,7 +558,8 @@ declare namespace App.Data.Admin.Subscriptions {
 declare namespace App.Data.Admin.Users {
     export type UserBalanceEntryListData = {
         amount: number;
-        admin: string;
+        admin: App.Data.Admin.Admins.AdminSelectOptionData;
+        user: App.Data.Admin.Users.UserSelectOptionData | null;
         before_balance: number;
         after_balance: number;
         created_at: string;
