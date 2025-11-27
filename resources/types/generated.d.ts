@@ -489,6 +489,14 @@ declare namespace App.Data.Admin.Plans.Prices {
         price: number;
     };
 }
+declare namespace App.Data.Admin.Reports {
+    export type UserBalancesExportReportData = {
+        date_from: string;
+        date_to: string;
+        hide_zero_balances: boolean;
+        hide_zero_invoices: boolean;
+    };
+}
 declare namespace App.Data.Admin.Reservations {
     export type MultiReservationResultData = {
         free_slots: any;

@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\LitecomZoneController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PlanCourtTypeRuleController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\Users\UserBalanceEntryController;
@@ -112,6 +113,10 @@ Route::prefix('admin')->group(function () {
         Route::prefix('availability')->group(function () {
             Route::get('stats', [AvailabilityController::class, 'stats']);
             Route::get('stats-by-interval', [AvailabilityController::class, 'statsByInterval']);
+        });
+
+        Route::prefix('reports')->group(function () {
+            Route::get('user-balances', [ReportController::class, 'userBalances']);
         });
     });
 });
