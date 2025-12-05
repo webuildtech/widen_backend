@@ -796,6 +796,14 @@ declare namespace App.Data.User.Forms {
         marketing_consent: boolean;
         service_consent: boolean;
     };
+    export type CompanyFormStoreData = {
+        company_name: string;
+        user: string;
+        phone: string;
+        email: string;
+        marketing_consent: boolean;
+        service_consent: boolean;
+    };
 }
 declare namespace App.Data.User.FutureMembers {
     export type FutureMemberStoreData = {
