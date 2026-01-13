@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Plan;
 use App\Models\PlanFeature;
 
 class PlansFeaturesSeeder extends BasicSeeder
@@ -198,19 +199,21 @@ class PlansFeaturesSeeder extends BasicSeeder
             foreach ($plans as $plan) {
                 $planId = $plan['id'];
 
-                foreach ($plan['features'] as $feature) {
-                    $parent = PlanFeature::create([
-                        'plan_id' => $planId,
-                        'label' => $feature['label'],
-                        'parent_id' => null,
-                    ]);
-
-                    foreach ($feature['subFeatures'] as $subLabel) {
-                        PlanFeature::create([
+                if (Plan::where('id', $planId)->exists()) {
+                    foreach ($plan['features'] as $feature) {
+                        $parent = PlanFeature::create([
                             'plan_id' => $planId,
-                            'label' => $subLabel,
-                            'parent_id' => $parent->id,
+                            'label' => $feature['label'],
+                            'parent_id' => null,
                         ]);
+
+                        foreach ($feature['subFeatures'] as $subLabel) {
+                            PlanFeature::create([
+                                'plan_id' => $planId,
+                                'label' => $subLabel,
+                                'parent_id' => $parent->id,
+                            ]);
+                        }
                     }
                 }
             }
