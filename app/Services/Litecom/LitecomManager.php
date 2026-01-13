@@ -2,6 +2,7 @@
 
 namespace App\Services\Litecom;
 
+use Log;
 use RuntimeException;
 
 class LitecomManager
@@ -14,13 +15,17 @@ class LitecomManager
         $this->clients = [];
 
         foreach ($config['connections'] as $name => $connection) {
-            $this->clients[$name] = new LitecomClient(
-                name: $name,
-                baseUrl: $connection['base_url'] ?? '',
-                token: $connection['token'] ?? '',
-                timeout: $connection['timeout'] ?? 10,
-                retries: $connection['retries'] ?? 2,
-            );
+            try {
+                $this->clients[$name] = new LitecomClient(
+                    name: $name,
+                    baseUrl: $connection['base_url'] ?? '',
+                    token: $connection['token'] ?? '',
+                    timeout: $connection['timeout'] ?? 10,
+                    retries: $connection['retries'] ?? 2,
+                );
+            } catch (\Throwable $e) {
+                Log::error('Litecom connection error: ' . $e->getMessage());
+            }
         }
     }
 
