@@ -37,6 +37,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
 
         $users = User::query()
             ->with('invoices', fn($q) => $q->whereBetween('date', [$this->from, $this->to]))
+            ->with('balanceEntries', fn($q) => $q->whereDate('created_at', '<=', $this->to))
             ->get()
             ->map(function (User $user) use ($fromDate, $toDate) {
                 $isCompany = $user->is_company;
@@ -44,6 +45,8 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
                 $price = $user->invoices->sum('price');
                 $vat = $user->invoices->sum('vat');
                 $priceWithVat = $user->invoices->sum('price_with_vat');
+
+                $balanceEntriesAmount = $user->balanceEntries->sum('amount');
 
                 return [
                     'key' => 0,
@@ -60,6 +63,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
                     'vat' => $vat,
                     'price_with_vat' => $priceWithVat,
                     'end_balance' => $this->userService->getBalanceByDay($user, $this->to),
+                    'balance_entries_amount' => $balanceEntriesAmount > 0 ? $balanceEntriesAmount : '-',
                 ];
             });
 
@@ -99,6 +103,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
             'PVM (EUR)',
             'Išrašyta sąskaitų per periodą (su PVM, EUR)',
             'Balansas ' . $this->to->toDateString(),
+            'Dovanoti admin pinigai iki '. $this->to->toDateString() . '(nuo sistemos veikimo pradžios)'
         ];
     }
 
@@ -113,6 +118,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
             'L' => NumberFormat::FORMAT_CURRENCY_EUR,
             'M' => NumberFormat::FORMAT_CURRENCY_EUR,
             'N' => NumberFormat::FORMAT_CURRENCY_EUR,
+            'O' => NumberFormat::FORMAT_CURRENCY_EUR,
         ];
     }
 
@@ -127,7 +133,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
                 $totalBg = 'dbe8f2';
 
                 $lastRow = $sheet->getHighestRow();
-                $lastCol = 'N';
+                $lastCol = 'O';
                 $headerRg = "A1:{$lastCol}1";
                 $tableRg = "A1:{$lastCol}{$lastRow}";
                 $totalRow = $lastRow + 1;
@@ -175,6 +181,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
                 $sheet->getColumnDimension('L')->setWidth(25);
                 $sheet->getColumnDimension('M')->setWidth(25);
                 $sheet->getColumnDimension('N')->setWidth(25);
+                $sheet->getColumnDimension('O')->setWidth(25);
 
                 for ($r = 2; $r <= $lastRow; $r++) {
                     if ($r % 2 === 0) {
@@ -210,7 +217,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
 
                 $sheet->setCellValue("A{$totalRow}", 'IŠVISO:');
 
-                foreach (range('G', 'N') as $col) {
+                foreach (range('G', 'O') as $col) {
                     $sheet->setCellValue(
                         $col . $totalRow,
                         sprintf('=SUM(%1$s2:%1$s%2$d)', $col, $lastRow)
@@ -238,7 +245,7 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
                     ],
                 ]);
 
-                $sheet->getStyle("G{$totalRow}:N{$totalRow}")
+                $sheet->getStyle("G{$totalRow}:O{$totalRow}")
                     ->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_EUR);
 
                 $sheet->getRowDimension($totalRow)->setRowHeight(22);
