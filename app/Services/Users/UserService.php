@@ -44,27 +44,14 @@ class UserService
             ->whereStatus(PaymentStatus::PAID->value)
             ->where('paid_at', '<=', $date);
 
-        $paidAmountFromBalance = (clone $paymentsQuery)
-            ->whereNotNull('paymentable_type')
-            ->sum('paid_amount_from_balance');
-
         $paidAmount = (clone $paymentsQuery)
             ->whereNull('paymentable_type')
             ->sum('paid_amount');
 
-        $refundedAmount = $user->reservations()
-            ->withTrashed()
-            ->whereIsPaid(true)
-            ->where('canceled_at', '<=', $date)
-            ->sum('refunded_amount');
+        $invoiceQuery = $user->invoices()->where('date', '<=', $date);
 
-        $adminAddedAmount = $user->balanceEntries()
-            ->where('created_at', '<=', $date)
-            ->sum('amount');
+        $invoiceAmount = $invoiceQuery->sum('price_with_vat');
 
-        return (float)$paidAmount
-            + (float)$refundedAmount
-            + (float)$adminAddedAmount
-            - (float)$paidAmountFromBalance;
+        return (float)$paidAmount - (float)$invoiceAmount;
     }
 }
