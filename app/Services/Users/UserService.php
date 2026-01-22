@@ -40,17 +40,14 @@ class UserService
     {
         $date = $date->copy()->endOfDay();
 
-        $paymentsQuery = $user->payments()
+        $paidAmount = $user->payments()
             ->whereStatus(PaymentStatus::PAID->value)
-            ->where('paid_at', '<=', $date);
-
-        $paidAmount = (clone $paymentsQuery)
-            ->whereNull('paymentable_type')
+            ->where('paid_at', '<=', $date)
             ->sum('paid_amount');
 
-        $invoiceQuery = $user->invoices()->where('date', '<=', $date);
-
-        $invoiceAmount = $invoiceQuery->sum('price_with_vat');
+        $invoiceAmount = $user->invoices()
+            ->where('date', '<=', $date)
+            ->sum('price_with_vat');
 
         return (float)$paidAmount - (float)$invoiceAmount;
     }
