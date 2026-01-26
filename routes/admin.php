@@ -46,7 +46,7 @@ Route::prefix('admin')->group(function () {
             Route::apiResource('', UserController::class, ['parameters' => ['' => 'user']]);
 
             Route::get('{user}/balance-entries', [UserBalanceEntryController::class, 'allByUser']);
-            Route::post('{user}/balance-entries', [UserBalanceEntryController::class, 'storeByUser']);
+//            Route::post('{user}/balance-entries', [UserBalanceEntryController::class, 'storeByUser']);
         });
 
         Route::get('/user-balance-entries', [UserBalanceEntryController::class, 'index']);
