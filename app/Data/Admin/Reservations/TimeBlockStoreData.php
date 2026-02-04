@@ -26,11 +26,11 @@ class TimeBlockStoreData extends Data
     public static function messages(): array
     {
         return [
-            'start_time.required' => 'Būtina nurodyti pradžios laiką.',
-            'start_time.regex' => 'Netinkamas formatas!',
+            'start_time.required' => __('validation.availability.start_time.required'),
+            'start_time.regex' => __('validation.availability.start_time.format'),
 
-            'end_time.required' => 'Būtina nurodyti pabaigos laiką.',
-            'end_time.regex' => 'Netinkamas formatas!',
+            'end_time.required' => __('validation.availability.end_time.required'),
+            'end_time.regex' => __('validation.availability.end_time.format'),
         ];
     }
 }

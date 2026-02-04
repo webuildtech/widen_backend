@@ -173,4 +173,32 @@ return [
 
     'attributes' => [],
 
+    'availability' => [
+        'start_time' => [
+            'required' => 'Būtina nurodyti pradžios laiką.',
+            'format' => 'Netinkamas formatas!',
+        ],
+
+        'end_time' => [
+            'required' => 'Būtina nurodyti pabaigos laiką.',
+            'format' => 'Netinkamas formatas!',
+        ],
+
+        'price' => [
+            'required' => 'Būtina nurodyti kainą.',
+            'min' => 'Kaina turi būti bent 0.',
+        ],
+
+        'date_from' => [
+            'before' => 'Galioja nuo turi būti mažesnis nei galioja iki.',
+        ],
+        'date_to' => [
+            'after' => 'Galioja iki turi būti didesnis nei galioja nuo.',
+        ],
+
+        'slot' => [
+            'end_after_start' => 'Pabaigos laikas turi būti didesnis nei pradžios laikas.',
+            'no_overlap' => 'Naujas intervalas turi prasidėti ne anksčiau, nei baigėsi ankstesnis.',
+        ],
+    ],
 ];

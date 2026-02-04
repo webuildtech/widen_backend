@@ -3,6 +3,7 @@
 namespace App\Data\Admin\Admins;
 
 use App\Enums\AdminRole;
+use App\Enums\Locale;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -17,6 +18,8 @@ class AdminData extends Data
         public ?string   $last_name,
 
         public AdminRole $role,
+
+        public Locale    $locale,
 
         public string    $email,
 

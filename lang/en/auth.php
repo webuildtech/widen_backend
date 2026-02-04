@@ -1,20 +1,16 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
+    'failed' => 'Your login credentials do not match our records.',
+    'password' => 'The password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
+    'letter_sent' => 'A password reset link has been sent to your email address.',
+    'token_error' => 'The provided access token is invalid.',
+    'password_changed' => 'Password changed successfully.',
+
+    'login' => [
+        'invalid_credentials' => 'Your login credentials do not match our records.',
+        'account_blocked_by_employer' => 'Your account has been blocked by your employer.',
+    ],
 ];

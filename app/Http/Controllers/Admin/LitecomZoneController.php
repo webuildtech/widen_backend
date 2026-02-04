@@ -50,11 +50,11 @@ class LitecomZoneController extends Controller
         try {
             $this->litecomService->syncZones();
 
-            return response()->json(['message' => 'Litecom zones synced successfully']);
+            return response()->json(['message' => __('litecom.zones.sync.success')]);
         } catch (\Exception $e) {
             Log::warning('Litecom zones sync failed: ' . $e->getMessage());
 
-            return response()->json(['message' => 'Litecom yra nepasiekiamas, prašome pabandyti vėliau!'], 500);
+            return response()->json(['message' => __('litecom.unavailable_try_later')], 500);
         }
     }
 
@@ -80,11 +80,11 @@ class LitecomZoneController extends Controller
         try {
             $this->litecomService->on($litecomZone, $data->scene, $data->manual_override_until);
 
-            return response()->json(['message' => 'Litecom zone ON successfully']);
+            return response()->json(['message' => __('litecom.zones.on.success')]);
         } catch (\Exception $e) {
             Log::warning('Litecom zone ON failed: ' . $e->getMessage());
 
-            return response()->json(['message' => 'Litecom yra nepasiekiamas, prašome pabandyti vėliau!'], 500);
+            return response()->json(['message' => __('litecom.unavailable_try_later')], 500);
         }
     }
 
@@ -93,11 +93,11 @@ class LitecomZoneController extends Controller
         try {
             $this->litecomService->off($litecomZone);
 
-            return response()->json(['message' => 'Litecom zone OFF successfully']);
+            return response()->json(['message' => __('litecom.zones.off.success')]);
         } catch (\Exception $e) {
             Log::warning('Litecom zone OFF failed: ' . $e->getMessage());
 
-            return response()->json(['message' => 'Litecom yra nepasiekiamas, prašome pabandyti vėliau!'], 500);
+            return response()->json(['message' => __('litecom.unavailable_try_later')], 500);
         }
     }
 }

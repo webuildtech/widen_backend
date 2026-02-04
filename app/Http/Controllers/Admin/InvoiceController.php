@@ -48,7 +48,7 @@ class InvoiceController extends Controller
     public function download(Invoice $invoice)
     {
         if (!$invoice->path) {
-            return response()->json(['message' => 'Veiksmas negalimas!'], 403);
+            return response()->json(['message' => __('invoices.download.not_allowed')], 403);
         }
 
         return response()->download(storage_path('app' . $invoice->path));

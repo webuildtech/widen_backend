@@ -17,13 +17,13 @@ class AuthController extends Controller
 
         if (!$admin || !\Hash::check($loginData->password, $admin->password)) {
             return response()->json([
-                "errors" => ['email' => ['Jūsų prisijungimo duomenys nesutampa su sistemos duomenimis.']]
+                "errors" => ['email' => [__('auth.login.invalid_credentials')]]
             ], 406);
         }
 
         if ($admin->blocked) {
             return response()->json([
-                "errors" => ['email' => ['Jūsų paskyrą užblokavo darbdavys.']]
+                "errors" => ['email' => [__('auth.login.account_blocked_by_employer')]]
             ], 406);
         }
 

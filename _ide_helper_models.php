@@ -20,6 +20,7 @@ namespace App\Models{
  * @property string $last_name
  * @property string $email
  * @property string|null $phone
+ * @property string $locale
  * @property int $blocked
  * @property string $password
  * @property string|null $remember_token
@@ -54,6 +55,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereLocale($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereRememberToken($value)

@@ -7,18 +7,10 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class AccountData extends Data
+class AccountLocaleUpdateData extends Data
 {
     public function __construct(
-        public string  $email,
-
-        public string  $first_name,
-
-        public ?string $last_name,
-
-        public Locale  $locale,
-
-        public string  $updated_at
+        public Locale $locale,
     )
     {
     }

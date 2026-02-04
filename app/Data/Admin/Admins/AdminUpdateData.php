@@ -3,6 +3,7 @@
 namespace App\Data\Admin\Admins;
 
 use App\Enums\AdminRole;
+use App\Enums\Locale;
 use App\Models\Admin;
 use Spatie\LaravelData\Attributes\Validation\Confirmed;
 use Spatie\LaravelData\Attributes\Validation\Email;
@@ -28,6 +29,8 @@ class AdminUpdateData extends Data
         public string|Optional      $email,
 
         public AdminRole|Optional   $role,
+
+        public Locale|Optional      $locale,
 
         #[Max(255)]
         public null|string|Optional $phone,

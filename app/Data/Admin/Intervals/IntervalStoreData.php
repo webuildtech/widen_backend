@@ -53,7 +53,7 @@ class IntervalStoreData extends Data
                 if ($price['start_time'] >= $price['end_time']) {
                     $validator->errors()->add(
                         "prices.{$index}.end_time",
-                        'Pabaigos laikas turi būti didesnis nei pradžios laikas'
+                        __('validation.availability.slot.end_after_start')
                     );
                 }
 
@@ -70,7 +70,6 @@ class IntervalStoreData extends Data
                 ];
             }
 
-
             foreach ($byDay as $slots) {
                 for ($i = 1; $i < count($slots); $i++) {
                     $prev = $slots[$i - 1];
@@ -79,7 +78,7 @@ class IntervalStoreData extends Data
                     if ($current['start_time'] < $prev['end_time']) {
                         $validator->errors()->add(
                             "prices.{$current['index']}.start_time",
-                            'Naujas intervalas turi prasidėti ne anksčiau, nei baigėsi ankstesnis'
+                            __('validation.availability.slot.no_overlap')
                         );
                     }
                 }

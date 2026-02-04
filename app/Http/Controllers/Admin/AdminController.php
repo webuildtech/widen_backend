@@ -28,6 +28,7 @@ class AdminController extends Controller
                 'last_name',
                 'email',
                 'phone',
+                'locale',
                 'updated_at'
             ])
             ->allowedFilters([

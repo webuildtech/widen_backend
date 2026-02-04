@@ -191,4 +191,32 @@ return [
 
     'attributes' => [],
 
+    'availability' => [
+        'start_time' => [
+            'required' => 'Start time is required.',
+            'format' => 'Invalid format!',
+        ],
+
+        'end_time' => [
+            'required' => 'End time is required.',
+            'format' => 'Invalid format!',
+        ],
+
+        'price' => [
+            'required' => 'Price is required.',
+            'min' => 'Price must be at least 0.',
+        ],
+
+        'date_from' => [
+            'before' => '"Valid from" must be earlier than "valid to".',
+        ],
+        'date_to' => [
+            'after' => '"Valid to" must be later than "valid from".',
+        ],
+
+        'slot' => [
+            'end_after_start' => 'End time must be later than start time.',
+            'no_overlap' => 'A new time slot must start no earlier than the previous one ends.',
+        ],
+    ],
 ];

@@ -25,7 +25,7 @@ use App\Http\Controllers\Admin\Users\UserBalanceEntryController;
 use App\Http\Controllers\Admin\Users\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('set_locale')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
     });
@@ -35,6 +35,7 @@ Route::prefix('admin')->group(function () {
 
         Route::prefix('account')->group(function () {
             Route::get('me', [AccountController::class, 'show']);
+            Route::put('change-locale', [AccountController::class, 'changeLocale']);
         });
 
         Route::apiResource('admins', AdminController::class);

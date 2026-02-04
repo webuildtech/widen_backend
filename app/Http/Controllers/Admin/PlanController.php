@@ -67,7 +67,7 @@ class PlanController extends Controller
         $ids = $plan->prices()->whereNotIn('id', Arr::pluck($data->prices, 'id'))->pluck('id');
 
         if (Subscription::whereIn('plan_id', $ids)->exists()) {
-            return response()->json(['message' => 'Negalima ištrinti plano kainos, nes yra aktyvių prenumeratų!'], 406);
+            return response()->json(['message' => __('plans.prices.delete_forbidden_active_subscriptions')], 406);
         }
 
         $plan->update($data->except('features', 'prices')->all());
@@ -81,11 +81,11 @@ class PlanController extends Controller
     public function destroy(Plan $plan)
     {
         if ($plan->is_default) {
-            return response()->json(['message' => 'Negalite ištrinti default plano!'], 406);
+            return response()->json(['message' => __('plans.delete_forbidden_default_plan')], 406);
         }
 
         if (Subscription::whereIn('plan_id', $plan->prices()->pluck('id'))->exists()) {
-            return response()->json(['message' => 'Negalima ištrinti plano, nes yra aktyvių prenumeratų!'], 406);
+            return response()->json(['message' => __('plans.delete_forbidden_active_subscriptions')], 406);
         }
 
         $plan->delete();

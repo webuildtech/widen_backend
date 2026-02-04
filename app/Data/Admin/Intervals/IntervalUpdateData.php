@@ -47,14 +47,14 @@ class IntervalUpdateData extends Data
                 if ($dateFrom) {
                     Carbon::parseWithAppTimezone($dateFrom)->greaterThan($interval['date_to']) && $validator->errors()->add(
                         "date_from",
-                        'Galioja nuo turi būti mažesnis nei galioja iki'
+                        __('validation.availability.date_from.before')
                     );
                 }
 
                 if ($dateTo) {
                     Carbon::parseWithAppTimezone($dateTo)->lessThan($interval['date_from']) && $validator->errors()->add(
                         "date_to",
-                        'Galioja iki turi būti didesnis nei galioja nuo'
+                        __('validation.availability.date_to.after')
                     );
                 }
             }
@@ -72,7 +72,7 @@ class IntervalUpdateData extends Data
                 if ($price['start_time'] >= $price['end_time']) {
                     $validator->errors()->add(
                         "prices.{$index}.end_time",
-                        'Pabaigos laikas turi būti didesnis nei pradžios laikas'
+                        __('validation.availability.slot.end_after_start')
                     );
                 }
 
@@ -89,7 +89,6 @@ class IntervalUpdateData extends Data
                 ];
             }
 
-
             foreach ($byDay as $slots) {
                 for ($i = 1; $i < count($slots); $i++) {
                     $prev = $slots[$i - 1];
@@ -98,7 +97,7 @@ class IntervalUpdateData extends Data
                     if ($current['start_time'] < $prev['end_time']) {
                         $validator->errors()->add(
                             "prices.{$current['index']}.start_time",
-                            'Naujas intervalas turi prasidėti ne anksčiau, nei baigėsi ankstesnis'
+                            __('validation.availability.slot.no_overlap')
                         );
                     }
                 }
