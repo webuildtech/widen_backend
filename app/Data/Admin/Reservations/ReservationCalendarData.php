@@ -30,6 +30,7 @@ class ReservationCalendarData extends Data
 
         public ?Carbon               $canceled_at,
 
+        public ?string               $comment,
     )
     {
     }

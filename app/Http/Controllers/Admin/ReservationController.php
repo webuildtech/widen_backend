@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Data\Admin\Reservations\ReservationBulkActionData;
 use App\Data\Admin\Reservations\ReservationCalendarData;
+use App\Data\Admin\Reservations\ReservationCommentData;
 use App\Data\Admin\Reservations\ReservationFilterData;
 use App\Data\Admin\Reservations\MultiReservationStoreData;
 use App\Data\Admin\Reservations\ReservationListData;
@@ -134,5 +135,14 @@ class ReservationController extends Controller
         );
 
         return [];
+    }
+
+    public function comment(ReservationCommentData $data, Reservation $reservation): ReservationCalendarData
+    {
+        $reservation->update(['comment' => $data->comment]);
+
+        $reservation->load(['court', 'owner']);
+
+        return ReservationCalendarData::from($reservation);
     }
 }

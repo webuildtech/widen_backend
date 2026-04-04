@@ -94,6 +94,7 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
         Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel']);
         Route::post('reservations/{reservation}/cancel-all-same', [ReservationController::class, 'cancelAllSame']);
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
+        Route::post('reservations/{reservation}/comment', [ReservationController::class, 'comment']);
 
         Route::get('future-members', [FutureMemberController::class, 'index']);
 
