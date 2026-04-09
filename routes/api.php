@@ -15,6 +15,7 @@ use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PlanController;
 use App\Http\Controllers\User\PlanCourtTypeRuleController;
 use App\Http\Controllers\User\ReservationController;
+use App\Http\Controllers\User\ReservationSlotController;
 use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
 
@@ -64,6 +65,10 @@ Route::middleware(['auth:user'])->group(function () {
         Route::post('pay', [ReservationController::class, 'pay']);
         Route::post('{reservation}/cancel', [ReservationController::class, 'cancel'])
             ->middleware('can:cancel,reservation');
+    });
+
+    Route::prefix('reservation-slots')->group(function () {
+        Route::get('my', [ReservationSlotController::class, 'my']);
     });
 
     Route::prefix('subscriptions')->group(function () {

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Court;
 use App\Models\Reservation;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -13,6 +14,17 @@ class ReservationRepository
     {
         return $court->reservationSlots()
             ->active()
+            ->whereDate('slot_start', $date)
+            ->get(['slot_start', 'slot_end'])
+            ->mapWithKeys(fn ($slot) => [$slot->slot_start->format('H:i') => $slot->slot_end->format('H:i')])
+            ->toArray();
+    }
+
+    public function getSlotForSaleByCourtAndDate(Court $court, Carbon $date): array
+    {
+        return $court->reservationSlots()
+            ->where('try_sell', true)
+            ->where('is_refunded', false)
             ->whereDate('slot_start', $date)
             ->get(['slot_start', 'slot_end'])
             ->mapWithKeys(fn ($slot) => [$slot->slot_start->format('H:i') => $slot->slot_end->format('H:i')])

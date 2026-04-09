@@ -38,18 +38,20 @@ class CourtSlotService
         $reservedSlots = $this->reservationRepository->getReservedSlotsForCourtAndDate($court, $date);
         $downtimeSlots = $this->downtimeSlotService->getForCourtAndDate($court, $date);
         $planSlots = $checkByPlan ? $this->planSlotService->getForDateUserAndCourtType($court->courtType, $date, $user) : null;
+        $slotsForSale = $this->reservationRepository->getSlotForSaleByCourtAndDate($court, $date);
 
-        return $this->calculateAvailableSlots($intervalPrices, $court, $date, $reservedSlots, $downtimeSlots, $planSlots, $user);
+        return $this->calculateAvailableSlots($intervalPrices, $court, $date, $reservedSlots, $downtimeSlots, $planSlots, $user, $slotsForSale);
     }
 
     private function calculateAvailableSlots(
         Collection $intervalPrices,
-        Court $court,
-        Carbon $date,
-        array $reservedSlots,
-        array $downtimeSlots,
-        array $planSlots = null,
-        User $user = null
+        Court      $court,
+        Carbon     $date,
+        array      $reservedSlots,
+        array      $downtimeSlots,
+        array      $planSlots = null,
+        User       $user = null,
+        array      $slotsForSale = []
     ): Collection
     {
         $slots = collect();
@@ -66,8 +68,17 @@ class CourtSlotService
                 $slotEndDateTime = $date->copy()->setTimeFromTimeString($slot['end_time']);
 
                 if ($this->courtSlotAvailabilityChecker->isAvailable($slotDateTime, $slotEndDateTime, $reservedSlots, $downtimeSlots, $planSlots)) {
+                    $key = $slotDateTime->format('H:i');
+
                     $slots->push(
-                        $this->createSlot($court, $intervalPrice, $slotDateTime, $slot, $specialPrice)
+                        $this->createSlot(
+                            $court,
+                            $intervalPrice,
+                            $slotDateTime,
+                            $slot,
+                            $specialPrice,
+                            isset($slotsForSale[$key]) ? 'sale' : 'standard'
+                        )
                     );
                 }
             }
@@ -76,7 +87,7 @@ class CourtSlotService
         return $slots;
     }
 
-    private function createSlot(Court $court, IntervalPrice $price, Carbon $slotDateTime, array $slot, float $userPrice): array
+    private function createSlot(Court $court, IntervalPrice $price, Carbon $slotDateTime, array $slot, float $userPrice, string $type): array
     {
         return [
             'court_id' => $court->id,
@@ -86,6 +97,7 @@ class CourtSlotService
             'end_time' => $slot['end_time'],
             'price' => $userPrice,
             'original_price' => floatval($price->price),
+            'type' => $type,
         ];
     }
 }

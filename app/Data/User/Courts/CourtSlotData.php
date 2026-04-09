@@ -23,6 +23,8 @@ class CourtSlotData extends Data
         public float  $price,
 
         public float  $original_price,
+
+        public string $type,
     )
     {
     }
