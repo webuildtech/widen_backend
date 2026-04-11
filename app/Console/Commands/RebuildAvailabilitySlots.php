@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\AvailabilitySlotType;
 use App\Models\AvailabilitySlot;
 use App\Models\Court;
 use App\Models\Interval;
@@ -72,14 +73,7 @@ class RebuildAvailabilitySlots extends Command
                         continue;
                     }
 
-                    $reservationsByDate = $court->reservationSlots()
-                        ->active()
-                        ->whereBetween('slot_start', [Carbon::parse($timeWindowStart)->startOfDay(), $periodEnd])
-                        ->get(['slot_start', 'slot_end'])
-                        ->groupBy(fn($r) => $r->slot_start->toDateString())
-                        ->map(fn(Collection $group) => $group->mapWithKeys(
-                            fn($r) => [$r->slot_start->format('H:i') => $r->slot_end->format('H:i')]
-                        ));
+                    $reservationsByDate = $this->getReservationsByDate($court, $timeWindowStart, $periodEnd);
 
                     $downtimes = $court->downtimes()
                         ->where('date_to', '>=', $genFromDate->toDateString())
@@ -123,6 +117,7 @@ class RebuildAvailabilitySlots extends Command
                                 'end_time' => $slot['end_time'],
                                 'is_reserved' => $reservedMap->has($slot['start_time']),
                                 'is_blocked' => $blockedMap->has($slot['start_time']),
+                                'type' => $reservedMap->get($slot['start_time'])?->value ?? null,
                             ];
                         }
 
@@ -156,14 +151,7 @@ class RebuildAvailabilitySlots extends Command
         $yesterdayStart = Carbon::parse($tailDate)->startOfDay();
         $yesterdayEnd = Carbon::parse($tailDate)->endOfDay();
 
-        $reservationsByDate = $court->reservationSlots()
-            ->active()
-            ->whereBetween('slot_start', [Carbon::parse($timeWindowStart)->startOfDay(), $yesterdayEnd])
-            ->get(['slot_start', 'slot_end'])
-            ->groupBy(fn($r) => $r->slot_start->toDateString())
-            ->map(fn(Collection $group) => $group->mapWithKeys(
-                fn($r) => [$r->slot_start->format('H:i') => $r->slot_end->format('H:i')]
-            ));
+        $reservationsByDate = $this->getReservationsByDate($court, $timeWindowStart, $yesterdayEnd);
 
         $downtimes = $court->downtimes()
             ->where('date_to', '>=', $tailDate)
@@ -187,6 +175,7 @@ class RebuildAvailabilitySlots extends Command
                 'end_time' => $row->end_time,
                 'is_reserved' => $reservedMap->has($start),
                 'is_blocked' => $blockedMap->has($start),
+                'type' => $reservedMap->get($start)?->value ?? null,
             ];
         }
 
@@ -209,6 +198,26 @@ class RebuildAvailabilitySlots extends Command
         });
     }
 
+    protected function getReservationsByDate(Court $court, Carbon $start, Carbon $end)
+    {
+        return $court->reservationSlots()
+            ->active()
+            ->with([
+                'reservation:id,owner_id,owner_type,delete_after_failed_payment',
+                'reservation.owner',
+            ])
+            ->whereBetween('slot_start', [$start->startOfDay(), $end])
+            ->get(['id', 'reservation_id', 'slot_start'])
+            ->groupBy(fn($r) => $r->slot_start->toDateString())
+            ->map(fn(Collection $group) => $group->mapWithKeys(
+                fn($r) => [
+                    $r->slot_start->format('H:i') => $this->getType(
+                        $r->reservation?->owner?->email,
+                        $r->reservation?->delete_after_failed_payment
+                    )
+                ]
+            ));
+    }
     protected function warmSlotCache(Interval $interval, SlotService $slotService): void
     {
         if (isset($this->slotCache[$interval->id])) {
@@ -277,6 +286,23 @@ class RebuildAvailabilitySlots extends Command
     protected function flushBulk(array $rows): void
     {
         AvailabilitySlot::query()->insertOrIgnore($rows);
+    }
+
+    protected function getType(string $email, ?bool $deleteAfterFailedPayment): AvailabilitySlotType
+    {
+        if ($email === '123@gmail.com') {
+            return AvailabilitySlotType::TOURNAMENT;
+        }
+
+        if ($email === 'info@septynisesi.lt') {
+            return AvailabilitySlotType::ACADEMY;
+        }
+
+        if ($deleteAfterFailedPayment === false) {
+            return AvailabilitySlotType::SEASON;
+        }
+
+        return AvailabilitySlotType::SPOT;
     }
 }
 

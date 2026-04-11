@@ -2,10 +2,13 @@
 
 namespace App\Services\Availability;
 
+use App\Enums\AvailabilitySlotType;
 use App\Models\AvailabilitySlot;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AvailabilityStatsService
 {
@@ -29,7 +32,8 @@ class AvailabilityStatsService
         }
 
         $query = AvailabilitySlot::query()
-            ->when($end,
+            ->when(
+                $end,
                 fn($q) => $q->whereBetween('date', [$start, $end]),
                 fn($q) => $q->whereDate('date', $start)
             )
@@ -41,6 +45,7 @@ class AvailabilityStatsService
                 DB::raw('SUM(CASE WHEN COALESCE(is_reserved,0)=1 THEN 1 ELSE 0 END) AS reserved'),
                 DB::raw('SUM(CASE WHEN COALESCE(is_blocked,0)=1 THEN 1 ELSE 0 END) AS blocked'),
                 DB::raw('SUM(CASE WHEN COALESCE(is_reserved,0)=0 AND COALESCE(is_blocked,0)=0 THEN 1 ELSE 0 END) AS free'),
+                ...$this->reservedByTypeSelects(),
             ])
             ->groupBy('court_type_id')
             ->orderBy('court_type_id');
@@ -56,6 +61,7 @@ class AvailabilityStatsService
             'reserved' => $stats->sum('reserved'),
             'blocked' => $stats->sum('blocked'),
             'free' => $stats->sum('free'),
+            'reserved_by_type' => $this->sumReservedByType($stats),
         ];
 
         $result = ['overall' => $this->enrichPeriod($overall)];
@@ -71,6 +77,7 @@ class AvailabilityStatsService
                     'reserved' => $row->reserved,
                     'blocked' => $row->blocked,
                     'free' => $row->free,
+                    'reserved_by_type' => $this->extractReservedByTypeFromRow($row),
                 ]),
             ];
         })->toArray();
@@ -79,6 +86,48 @@ class AvailabilityStatsService
             ...$result,
             'by_court_type' => $byType,
         ];
+    }
+
+    private function reservedByTypeSelects(): array
+    {
+        return array_map(function (AvailabilitySlotType $type) {
+            $alias = $this->reservedByTypeAlias($type);
+
+            return DB::raw(sprintf(
+                "SUM(CASE WHEN COALESCE(is_reserved,0)=1 AND type='%s' THEN 1 ELSE 0 END) AS %s",
+                $type->value,
+                $alias
+            ));
+        }, AvailabilitySlotType::cases());
+    }
+
+    private function sumReservedByType(Collection $stats): array
+    {
+        $result = [];
+
+        foreach (AvailabilitySlotType::cases() as $type) {
+            $result[$type->value] = $stats->sum($this->reservedByTypeAlias($type));
+        }
+
+        return $result;
+    }
+
+    private function extractReservedByTypeFromRow(object $row): array
+    {
+        $result = [];
+
+        foreach (AvailabilitySlotType::cases() as $type) {
+            $alias = $this->reservedByTypeAlias($type);
+
+            $result[$type->value] = $row->{$alias} ?? 0;
+        }
+
+        return $result;
+    }
+
+    private function reservedByTypeAlias(AvailabilitySlotType $type): string
+    {
+        return 'reserved_type_' . Str::snake($type->value);
     }
 
     private function enrichPeriod(array $stats): array
@@ -92,6 +141,20 @@ class AvailabilityStatsService
         $stats['reserved_pct'] = $this->pct($stats['reserved'], $total);
         $stats['blocked_pct'] = $this->pct($stats['blocked'], $total);
         $stats['free_pct'] = $this->pct($stats['free'], $total);
+
+        $reservedByType = [];
+
+        foreach (AvailabilitySlotType::cases() as $type) {
+            $count = $stats['reserved_by_type'][$type->value] ?? 0;
+
+            $reservedByType[] = [
+                'type' => $type,
+                'count' => $count,
+                'pct' => $this->pct($count, $total),
+            ];
+        }
+
+        $stats['reserved_by_type'] = $reservedByType;
 
         return $stats;
     }

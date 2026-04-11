@@ -2,7 +2,9 @@
 
 namespace App\Data\Admin\Availability;
 
+use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -22,6 +24,9 @@ class AvailabilityStatsData extends Data
 
         public int $occupied,
         public float $occupied_pct,
+
+        /** @var array<int, AvailabilityReservedByTypeData> */
+        public array $reserved_by_type,
     )
     {
     }
