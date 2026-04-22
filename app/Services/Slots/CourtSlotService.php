@@ -28,14 +28,14 @@ class CourtSlotService
     {
     }
 
-    public function generateFreeSlots(Court $court, Carbon $date, User $user = null, bool $checkByPlan = true): Collection
+    public function generateFreeSlots(Court $court, Carbon $date, User $user = null, bool $checkByPlan = true, int $skipReservation = null): Collection
     {
         if (!$interval = $this->intervalRepository->getForCourtAndDateFirst($court, $date)) {
             return collect();
         }
 
         $intervalPrices = $this->intervalService->getPricesByDay($interval, $date);
-        $reservedSlots = $this->reservationRepository->getReservedSlotsForCourtAndDate($court, $date);
+        $reservedSlots = $this->reservationRepository->getReservedSlotsForCourtAndDate($court, $date, $skipReservation);
         $downtimeSlots = $this->downtimeSlotService->getForCourtAndDate($court, $date);
         $planSlots = $checkByPlan ? $this->planSlotService->getForDateUserAndCourtType($court->courtType, $date, $user) : null;
         $slotsForSale = $this->reservationRepository->getSlotForSaleByCourtAndDate($court, $date);

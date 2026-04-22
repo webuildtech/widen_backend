@@ -16,7 +16,7 @@ class ReservationSlotService
     {
     }
 
-    public function splitIntoFreeAndOccupied(array $slots, User $user = null): array
+    public function splitIntoFreeAndOccupied(array $slots, User $user = null, bool $checkByPlan = true, int $skipReservation = null): array
     {
         $slots = collect($slots);
         $free = collect();
@@ -35,7 +35,7 @@ class ReservationSlotService
             $court = $courts[$courtId] ?? throw new ModelNotFoundException("Court $courtId not found");
 
             foreach ($slotsByDate as $date => $courtDaySlots) {
-                $splitSlots = $this->getFreeAndOccupied($court, Carbon::parse($date), $courtDaySlots, $user);
+                $splitSlots = $this->getFreeAndOccupied($court, Carbon::parse($date), $courtDaySlots, $user, $checkByPlan, $skipReservation);
 
                 $free = $free->merge($splitSlots['free']);
                 $occupied = $occupied->merge($splitSlots['occupied']);
@@ -45,12 +45,12 @@ class ReservationSlotService
         return ['free' => $free, 'occupied' => $occupied];
     }
 
-    public function getFreeAndOccupied(Court $court, Carbon $date, $slots, User $user = null, bool $checkByPlan = true): array
+    public function getFreeAndOccupied(Court $court, Carbon $date, $slots, User $user = null, bool $checkByPlan = true, int $skipReservation = null): array
     {
         $free = collect();
         $occupied = collect();
 
-        $availableSlots = $this->courtSlotService->generateFreeSlots($court, $date, $user, $checkByPlan);
+        $availableSlots = $this->courtSlotService->generateFreeSlots($court, $date, $user, $checkByPlan, $skipReservation);
         $indexedSlots = $availableSlots->keyBy(fn($slot) => $this->generateSlotKey($slot));
 
         foreach ($slots as $slot) {

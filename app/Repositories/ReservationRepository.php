@@ -10,11 +10,17 @@ use Illuminate\Support\Collection;
 
 class ReservationRepository
 {
-    public function getReservedSlotsForCourtAndDate(Court $court, Carbon $date): array
+    public function getReservedSlotsForCourtAndDate(Court $court, Carbon $date, int $skipReservation = null): array
     {
-        return $court->reservationSlots()
+        $slots = $court->reservationSlots()
             ->active()
-            ->whereDate('slot_start', $date)
+            ->whereDate('slot_start', $date);
+
+        if ($skipReservation) {
+            $slots->where('reservation_id', '!=', $skipReservation);
+        }
+
+        return $slots
             ->get(['slot_start', 'slot_end'])
             ->mapWithKeys(fn ($slot) => [$slot->slot_start->format('H:i') => $slot->slot_end->format('H:i')])
             ->toArray();

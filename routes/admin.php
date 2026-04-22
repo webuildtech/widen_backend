@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AvailabilityController;
 use App\Http\Controllers\Admin\CourtController;
+use App\Http\Controllers\Admin\CourtSlotController;
 use App\Http\Controllers\Admin\CourtTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscountCodeController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PlanCourtTypeRuleController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\ReservationUpdateController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\Users\UserBalanceEntryController;
 use App\Http\Controllers\Admin\Users\UserController;
@@ -68,6 +70,8 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
         Route::get('courts/all', [CourtController::class, 'all']);
         Route::apiResource('courts', CourtController::class);
 
+        Route::get('court-slots', CourtSlotController::class);
+
         Route::apiResource('downtimes', DowntimeController::class);
 
         Route::apiResource('discount-codes', DiscountCodeController::class);
@@ -95,6 +99,7 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
         Route::post('reservations/{reservation}/cancel-all-same', [ReservationController::class, 'cancelAllSame']);
         Route::get('reservations/{reservation}/pay', [ReservationController::class, 'pay']);
         Route::post('reservations/{reservation}/comment', [ReservationController::class, 'comment']);
+        Route::post('reservations/{reservation}/update', ReservationUpdateController::class);
 
         Route::get('future-members', [FutureMemberController::class, 'index']);
 

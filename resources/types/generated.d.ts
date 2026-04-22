@@ -4,6 +4,7 @@ declare namespace App.Data.Admin.Admins {
         first_name: string;
         last_name: string | null;
         role: App.Enums.AdminRole;
+        locale: App.Enums.Locale;
         email: string;
         phone: string | null;
     };
@@ -13,6 +14,7 @@ declare namespace App.Data.Admin.Admins {
         last_name: string;
         role: App.Enums.AdminRole;
         email: string;
+        locale: App.Enums.Locale;
         phone: string | null;
         updated_at: string;
     };
@@ -25,6 +27,7 @@ declare namespace App.Data.Admin.Admins {
         last_name: string;
         email: string;
         role: App.Enums.AdminRole;
+        locale: App.Enums.Locale;
         phone?: string | null;
         password: string;
     };
@@ -33,6 +36,7 @@ declare namespace App.Data.Admin.Admins {
         last_name?: string | null;
         email?: string;
         role?: App.Enums.AdminRole;
+        locale?: App.Enums.Locale;
         phone?: string | null;
         password?: string;
     };
@@ -42,7 +46,11 @@ declare namespace App.Data.Admin.Auth {
         email: string;
         first_name: string;
         last_name: string | null;
+        locale: App.Enums.Locale;
         updated_at: string;
+    };
+    export type AccountLocaleUpdateData = {
+        locale: App.Enums.Locale;
     };
     export type AuthData = {
         authUser: App.Data.Admin.Auth.AccountData;
@@ -65,6 +73,11 @@ declare namespace App.Data.Admin.Availability {
         labels: Array<string>;
         data: Array<App.Data.Admin.Availability.AvailabilityStatsWithCourtTypesData>;
     };
+    export type AvailabilityReservedByTypeData = {
+        type: App.Enums.AvailabilitySlotType;
+        count: number;
+        pct: number;
+    };
     export type AvailabilityStatsData = {
         total: number;
         reserved: number;
@@ -75,6 +88,7 @@ declare namespace App.Data.Admin.Availability {
         free_pct: number;
         occupied: number;
         occupied_pct: number;
+        reserved_by_type: Array<App.Data.Admin.Availability.AvailabilityReservedByTypeData>;
     };
     export type AvailabilityStatsWithCourtTypesData = {
         overall: App.Data.Admin.Availability.AvailabilityStatsData;
@@ -86,6 +100,24 @@ declare namespace App.Data.Admin.Availability {
         date_to?: string;
         time_from?: string;
         time_to?: string;
+    };
+}
+declare namespace App.Data.Admin.CourtSlot {
+    export type CourtFilterData = {
+        courtTypeId: number | null;
+        date: string;
+    };
+    export type CourtListData = {
+        id: number;
+        name: string;
+        slots: Array<App.Data.Admin.CourtSlot.CourtSlotData>;
+    };
+    export type CourtSlotData = {
+        court_id: number;
+        date: string;
+        start_time: string;
+        end_time: string;
+        type?: string;
     };
 }
 declare namespace App.Data.Admin.Courts {
@@ -525,6 +557,10 @@ declare namespace App.Data.Admin.Reservations {
         price_with_vat: number;
         is_paid: boolean;
         canceled_at: string | null;
+        comment: string | null;
+    };
+    export type ReservationCommentData = {
+        comment: string | null;
     };
     export type ReservationFilterData = {
         courts_ids?: Array<number>;
@@ -545,6 +581,15 @@ declare namespace App.Data.Admin.Reservations {
         paid_at: string | null;
         canceled_at: string | null;
         updated_at: string;
+    };
+    export type ReservationSlotStoreData = {
+        court_id: number;
+        date: string;
+        start_time: string;
+        end_time: string;
+    };
+    export type ReservationUpdateData = {
+        slots: Array<App.Data.Admin.Reservations.ReservationSlotStoreData>;
     };
     export type TimeBlockStoreData = {
         day: App.Enums.Day;
@@ -776,6 +821,7 @@ declare namespace App.Data.User.Courts {
         end_time: string;
         price: number;
         original_price: number;
+        type: string;
     };
 }
 declare namespace App.Data.User.DiscountCodes {
@@ -889,6 +935,12 @@ declare namespace App.Data.User.Plans.Prices {
         price: number;
     };
 }
+declare namespace App.Data.User.ReservationSlots {
+    export type MyReservationSlotData = {
+        court_id: number;
+        start_time: string;
+    };
+}
 declare namespace App.Data.User.Reservations {
     export type ReservationData = {
         id: number;
@@ -942,8 +994,14 @@ declare namespace App.Data.User.Subscriptions {
 }
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
+    export type AvailabilitySlotType =
+        | "spot"
+        | "season"
+        | "academy"
+        | "tournament";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type DiscountCodeType = "percent" | "fixed";
+    export type Locale = "lt" | "en";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";
 }
