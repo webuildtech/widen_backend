@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\AccountController;
+use App\Http\Controllers\User\AdvertisementController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CourtController;
@@ -18,6 +19,8 @@ use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\ReservationSlotController;
 use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
+
+Route::get('advertisements', AdvertisementController::class);
 
 Route::get('court-types', [CourtTypeController::class, 'index']);
 

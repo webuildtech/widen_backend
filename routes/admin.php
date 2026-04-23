@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AvailabilityController;
 use App\Http\Controllers\Admin\CourtController;
@@ -124,6 +125,11 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
 
         Route::prefix('reports')->group(function () {
             Route::get('user-balances', [ReportController::class, 'userBalances']);
+        });
+
+        Route::prefix('advertisements')->group(function () {
+            Route::get('', [AdvertisementController::class, 'show']);
+            Route::put('', [AdvertisementController::class, 'update']);
         });
     });
 });

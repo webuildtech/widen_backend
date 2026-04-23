@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Admin;
+use App\Models\Advertisement;
 use App\Models\Court;
 use App\Models\CourtType;
 use App\Models\DiscountCode;
@@ -46,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         Relation::enforceMorphMap([
+            'advertisement' => Advertisement::class,
             'futureMember' => FutureMember::class,
             'admin' => Admin::class,
             'courtType' => CourtType::class,

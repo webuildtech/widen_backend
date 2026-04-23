@@ -41,6 +41,22 @@ declare namespace App.Data.Admin.Admins {
         password?: string;
     };
 }
+declare namespace App.Data.Admin.Advertisements {
+    export type AdvertisementData = {
+        id: number;
+        primary_button_label: string | null;
+        primary_button_to: string | null;
+        is_active: boolean;
+        logo: App.Data.Core.Media.MediaData | null;
+    };
+    export type AdvertisementUpdateData = {
+        primary_button_label?: string | null;
+        primary_button_to?: string | null;
+        is_active?: boolean;
+        logoFile?: any;
+        deleteLogo?: boolean;
+    };
+}
 declare namespace App.Data.Admin.Auth {
     export type AccountData = {
         email: string;
@@ -766,6 +782,13 @@ declare namespace App.Data.User.Account {
         company_vat_code?: string | null;
         company_address?: string | null;
         company_phone?: string | null;
+    };
+}
+declare namespace App.Data.User.Advertisements {
+    export type AdvertisementData = {
+        primary_button_label: string | null;
+        primary_button_to: string | null;
+        logoUrl: string | null;
     };
 }
 declare namespace App.Data.User.Auth {

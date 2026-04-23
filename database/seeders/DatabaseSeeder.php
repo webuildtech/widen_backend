@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CourtTypesSeeder::class);
         $this->call(DefaultPlanSeeder::class);
         $this->call(PlansFeaturesSeeder::class);
+        $this->call(AdvertisementsSeeder::class);
     }
 }
