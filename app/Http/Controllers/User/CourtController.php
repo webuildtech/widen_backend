@@ -28,6 +28,8 @@ class CourtController extends Controller
             ->with('courtType')
             ->whereHas('intervals')
             ->get()
+            ->sortBy('courtType.sort_order')
+            ->values()
             ->map(function (Court $court) use ($user, $permissions, $data) {
                 $court->slots = $permissions[$court->court_type_id]
                     ? $this->courtSlotService->generateFreeSlots($court, $data->date, $user)

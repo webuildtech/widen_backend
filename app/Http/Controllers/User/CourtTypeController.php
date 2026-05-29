@@ -10,7 +10,7 @@ class CourtTypeController extends Controller
 {
     public function index()
     {
-        $courtTypes = CourtType::all();
+        $courtTypes = CourtType::whereHas('courts')->get();
 
         return CourtTypeSelectOptionData::collect($courtTypes);
     }
