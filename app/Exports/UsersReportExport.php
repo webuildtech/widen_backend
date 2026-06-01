@@ -55,14 +55,14 @@ class UsersReportExport implements FromCollection, WithHeadings, WithColumnForma
                     'company_vat_code' => $isCompany && $user->company_vat_code ? $user->company_vat_code : 'ND',
                     'from_date' => $fromDate,
                     'to_date' => $toDate,
-                    'start_balance' => $this->userService->getBalanceByDay($user, $this->from->copy()->subDay()),
+                    'start_balance' => $this->userService->getRealBalanceByDay($user, $this->from->copy()->subDay()),
                     'price_all' => $price,
                     'price' => $price,
                     '-',
                     '-',
                     'vat' => $vat,
                     'price_with_vat' => $priceWithVat,
-                    'end_balance' => $this->userService->getBalanceByDay($user, $this->to),
+                    'end_balance' => $this->userService->getRealBalanceByDay($user, $this->to),
                     'balance_entries_amount' => $balanceEntriesAmount > 0 ? $balanceEntriesAmount : '-',
                 ];
             });

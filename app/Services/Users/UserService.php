@@ -51,4 +51,31 @@ class UserService
 
         return (float)$paidAmount - (float)$invoiceAmount;
     }
+
+    /**
+     * Real user balance (excluding the effect of admin-gifted money).
+     *
+     * getBalanceByDay() returns (real payments - invoices). When gifted money
+     * is spent, the invoice grows but there is no matching payment (it was paid
+     * from balance), which produces a phantom negative balance. Here we add back
+     * the portion of invoices that was covered by the gift, so that neither the
+     * spent nor the unused gift distorts the real balance.
+     */
+    public function getRealBalanceByDay(User $user, Carbon $date): float
+    {
+        $date = $date->copy()->endOfDay();
+
+        $invoiceAmount = (float)$user->invoices()
+            ->where('date', '<=', $date)
+            ->sum('price_with_vat');
+
+        $giftedAmount = (float)$user->balanceEntries()
+            ->where('source', 'admin_adjustment')
+            ->where('created_at', '<=', $date)
+            ->sum('amount');
+
+        $usedGift = max(0, min($giftedAmount, $invoiceAmount));
+
+        return $this->getBalanceByDay($user, $date) + $usedGift;
+    }
 }
