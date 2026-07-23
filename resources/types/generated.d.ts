@@ -713,6 +713,8 @@ declare namespace App.Data.Core.CourtTypes {
     export type CourtTypeSelectOptionData = {
         id: number;
         name: string;
+        note: string | null;
+        color: string | null;
     };
 }
 declare namespace App.Data.Core.Media {
@@ -1018,10 +1020,7 @@ declare namespace App.Data.User.Subscriptions {
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
     export type AvailabilitySlotType =
-        | "spot"
-        | "season"
-        | "academy"
-        | "tournament";
+        "spot" | "season" | "academy" | "tournament";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type DiscountCodeType = "percent" | "fixed";
     export type Locale = "lt" | "en";

@@ -14,6 +14,8 @@ class CourtTypeSelectOptionData extends Data
         public string  $name,
 
         public ?string $note,
+
+        public ?string $color,
     )
     {
     }
