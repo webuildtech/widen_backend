@@ -15,6 +15,9 @@ class DiscountCodeData extends Data
         public DiscountCodeType $type,
 
         public float            $value,
+
+        /** @var array<int> */
+        public array            $court_types_ids,
     )
     {
     }

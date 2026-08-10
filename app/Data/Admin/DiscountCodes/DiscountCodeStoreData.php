@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MergeValidationRules;
 use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
 use Spatie\LaravelData\Attributes\Validation\Date;
+use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\Validation\Numeric;
@@ -44,14 +45,24 @@ class DiscountCodeStoreData extends Data
         public Carbon|Optional|null $date_to,
 
         public bool|Optional        $is_active,
+
+        /** @var array<int> */
+        public array|Optional|null  $court_types_ids,
     )
     {
+        if ($this->court_types_ids === null) {
+            $this->court_types_ids = [];
+        }
     }
 
     public static function rules(): array
     {
         return [
             'value' => [Rule::when(request('type') === DiscountCodeType::PERCENT->value, ['max:100'])],
+            'court_types_ids.*' => [
+                'required',
+                new Exists('court_types', 'id', withoutTrashed: true),
+            ],
         ];
     }
 }

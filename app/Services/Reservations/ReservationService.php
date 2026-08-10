@@ -3,6 +3,7 @@
 namespace App\Services\Reservations;
 
 use App\Enums\DiscountCodeType;
+use App\Models\Court;
 use App\Models\DiscountCode;
 use App\Models\Guest;
 use App\Models\Reservation;
@@ -15,6 +16,8 @@ use Illuminate\Validation\ValidationException;
 
 class ReservationService
 {
+    private array $courtTypeIds = [];
+
     public function __construct(
         protected PlanCourtTypeRuleService $planCourtTypeRuleService,
     )
@@ -36,7 +39,7 @@ class ReservationService
                 $totalDiscount += $discount;
             }
 
-            if ($discountCode) {
+            if ($discountCode && $discountCode->appliesToCourtType($this->getCourtTypeId($slot['court_id']))) {
                 $discount = 0;
 
                 if ($discountCode->type === DiscountCodeType::FIXED) {
@@ -187,5 +190,10 @@ class ReservationService
                 $this->delete($reservation);
             }
         }
+    }
+
+    private function getCourtTypeId(int $courtId): ?int
+    {
+        return $this->courtTypeIds[$courtId] ??= Court::whereKey($courtId)->value('court_type_id');
     }
 }

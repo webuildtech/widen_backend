@@ -7,6 +7,7 @@ use App\Data\User\Reservations\ReservationPayData;
 use App\Data\User\Reservations\ReservationData;
 use App\Data\User\Reservations\ReservationStoreData;
 use App\Http\Controllers\Controller;
+use App\Models\Court;
 use App\Models\Guest;
 use App\Models\Reservation;
 use App\Models\ReservationGroup;
@@ -90,7 +91,12 @@ class ReservationController extends Controller
         $discountCode = null;
 
         if (is_string($data->discount_code)) {
-            $result = $this->discountCodeService->validateCode($data->discount_code);
+            $courtTypeIds = Court::whereIn('id', $data->slots->pluck('court_id')->unique())
+                ->pluck('court_type_id')
+                ->unique()
+                ->all();
+
+            $result = $this->discountCodeService->validateCode($data->discount_code, $courtTypeIds);
 
             if (!$result['valid']) {
                 return response()->json(['message' => $result['message']], 406);

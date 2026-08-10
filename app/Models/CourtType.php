@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -26,5 +27,10 @@ class CourtType extends BaseModel
     public function planRules(): HasMany
     {
         return $this->hasMany(PlanCourtTypeRule::class);
+    }
+
+    public function discountCodes(): BelongsToMany
+    {
+        return $this->belongsToMany(DiscountCode::class);
     }
 }

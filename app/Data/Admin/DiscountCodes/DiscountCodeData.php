@@ -28,6 +28,9 @@ class DiscountCodeData extends Data
         public ?Carbon          $date_from,
 
         public ?Carbon          $date_to,
+
+        /** @var array<int> */
+        public array            $court_types_ids,
     )
     {
     }

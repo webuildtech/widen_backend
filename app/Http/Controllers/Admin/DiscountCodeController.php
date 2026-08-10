@@ -8,15 +8,23 @@ use App\Data\Admin\DiscountCodes\DiscountCodeListData;
 use App\Data\Admin\DiscountCodes\DiscountCodeUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\DiscountCode;
+use App\Services\DiscountCodeService;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class DiscountCodeController extends Controller
 {
+    public function __construct(
+        protected DiscountCodeService $discountCodeService,
+    )
+    {
+    }
+
     public function index()
     {
         $discountCodes = QueryBuilder::for(DiscountCode::class)
+            ->with('courtTypes')
             ->allowedSorts([
                 'name',
                 'is_active',
@@ -34,6 +42,7 @@ class DiscountCodeController extends Controller
                 'code',
                 AllowedFilter::operator('value_from', FilterOperator::GREATER_THAN_OR_EQUAL, 'and', 'value'),
                 AllowedFilter::operator('value_to', FilterOperator::LESS_THAN_OR_EQUAL, 'and', 'value'),
+                AllowedFilter::exact('court_type_id', 'courtTypes.id'),
                 AllowedFilter::scope('date_from_between'),
                 AllowedFilter::scope('date_to_between'),
                 AllowedFilter::scope('updated_at_between'),
@@ -46,9 +55,9 @@ class DiscountCodeController extends Controller
 
     public function store(DiscountCodeStoreData $data): DiscountCodeData
     {
-        $discountCode = DiscountCode::create($data->all());
+        $discountCode = $this->discountCodeService->create($data);
 
-        return DiscountCodeData::from($discountCode->refresh());
+        return DiscountCodeData::from($discountCode);
     }
 
     public function show(DiscountCode $discountCode): DiscountCodeData
@@ -58,9 +67,9 @@ class DiscountCodeController extends Controller
 
     public function update(DiscountCodeUpdateData $data, DiscountCode $discountCode): DiscountCodeData
     {
-        $discountCode->update($data->all());
+        $discountCode = $this->discountCodeService->update($discountCode, $data);
 
-        return DiscountCodeData::from($discountCode->refresh());
+        return DiscountCodeData::from($discountCode);
     }
 
     public function destroy(DiscountCode $discountCode): array

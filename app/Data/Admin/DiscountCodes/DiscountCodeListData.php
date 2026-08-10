@@ -31,6 +31,9 @@ class DiscountCodeListData extends Data
 
         public ?string          $date_to,
 
+        /** @var array<int> */
+        public array            $court_types_ids,
+
         public Carbon           $updated_at,
     )
     {

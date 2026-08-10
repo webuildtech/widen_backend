@@ -201,6 +201,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         usage_limit: number | null;
         date_from: string | null;
         date_to: string | null;
+        court_types_ids: Array<number>;
     };
     export type DiscountCodeListData = {
         id: number;
@@ -213,6 +214,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         used: number;
         date_from: string | null;
         date_to: string | null;
+        court_types_ids: Array<number>;
         updated_at: string;
     };
     export type DiscountCodeStoreData = {
@@ -224,6 +226,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_from?: string | null;
         date_to?: string | null;
         is_active?: boolean;
+        court_types_ids?: Array<number> | null;
     };
     export type DiscountCodeUpdateData = {
         name: string;
@@ -234,6 +237,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_from?: string | null;
         date_to?: string | null;
         is_active?: boolean;
+        court_types_ids?: Array<number> | null;
     };
 }
 declare namespace App.Data.Admin.Downtimes {
@@ -621,6 +625,7 @@ declare namespace App.Data.Admin.Subscriptions {
         subscriber: App.Data.Admin.Users.UserSelectOptionData | null;
         started_at: string;
         expired_at: string;
+        canceled_at: string | null;
         is_overdue: boolean;
     };
 }
@@ -854,10 +859,15 @@ declare namespace App.Data.User.Courts {
     };
 }
 declare namespace App.Data.User.DiscountCodes {
+    export type DiscountCodeCheckData = {
+        code: string;
+        court_ids: Array<number> | null;
+    };
     export type DiscountCodeData = {
         code: string;
         type: App.Enums.DiscountCodeType;
         value: number;
+        court_types_ids: Array<number>;
     };
 }
 declare namespace App.Data.User.Forms {

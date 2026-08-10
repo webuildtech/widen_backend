@@ -54,7 +54,7 @@ class SubscriptionController extends Controller
         $discountCode = null;
 
         if (is_string($data->discount_code)) {
-            $result = $this->discountCodeService->validateCode($data->discount_code);
+            $result = $this->discountCodeService->validateCode($data->discount_code, []);
 
             if (!$result['valid']) {
                 return response()->json(['message' => $result['message']], 406);
