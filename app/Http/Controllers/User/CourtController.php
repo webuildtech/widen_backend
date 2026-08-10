@@ -31,7 +31,7 @@ class CourtController extends Controller
             ->sortBy('courtType.sort_order')
             ->values()
             ->map(function (Court $court) use ($user, $permissions, $data) {
-                $court->slots = $permissions[$court->court_type_id]
+                $court->slots = ($permissions[$court->court_type_id] ?? false)
                     ? $this->courtSlotService->generateFreeSlots($court, $data->date, $user)
                     : collect();
 

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Court;
 use App\Models\PlanCourtTypeRule;
 use App\Models\User;
 use Carbon\Carbon;
@@ -28,30 +27,30 @@ class PlanCourtTypeRuleService
         return $planCourtTypeRule->refresh();
     }
 
-    public function getMaxDaysInAdvance(User $user = null, int $courtId = null)
+    public function getMaxDaysInAdvance(User $user = null, int $courtTypeId = null): int
     {
         $plan = $this->planService->getByUser($user);
 
         $courtTypeRules = $plan->courtTypeRules();
 
-        if($courtId) {
-            $courtTypeRules->where('court_type_id', Court::whereId($courtId)->value('court_type_id'));
+        if($courtTypeId) {
+            $courtTypeRules->where('court_type_id', $courtTypeId);
         }
 
-        return $courtTypeRules->max('max_days_in_advance');
+        return (int) $courtTypeRules->max('max_days_in_advance');
     }
 
-    public function getCancelHoursBefore(User $user = null, int $courtId = null)
+    public function getCancelHoursBefore(User $user = null, int $courtTypeId = null): int
     {
         $plan = $this->planService->getByUser($user);
 
         $courtTypeRules = $plan->courtTypeRules();
 
-        if($courtId) {
-            $courtTypeRules->where('court_type_id', Court::whereId($courtId)->value('court_type_id'));
+        if($courtTypeId) {
+            $courtTypeRules->where('court_type_id', $courtTypeId);
         }
 
-        return $courtTypeRules->max('cancel_hours_before');
+        return (int) $courtTypeRules->max('cancel_hours_before');
     }
 
     public function getAllowedCourtTypesByDate(User $user = null, Carbon $date)

@@ -42,7 +42,10 @@ class ReservationSlotStoreData extends Data
                 new Required(),
                 new AfterOrEqual(Carbon::today()),
                 new BeforeOrEqual(Carbon::today()->addDays(
-                    $planCourtTypeRuleService->getMaxDaysInAdvance($user, $context->payload['court_id'])
+                    $planCourtTypeRuleService->getMaxDaysInAdvance(
+                        $user,
+                        Court::whereId($context->payload['court_id'])->value('court_type_id')
+                    )
                 ))
             ]
         ];

@@ -29,6 +29,7 @@ class ReservationDeleteCommand extends Command
         $cancelHoursBefore = PlanCourtTypeRule::max('cancel_hours_before');
 
         $this->reservationRepository->getUnpaidForDate(now()->addHours($cancelHoursBefore), '<=')
+            ->load('court')
             ->each(function (Reservation $reservation) {
                 $cancelBefore = now()->addHours(
                     $this->planCourtTypeRuleService->getCancelHoursBefore(

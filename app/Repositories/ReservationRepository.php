@@ -44,6 +44,7 @@ class ReservationRepository
             ->whereCanceledAt(null)
             ->whereOwnerType('user')
             ->where('start_time', $operator, $date)
+            ->with('owner')
             ->get();
     }
 }
