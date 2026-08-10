@@ -20,7 +20,8 @@ class SocialService
             'email' => $user->getEmail(),
             'first_name' => $user->user['given_name'] ?? $user->getName(),
             'last_name' => $user->user['family_name'],
-            'password' => Str::password()
+            'password' => Str::password(),
+            'locale' => app()->getLocale(),
         ];
 
         return $this->userService->create($userData);

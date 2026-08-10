@@ -20,80 +20,83 @@ use App\Http\Controllers\User\ReservationSlotController;
 use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
 
-Route::get('advertisements', AdvertisementController::class);
+Route::middleware('set_locale')->group(function () {
+    Route::get('advertisements', AdvertisementController::class);
 
-Route::get('court-types', [CourtTypeController::class, 'index']);
+    Route::get('court-types', [CourtTypeController::class, 'index']);
 
-Route::get('plan-court-type-rules', [PlanCourtTypeRuleController::class, 'index']);
+    Route::get('plan-court-type-rules', [PlanCourtTypeRuleController::class, 'index']);
 
-Route::prefix('courts')->group(function () {
-    Route::get('', [CourtController::class, 'index']);
-});
-
-Route::post('/discount-codes/check', [DiscountCodeController::class, 'check']);
-
-Route::post('contact-us', [ContactUsController::class, 'store']);
-
-Route::prefix('plans')->group(function () {
-    Route::get('', [PlanController::class, 'index']);
-});
-
-Route::prefix('payments')->group(function () {
-    Route::post('validate', [PaymentController::class, 'validate']);
-    Route::post('callback', [PaymentController::class, 'callback']);
-});
-
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('password-recovery', 'passwordRecovery');
-    Route::post('password-reset', 'passwordReset');
-
-    Route::post('social', SocialAuthController::class);
-});
-
-Route::middleware(['auth:user'])->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-
-    Route::prefix('account')->group(function () {
-        Route::get('me', [AccountController::class, 'show']);
-        Route::put('me', [AccountController::class, 'update']);
-        Route::put('change-password', [AccountController::class, 'changePassword']);
-        Route::post('top-up-balance', [AccountController::class, 'topUpBalance']);
+    Route::prefix('courts')->group(function () {
+        Route::get('', [CourtController::class, 'index']);
     });
 
-    Route::prefix('reservations')->group(function () {
-        Route::post('', [ReservationController::class, 'store']);
-        Route::get('', [ReservationController::class, 'index']);
-        Route::post('pay', [ReservationController::class, 'pay']);
-        Route::post('{reservation}/cancel', [ReservationController::class, 'cancel'])
-            ->middleware('can:cancel,reservation');
-    });
+    Route::post('/discount-codes/check', [DiscountCodeController::class, 'check']);
 
-    Route::prefix('reservation-slots')->group(function () {
-        Route::get('my', [ReservationSlotController::class, 'my']);
-    });
+    Route::post('contact-us', [ContactUsController::class, 'store']);
 
-    Route::prefix('subscriptions')->group(function () {
-        Route::get('current', [SubscriptionController::class, 'current']);
-        Route::post('subscribe/{planPrice}', [SubscriptionController::class, 'subscribe']);
+    Route::prefix('plans')->group(function () {
+        Route::get('', [PlanController::class, 'index']);
     });
 
     Route::prefix('payments')->group(function () {
-       Route::get('', [PaymentController::class, 'index']);
+        Route::post('validate', [PaymentController::class, 'validate']);
+        Route::post('callback', [PaymentController::class, 'callback']);
     });
 
-    Route::prefix('invoices')->group(function () {
-        Route::get('', [InvoiceController::class, 'index']);
-        Route::get('{invoice}/download', [InvoiceController::class, 'download']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('register', 'register');
+        Route::post('password-recovery', 'passwordRecovery');
+        Route::post('password-reset', 'passwordReset');
+
+        Route::post('social', SocialAuthController::class);
     });
-});
 
-Route::post('future-members', [FutureMemberController::class, 'store']);
+    Route::middleware(['auth:user'])->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
 
-Route::post('newsletter', NewsletterController::class);
+        Route::prefix('account')->group(function () {
+            Route::get('me', [AccountController::class, 'show']);
+            Route::put('me', [AccountController::class, 'update']);
+            Route::put('change-locale', [AccountController::class, 'changeLocale']);
+        Route::put('change-password', [AccountController::class, 'changePassword']);
+            Route::post('top-up-balance', [AccountController::class, 'topUpBalance']);
+        });
 
-Route::prefix('forms')->group(function () {
-    Route::post('beginners', BeginnerFormController::class);
-    Route::post('companies', CompanyFormController::class);
+        Route::prefix('reservations')->group(function () {
+            Route::post('', [ReservationController::class, 'store']);
+            Route::get('', [ReservationController::class, 'index']);
+            Route::post('pay', [ReservationController::class, 'pay']);
+            Route::post('{reservation}/cancel', [ReservationController::class, 'cancel'])
+                ->middleware('can:cancel,reservation');
+        });
+
+        Route::prefix('reservation-slots')->group(function () {
+            Route::get('my', [ReservationSlotController::class, 'my']);
+        });
+
+        Route::prefix('subscriptions')->group(function () {
+            Route::get('current', [SubscriptionController::class, 'current']);
+            Route::post('subscribe/{planPrice}', [SubscriptionController::class, 'subscribe']);
+        });
+
+        Route::prefix('payments')->group(function () {
+           Route::get('', [PaymentController::class, 'index']);
+        });
+
+        Route::prefix('invoices')->group(function () {
+            Route::get('', [InvoiceController::class, 'index']);
+            Route::get('{invoice}/download', [InvoiceController::class, 'download']);
+        });
+    });
+
+    Route::post('future-members', [FutureMemberController::class, 'store']);
+
+    Route::post('newsletter', NewsletterController::class);
+
+    Route::prefix('forms')->group(function () {
+        Route::post('beginners', BeginnerFormController::class);
+        Route::post('companies', CompanyFormController::class);
+    });
 });

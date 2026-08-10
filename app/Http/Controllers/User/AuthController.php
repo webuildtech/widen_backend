@@ -42,7 +42,7 @@ class AuthController extends Controller
 
     public function register(RegisterData $data)
     {
-        $user = $this->userService->create($data->all());
+        $user = $this->userService->create([...$data->all(), 'locale' => app()->getLocale()]);
 
         return AuthData::from([
             "authUser" => $user,

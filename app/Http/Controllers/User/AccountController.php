@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Data\User\Account\AccountBalanceTopUpData;
 use App\Data\User\Account\AccountData;
+use App\Data\User\Account\AccountLocaleUpdateData;
 use App\Data\User\Account\AccountPasswordChangeData;
 use App\Data\User\Account\AccountUpdateData;
 use App\Enums\PaymentStatus;
@@ -32,6 +33,13 @@ class AccountController extends Controller
     public function update(AccountUpdateData $data): AccountData
     {
         $user = $this->userService->update(auth()->user(), $data->all());
+
+        return AccountData::from($user);
+    }
+
+    public function changeLocale(AccountLocaleUpdateData $data): AccountData
+    {
+        $user = $this->userService->update(auth()->user(), ['locale' => $data->locale]);
 
         return AccountData::from($user);
     }

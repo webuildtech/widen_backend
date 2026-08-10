@@ -3,6 +3,7 @@
 namespace App\Services\Payments;
 
 use App\Models\Payment;
+use App\Support\FrontendUrl;
 use Exception;
 use Log;
 use Maksekeskus\Maksekeskus;
@@ -26,7 +27,8 @@ class MakeCommerceService
 
     public function createTransaction(Payment $payment, string $ip): string
     {
-        $frontendUrl = env('APP_FRONTEND_URL') . '/payment';
+        $locale = FrontendUrl::locale();
+        $frontendUrl = FrontendUrl::to('/payment', $locale);
 
         $transaction = [
             'amount' => $payment->paid_amount,
@@ -52,7 +54,7 @@ class MakeCommerceService
                     'email' => $payment->owner->email,
                     'ip' => $ip,
                     'country' => 'LT',
-                    'locale' => 'LT'
+                    'locale' => strtoupper($locale->value),
                 ]
             ]);
 

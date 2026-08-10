@@ -2,6 +2,7 @@
 
 namespace App\Data\User\Account;
 
+use App\Enums\Locale;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -19,6 +20,8 @@ class AccountData extends Data
         public ?Carbon $birthday,
 
         public ?string $phone,
+
+        public Locale  $locale,
 
         public float   $balance,
 

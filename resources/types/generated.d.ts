@@ -757,6 +757,7 @@ declare namespace App.Data.User.Account {
         last_name: string | null;
         birthday: string | null;
         phone: string | null;
+        locale: App.Enums.Locale;
         balance: number;
         overdraft_limit: number;
         discount_on_everything: number;
@@ -767,6 +768,9 @@ declare namespace App.Data.User.Account {
         company_address: string | null;
         company_phone: string | null;
         has_subscription: boolean;
+    };
+    export type AccountLocaleUpdateData = {
+        locale: App.Enums.Locale;
     };
     export type AccountPasswordChangeData = {
         old_password: string;

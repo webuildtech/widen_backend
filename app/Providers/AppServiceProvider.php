@@ -27,6 +27,7 @@ use App\Models\ReservationGroup;
 use App\Models\ReservationSlot;
 use App\Models\User;
 use App\Services\Litecom\LitecomManager;
+use App\Support\FrontendUrl;
 use Carbon\Carbon;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -76,7 +77,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::macro('parseWithAppTimezone', fn($time) => Carbon::parse($time)->setTimezone(config('app.timezone')));
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return env('APP_FRONTEND_URL') . '/reset-password?token=' . $token;
+            return FrontendUrl::to('/reset-password', $user->locale) . '?token=' . $token;
         });
     }
 }
