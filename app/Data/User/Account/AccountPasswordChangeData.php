@@ -30,7 +30,7 @@ class AccountPasswordChangeData extends Data
             $password = $validator->getData()['old_password'] ?? null;
 
             if (!$password || !Hash::check($password, $user->password)) {
-                $validator->errors()->add('old_password', 'Pateiktas slaptažodis neteisingas.');
+                $validator->errors()->add('old_password', __('auth.invalid_current_password'));
             }
         });
     }

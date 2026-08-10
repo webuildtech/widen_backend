@@ -46,7 +46,7 @@ class SubscriptionController extends Controller
     public function subscribe(SubscribeData $data, PlanPrice $planPrice): JsonResponse
     {
         if ($planPrice->plan->is_default) {
-            return response()->json(['error' => 'Šio plano prenumeruoti negalima.'], 405);
+            return response()->json(['error' => __('subscriptions.subscribe_forbidden_default_plan')], 405);
         }
 
         $user = auth()->user();
@@ -81,7 +81,7 @@ class SubscriptionController extends Controller
                 $this->paymentService->cancel($payment->refresh(), PaymentStatus::CANCELLED);
 
                 return response()->json([
-                    'message' => 'Atsiprašome, šiuo metu negalime susisiekti su mokėjimo paslaugų teikėju. Prašome pabandyti vėliau.'
+                    'message' => __('payments.provider_unavailable')
                 ], 500);
             }
         }

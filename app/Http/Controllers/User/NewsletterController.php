@@ -19,6 +19,6 @@ class NewsletterController extends Controller
     {
         $this->omnisendService->createContactByEmail($data->email);
 
-        return response()->json(['message' => 'Jūs sėkmingai užsiprenumeravote naujienlaiškį.']);
+        return response()->json(['message' => __('newsletter.subscribed')]);
     }
 }

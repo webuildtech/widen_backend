@@ -65,7 +65,7 @@ class AccountController extends Controller
             $this->paymentService->cancel($payment->refresh(), PaymentStatus::CANCELLED);
 
             return response()->json([
-                'message' => 'Atsiprašome, šiuo metu negalime susisiekti su mokėjimo paslaugų teikėju. Prašome pabandyti vėliau.'
+                'message' => __('payments.provider_unavailable')
             ], 500);
         }
     }

@@ -44,7 +44,7 @@ class DowntimeInputData extends Data
             $endTime = $validator->getValue('end_time');
 
             if ($startTime && $endTime && $startTime >= $endTime) {
-                $validator->errors()->add("end_time", 'Pabaigos laikas turi būti didesnis nei pradžios laikas');
+                $validator->errors()->add("end_time", __('downtimes.end_time_after_start_time'));
             }
         });
     }

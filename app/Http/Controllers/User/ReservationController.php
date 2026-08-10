@@ -76,7 +76,7 @@ class ReservationController extends Controller
         $owner = auth()->guard('user')->user();
 
         if (!$this->reservationSlotService->isAllAvailable($data->slots->toArray())) {
-            return response()->json(['error' => 'Įvyko klaida, bandykite dar kartą!'], 424);
+            return response()->json(['error' => __('reservations.something_went_wrong')], 424);
         }
 
         ['free' => $freeSlots, 'occupied' => $occupySlots] = $this->reservationSlotService->splitIntoFreeAndOccupied(

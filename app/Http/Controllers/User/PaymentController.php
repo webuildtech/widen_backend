@@ -50,7 +50,7 @@ class PaymentController extends Controller
         $values = request()->all(['json', 'mac']);
 
         if (!$this->makeCommerceService->verify($values)) {
-            return response()->json(['error' => 'Jūs neturite teisių.'], 403);
+            return response()->json(['error' => __('payments.unauthorized')], 403);
         }
 
         $data = $this->makeCommerceService->extractData($values['json']);

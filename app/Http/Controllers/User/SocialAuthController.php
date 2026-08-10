@@ -29,7 +29,7 @@ class SocialAuthController extends Controller
                 'accessToken' => $user->createToken('access_token', ['*'], Carbon::now()->addDays(90))->plainTextToken
             ]);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Nepavyko prisijungti, bandykite dar kartą.'], 406);
+            return response()->json(['message' => __('auth.social.login_failed')], 406);
         }
     }
 }

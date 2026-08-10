@@ -8,9 +8,14 @@ return [
     'letter_sent' => 'A password reset link has been sent to your email address.',
     'token_error' => 'The provided access token is invalid.',
     'password_changed' => 'Password changed successfully.',
+    'invalid_current_password' => 'The provided password is incorrect.',
 
     'login' => [
         'invalid_credentials' => 'Your login credentials do not match our records.',
         'account_blocked_by_employer' => 'Your account has been blocked by your employer.',
+    ],
+
+    'social' => [
+        'login_failed' => 'Sign in failed, please try again.',
     ],
 ];

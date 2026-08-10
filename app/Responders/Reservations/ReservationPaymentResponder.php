@@ -33,10 +33,7 @@ class ReservationPaymentResponder
             } catch (RuntimeException $e) {
                 $this->paymentService->cancel($payment->refresh(), PaymentStatus::CANCELLED);
 
-                return ServiceResponse::error(
-                    'Atsiprašome, šiuo metu negalime susisiekti su mokėjimo paslaugų teikėju. Prašome pabandyti vėliau.',
-                    500
-                );
+                return ServiceResponse::error(__('payments.provider_unavailable'), 500);
             }
         }
 

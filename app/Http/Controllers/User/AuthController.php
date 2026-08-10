@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if (!$user || !\Hash::check($data->password, $user->password)) {
             return response()->json([
-                "errors" => ['email' => ['Jūsų prisijungimo duomenys nesutampa su sistemos duomenimis.']]
+                "errors" => ['email' => [__('auth.login.invalid_credentials')]]
             ], 406);
         }
 
