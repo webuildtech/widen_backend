@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+/**
+ * @mixin IdeHelperAdvertisement
+ */
 class Advertisement extends BaseModel implements HasMedia
 {
     use InteractsWithMedia;

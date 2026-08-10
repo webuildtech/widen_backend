@@ -75,8 +75,47 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string|null $primary_button_label
+ * @property string|null $primary_button_to
+ * @property int $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read mixed $logo
+ * @property-read mixed $logo_url
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement wherePrimaryButtonLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement wherePrimaryButtonTo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Advertisement withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperAdvertisement {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $court_id
  * @property int $court_type_id
+ * @property string|null $type
  * @property string $date
  * @property string $day
  * @property string $start_time
@@ -95,6 +134,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereIsBlocked($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereIsReserved($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AvailabilitySlot whereType($value)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -179,6 +219,9 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
+ * @property string|null $note
+ * @property string|null $color
+ * @property int $sort_order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -186,6 +229,8 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Court> $courts
  * @property-read int|null $courts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DiscountCode> $discountCodes
+ * @property-read int|null $discount_codes_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanCourtTypeRule> $planRules
  * @property-read int|null $plan_rules_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType dateBetween(string $column, string $start, ?string $end = null)
@@ -194,10 +239,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereSortOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType withoutTrashed()
@@ -226,6 +274,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CourtType> $courtTypes
+ * @property-read int|null $court_types_count
+ * @property-read mixed $court_types_ids
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateFromBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateToBetween(string $start, ?string $end = null)
@@ -918,7 +969,7 @@ namespace App\Models{
  * @property-read int|null $features_count
  * @property-read mixed $has_grace_days
  * @property-read \App\Models\Plan $plan
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\Subscription> $subscriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanPrice newQuery()
@@ -959,6 +1010,7 @@ namespace App\Models{
  * @property string $discount
  * @property string $price_with_vat
  * @property bool $is_paid
+ * @property string|null $comment
  * @property \Illuminate\Support\Carbon|null $paid_at
  * @property string|null $payment_source
  * @property string $refunded_amount
@@ -986,6 +1038,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCancellationReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCourtId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereDeleteAfterFailedPayment($value)
@@ -1101,6 +1154,67 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $plan_id
+ * @property \Illuminate\Support\Carbon|null $canceled_at
+ * @property \Illuminate\Support\Carbon|null $expired_at
+ * @property \Illuminate\Support\Carbon|null $grace_days_ended_at
+ * @property \Illuminate\Support\Carbon $started_at
+ * @property \Illuminate\Support\Carbon|null $suppressed_at
+ * @property int $was_switched
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $subscriber_type
+ * @property int $subscriber_id
+ * @property-read bool $is_overdue
+ * @property-read \App\Models\PlanPrice|null $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\SubscriptionRenewal> $renewals
+ * @property-read int|null $renewals_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subscriber
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription canceled()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription canceledAtBetween(?string $start = null, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription expiredAtBetween(?string $start = null, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notActive()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notCanceled()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription startedAtBetween(?string $start = null, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription status(string $status)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription subscriberEmail(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription subscriberFirstName(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription subscriberLastName(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription subscriberPhone(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription visible()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCanceledAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereGraceDaysEndedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStartedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereSubscriberId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereSubscriberType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereSuppressedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereWasSwitched($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperSubscription {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $first_name
  * @property string|null $last_name
  * @property string $email
@@ -1109,6 +1223,7 @@ namespace App\Models{
  * @property string $discount_on_everything
  * @property string|null $birthday
  * @property string|null $phone
+ * @property string $locale
  * @property int $is_company
  * @property string|null $company_name
  * @property string|null $company_code
@@ -1146,7 +1261,7 @@ namespace App\Models{
  * @property-read int|null $renewals_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
- * @property-read \LucasDotVin\Soulbscription\Models\Subscription|null $subscription
+ * @property-read \App\Models\Subscription|null $subscription
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User birthdayBetween(string $start, ?string $end = null)
@@ -1176,6 +1291,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsCompany($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLocale($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereOverdraftLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)

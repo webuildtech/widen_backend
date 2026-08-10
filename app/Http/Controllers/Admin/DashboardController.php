@@ -8,9 +8,9 @@ use App\Models\Admin;
 use App\Models\Court;
 use App\Models\Group;
 use App\Models\Plan;
+use App\Models\Subscription;
 use App\Models\User;
 use App\Services\Payments\IncomeService;
-use LucasDotVin\Soulbscription\Models\Subscription;
 
 class DashboardController extends Controller
 {

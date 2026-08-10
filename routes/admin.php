@@ -80,6 +80,7 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
         Route::get('payments', [PaymentController::class, 'index']);
 
         Route::get('subscriptions', [SubscriptionController::class, 'index']);
+        Route::post('subscriptions/{subscription}/cancel', [SubscriptionController::class, 'cancel']);
 
         Route::controller(InvoiceController::class)->prefix('invoices')->group(function () {
             Route::get('', 'index');

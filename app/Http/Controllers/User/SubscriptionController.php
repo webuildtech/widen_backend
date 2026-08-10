@@ -36,7 +36,7 @@ class SubscriptionController extends Controller
                 'plan_price_id' => $subscription->plan_id,
                 'started_at' => $subscription->started_at,
                 'expired_at' => $subscription->expired_at,
-                'cancelled_at' => $subscription->cancelled_at,
+                'cancelled_at' => $subscription->canceled_at,
             ]);
         }
 

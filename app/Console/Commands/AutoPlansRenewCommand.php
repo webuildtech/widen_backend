@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Enums\PaymentStatus;
+use App\Models\Subscription;
 use App\Services\Payments\PaymentService;
 use Illuminate\Console\Command;
 use Log;
-use LucasDotVin\Soulbscription\Models\Subscription;
 
 class AutoPlansRenewCommand extends Command
 {

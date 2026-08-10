@@ -4,8 +4,8 @@ namespace App\Data\Admin\Subscriptions;
 
 use App\Data\Admin\Plans\PlanSelectOptionData;
 use App\Data\Admin\Users\UserSelectOptionData;
+use App\Models\Subscription;
 use Carbon\Carbon;
-use LucasDotVin\Soulbscription\Models\Subscription;
 use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -28,6 +28,8 @@ class SubscriptionListData extends Data
 
         public Carbon                $expired_at,
 
+        public ?Carbon               $canceled_at,
+
         public bool                  $is_overdue,
     )
     {
@@ -42,6 +44,7 @@ class SubscriptionListData extends Data
             $subscription->subscriber ? UserSelectOptionData::from($subscription->subscriber) : null,
             $subscription->started_at,
             $subscription->expired_at,
+            $subscription->canceled_at,
             $subscription->is_overdue,
         );
     }

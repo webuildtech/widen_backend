@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Mail\SubscriptionExpirationReminderMail;
+use App\Models\Subscription;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
-use LucasDotVin\Soulbscription\Models\Subscription;
 
 class SubscriptionExpirationReminderCommand extends Command
 {

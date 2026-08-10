@@ -23,7 +23,7 @@ return [
             'uses_uuid' => env('SOULBSCRIPTION_SUBSCRIBER_USES_UUID', false),
         ],
 
-        'subscription' => \LucasDotVin\Soulbscription\Models\Subscription::class,
+        'subscription' => \App\Models\Subscription::class,
 
         'subscription_renewal' => \LucasDotVin\Soulbscription\Models\SubscriptionRenewal::class,
     ],
