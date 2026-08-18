@@ -24,6 +24,16 @@ class CourtType extends BaseModel
         return $this->hasMany(Court::class);
     }
 
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class);
+    }
+
+    public function gameLevels(): BelongsToMany
+    {
+        return $this->belongsToMany(GameLevel::class)->orderBy('sort_order');
+    }
+
     public function planRules(): HasMany
     {
         return $this->hasMany(PlanCourtTypeRule::class);

@@ -44,12 +44,13 @@ class ReservationController extends Controller
                 'updated_at'
             ])
             ->allowedFilters([
-                'owner.first_name',
-                'owner.last_name',
-                'owner.email',
-                'owner.phone',
+                AllowedFilter::scope('owner.first_name', 'ownerFirstName'),
+                AllowedFilter::scope('owner.last_name', 'ownerLastName'),
+                AllowedFilter::scope('owner.email', 'ownerEmail'),
+                AllowedFilter::scope('owner.phone', 'ownerPhone'),
                 AllowedFilter::operator('price_from', FilterOperator::GREATER_THAN_OR_EQUAL, 'and', 'price_with_vat'),
                 AllowedFilter::operator('price_to', FilterOperator::LESS_THAN_OR_EQUAL, 'and', 'price_with_vat'),
+                AllowedFilter::exact('owner_type'),
                 AllowedFilter::exact('court_id'),
                 AllowedFilter::exact('court.court_type_id'),
                 'is_paid',
@@ -106,8 +107,12 @@ class ReservationController extends Controller
         return [];
     }
 
-    public function cancel(Reservation $reservation): array
+    public function cancel(Reservation $reservation)
     {
+        if ($reservation->owner_type === 'game') {
+            return response()->json(['message' => __('games.manage_from_games_page')], 424);
+        }
+
         $this->reservationService->cancel($reservation);
 
         return [];
@@ -120,8 +125,12 @@ class ReservationController extends Controller
         return ['quantity' => $quantity];
     }
 
-    public function destroy(Reservation $reservation): array
+    public function destroy(Reservation $reservation)
     {
+        if ($reservation->owner_type === 'game') {
+            return response()->json(['message' => __('games.manage_from_games_page')], 424);
+        }
+
         $this->reservationService->delete($reservation);
 
         return [];

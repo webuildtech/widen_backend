@@ -4,6 +4,7 @@ namespace App\Services\Users;
 
 use App\Enums\PaymentStatus;
 use App\Jobs\SubscribeUserToNewsletter;
+use App\Models\GameParticipant;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -18,11 +19,27 @@ class UserService
         $user = User::create($attributes);
         $user->refresh();
 
+        $this->linkGameParticipations($user);
+
         if ($user->agreed_newsletter) {
             SubscribeUserToNewsletter::dispatch($user->id);
         }
 
         return $user;
+    }
+
+    private function linkGameParticipations(User $user): void
+    {
+        GameParticipant::whereNull('user_id')
+            ->where('email', $user->email)
+            ->update(['user_id' => $user->id]);
+
+        GameParticipant::where('user_id', $user->id)
+            ->whereNull('first_name')
+            ->update([
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+            ]);
     }
 
     public function update(User $user, array $attributes): Model

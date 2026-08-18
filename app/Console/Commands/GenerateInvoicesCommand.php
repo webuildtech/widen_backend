@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\InvoiceGenerateMail;
+use App\Models\GameParticipant;
 use App\Models\Guest;
 use App\Models\User;
 use App\Services\Payments\InvoiceService;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Database\Eloquent\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 
@@ -40,8 +42,25 @@ class GenerateInvoicesCommand extends Command
     {
         return function (Builder $query) use ($interval) {
             $query->whereHas('reservations', fn($q) => $q->whereIsPaid(true)->whereBetween('end_time', $interval))
-                ->orWhereHas('payments', fn($q) => $q->whereStatus('paid')->wherePaymentableType('planPrice')->whereBetween('paid_at', $interval));
+                ->orWhereHas('payments', fn($q) => $q->whereStatus('paid')->wherePaymentableType('planPrice')->whereBetween('paid_at', $interval))
+                ->orWhereHas('payments', fn($q) => $q->whereStatus('paid')->wherePaymentableType('game')
+                    ->whereHas('gameParticipants', fn($p) => $p->confirmed()
+                        ->whereHas('game', fn($g) => $g->whereBetween('end_time', $interval))));
         };
+    }
+
+    private function gameSeats(User|Guest $entity, array $interval): ?BuilderContract
+    {
+        if (!$entity instanceof User) {
+            return null;
+        }
+
+        return GameParticipant::query()
+            ->confirmed()
+            ->whereHas('payment', fn($q) => $q->whereStatus('paid')
+                ->where('owner_type', 'user')
+                ->where('owner_id', $entity->id))
+            ->whereHas('game', fn($q) => $q->whereBetween('end_time', $interval));
     }
 
     private function generateInvoice(User|Guest $entity, array $interval, Carbon $invoiceDate, InvoiceService $invoiceService): void
@@ -49,7 +68,11 @@ class GenerateInvoicesCommand extends Command
         $reservation = $entity->reservations()->whereIsPaid(true)->whereBetween('end_time', $interval);
         $payments = $entity->payments()->whereStatus('paid')->wherePaymentableType('planPrice')->whereBetween('paid_at', $interval);
 
-        $priceWithVat = $reservation->sum('price_with_vat') - $reservation->sum('refunded_amount') + $payments->sum('price_with_vat');
+        $gameSeats = $this->gameSeats($entity, $interval);
+
+        $priceWithVat = $reservation->sum('price_with_vat') - $reservation->sum('refunded_amount')
+            + $payments->sum('price_with_vat')
+            + ($gameSeats ? $gameSeats->sum('price_with_vat') - $gameSeats->sum('refunded_amount') : 0);
 
         if ($priceWithVat > 0) {
             $invoice = $invoiceService->create($entity, $invoiceDate, $priceWithVat);

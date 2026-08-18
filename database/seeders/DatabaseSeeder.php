@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PlansFeaturesSeeder::class);
         $this->call(AdvertisementsSeeder::class);
         $this->call(CourtTypeAddNoteSeeder::class);
+        $this->call(GameLevelsSeeder::class);
     }
 }

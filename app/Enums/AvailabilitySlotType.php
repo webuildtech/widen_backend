@@ -11,4 +11,6 @@ enum AvailabilitySlotType: string
     case ACADEMY = 'academy';
 
     case TOURNAMENT = 'tournament';
+
+    case GAME = 'game';
 }

@@ -21,6 +21,11 @@ class FrontendUrl
         return rtrim(env('APP_FRONTEND_URL'), '/') . $prefix . '/' . ltrim($path, '/');
     }
 
+    public static function game(string $uuid, Locale|string|null $locale = null): string
+    {
+        return self::to(str_replace('{uuid}', $uuid, config('games.frontend_path')), $locale);
+    }
+
     public static function locale(Locale|string|null $locale = null): Locale
     {
         if ($locale instanceof Locale) {

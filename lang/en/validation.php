@@ -219,4 +219,9 @@ return [
             'no_overlap' => 'A new time slot must start no earlier than the previous one ends.',
         ],
     ],
+
+    'games' => [
+        'courts_court_type' => 'The selected courts do not belong to the selected sport.',
+        'capacity_below_taken_spots' => 'The number of players cannot be lower than the spots already taken (:taken).',
+    ],
 ];

@@ -201,4 +201,9 @@ return [
             'no_overlap' => 'Naujas intervalas turi prasidėti ne anksčiau, nei baigėsi ankstesnis.',
         ],
     ],
+
+    'games' => [
+        'courts_court_type' => 'Pasirinktos aikštelės nepriklauso pasirinktai sporto šakai.',
+        'capacity_below_taken_spots' => 'Dalyvių skaičius negali būti mažesnis nei jau užimtų vietų (:taken).',
+    ],
 ];

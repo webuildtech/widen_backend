@@ -20,6 +20,10 @@ class ReservationUpdateController extends Controller
 
     public function __invoke(ReservationUpdateData $data, Reservation $reservation)
     {
+        if ($reservation->owner_type === 'game') {
+            return response()->json(['message' => __('games.edit_from_games_page')], 424);
+        }
+
         if ($reservation->is_paid) {
             return response()->json(['message' => __('reservations.cannot_edit_paid_reservation')], 424);
         }

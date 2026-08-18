@@ -6,6 +6,7 @@ use App\Enums\AvailabilitySlotType;
 use App\Models\AvailabilitySlot;
 use App\Models\Court;
 use App\Models\Interval;
+use App\Models\Reservation;
 use App\Services\Slots\SlotService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -211,10 +212,7 @@ class RebuildAvailabilitySlots extends Command
             ->groupBy(fn($r) => $r->slot_start->toDateString())
             ->map(fn(Collection $group) => $group->mapWithKeys(
                 fn($r) => [
-                    $r->slot_start->format('H:i') => $this->getType(
-                        $r->reservation?->owner?->email,
-                        $r->reservation?->delete_after_failed_payment
-                    )
+                    $r->slot_start->format('H:i') => $this->getType($r->reservation)
                 ]
             ));
     }
@@ -288,8 +286,14 @@ class RebuildAvailabilitySlots extends Command
         AvailabilitySlot::query()->insertOrIgnore($rows);
     }
 
-    protected function getType(string $email, ?bool $deleteAfterFailedPayment): AvailabilitySlotType
+    protected function getType(?Reservation $reservation): AvailabilitySlotType
     {
+        if ($reservation?->owner_type === 'game') {
+            return AvailabilitySlotType::GAME;
+        }
+
+        $email = $reservation?->owner?->email;
+
         if ($email === '123@gmail.com') {
             return AvailabilitySlotType::TOURNAMENT;
         }
@@ -298,7 +302,7 @@ class RebuildAvailabilitySlots extends Command
             return AvailabilitySlotType::ACADEMY;
         }
 
-        if ($deleteAfterFailedPayment === false) {
+        if ($reservation?->delete_after_failed_payment === false) {
             return AvailabilitySlotType::SEASON;
         }
 

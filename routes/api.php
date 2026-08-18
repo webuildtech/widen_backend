@@ -10,6 +10,8 @@ use App\Http\Controllers\User\DiscountCodeController;
 use App\Http\Controllers\User\Forms\BeginnerFormController;
 use App\Http\Controllers\User\Forms\CompanyFormController;
 use App\Http\Controllers\User\FutureMemberController;
+use App\Http\Controllers\User\GameController;
+use App\Http\Controllers\User\GameLevelController;
 use App\Http\Controllers\User\InvoiceController;
 use App\Http\Controllers\User\NewsletterController;
 use App\Http\Controllers\User\PaymentController;
@@ -30,6 +32,13 @@ Route::middleware('set_locale')->group(function () {
     Route::prefix('courts')->group(function () {
         Route::get('', [CourtController::class, 'index']);
     });
+
+    Route::prefix('games')->group(function () {
+        Route::get('', [GameController::class, 'index']);
+        Route::get('{game}', [GameController::class, 'show'])->whereUuid('game');
+    });
+
+    Route::get('court-types/{courtType}/game-levels', GameLevelController::class);
 
     Route::post('/discount-codes/check', [DiscountCodeController::class, 'check']);
 
@@ -70,6 +79,11 @@ Route::middleware('set_locale')->group(function () {
             Route::post('pay', [ReservationController::class, 'pay']);
             Route::post('{reservation}/cancel', [ReservationController::class, 'cancel'])
                 ->middleware('can:cancel,reservation');
+        });
+
+        Route::prefix('games')->group(function () {
+            Route::get('my', [GameController::class, 'my']);
+            Route::post('{game}/join', [GameController::class, 'join'])->whereUuid('game');
         });
 
         Route::prefix('reservation-slots')->group(function () {

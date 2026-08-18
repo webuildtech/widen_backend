@@ -231,6 +231,10 @@ namespace App\Models{
  * @property-read int|null $courts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DiscountCode> $discountCodes
  * @property-read int|null $discount_codes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameLevel> $gameLevels
+ * @property-read int|null $game_levels_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Game> $games
+ * @property-read int|null $games_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanCourtTypeRule> $planRules
  * @property-read int|null $plan_rules_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CourtType dateBetween(string $column, string $start, ?string $end = null)
@@ -476,6 +480,200 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperFutureMember {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property int $court_type_id
+ * @property int|null $court_id
+ * @property int|null $admin_id
+ * @property \Illuminate\Support\Carbon $start_time
+ * @property \Illuminate\Support\Carbon $end_time
+ * @property int $capacity
+ * @property numeric $price
+ * @property numeric $vat
+ * @property numeric $price_with_vat
+ * @property \App\Enums\GameStatus $status
+ * @property \Illuminate\Support\Carbon|null $canceled_at
+ * @property string|null $cancellation_reason
+ * @property array<array-key, mixed>|null $title
+ * @property array<array-key, mixed>|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameParticipant> $activeParticipants
+ * @property-read int|null $active_participants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\Admin|null $admin
+ * @property-read \App\Models\Court|null $court
+ * @property-read \App\Models\CourtType $courtType
+ * @property-read mixed $email
+ * @property-read mixed $full_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameParticipant> $participants
+ * @property-read int|null $participants_count
+ * @property-read mixed $phone
+ * @property-read mixed $photo
+ * @property-read \App\Models\Reservation|null $reservation
+ * @property-read mixed $translations
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game endTimeTo(string $end)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game published()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game startTimeFrom(string $start)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game upcoming()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCanceledAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCancellationReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCapacity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCourtId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCourtTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereLocale(string $column, string $locale)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereLocales(string $column, array $locales)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game wherePriceWithVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGame {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property array<array-key, mixed> $name
+ * @property array<array-key, mixed>|null $description
+ * @property int $sort_order
+ * @property bool $active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CourtType> $courtTypes
+ * @property-read int|null $court_types_count
+ * @property-read mixed $translations
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereLocale(string $column, string $locale)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereLocales(string $column, array $locales)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereSortOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameLevel withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGameLevel {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $game_id
+ * @property int|null $user_id
+ * @property int|null $added_by_user_id
+ * @property int|null $game_level_id
+ * @property int|null $payment_id
+ * @property string $email
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property \App\Enums\GameParticipantStatus $status
+ * @property numeric $price
+ * @property numeric $vat
+ * @property numeric $discount
+ * @property numeric $price_with_vat
+ * @property numeric $refunded_amount
+ * @property \Illuminate\Support\Carbon|null $joined_at
+ * @property \Illuminate\Support\Carbon|null $canceled_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\User|null $addedBy
+ * @property-read mixed $full_name
+ * @property-read \App\Models\Game $game
+ * @property-read \App\Models\GameLevel|null $level
+ * @property-read \App\Models\Payment|null $payment
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant confirmed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant holdingSpot()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant pending()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereAddedByUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereCanceledAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereGameId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereGameLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereJoinedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant wherePaymentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant wherePriceWithVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant whereVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameParticipant withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGameParticipant {}
 }
 
 namespace App\Models{
@@ -752,6 +950,8 @@ namespace App\Models{
  * @property numeric $discount
  * @property numeric $paid_amount
  * @property numeric $paid_amount_from_balance
+ * @property numeric $refunded_amount
+ * @property numeric $refunded_amount_to_balance
  * @property \Illuminate\Support\Carbon|null $paid_at
  * @property int|null $discount_code_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -760,6 +960,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\DiscountCode|null $discountCode
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameParticipant> $gameParticipants
+ * @property-read int|null $game_participants_count
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $paymentable
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment dateBetween(string $column, string $start, ?string $end = null)
@@ -783,6 +985,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePaymentableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment wherePriceWithVat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRefundedAmountToBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereRenew($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment whereTransactionId($value)
@@ -1032,6 +1236,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation ownerAttributeLike(string $column, string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation ownerEmail(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation ownerFirstName(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation ownerLastName(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation ownerPhone(string $value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation paidAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation startTimeFrom(string $start)
@@ -1232,6 +1441,7 @@ namespace App\Models{
  * @property string|null $company_phone
  * @property int $agreed_terms
  * @property int $agreed_newsletter
+ * @property bool|null $notify_about_games
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
@@ -1247,6 +1457,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \LucasDotVin\Soulbscription\Models\FeatureTicket> $featureTickets
  * @property-read int|null $feature_tickets_count
  * @property-read mixed $full_name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameParticipant> $gameParticipations
+ * @property-read int|null $game_participations_count
  * @property-read \Illuminate\Database\Eloquent\Collection $features
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
@@ -1292,6 +1504,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsCompany($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereNotifyAboutGames($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereOverdraftLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)

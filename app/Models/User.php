@@ -44,6 +44,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'notify_about_games' => 'boolean',
         ];
     }
 
@@ -80,5 +81,10 @@ class User extends Authenticatable
     public function balanceEntries(): HasMany
     {
         return $this->hasMany(UserBalanceEntry::class);
+    }
+
+    public function gameParticipations(): HasMany
+    {
+        return $this->hasMany(GameParticipant::class);
     }
 }

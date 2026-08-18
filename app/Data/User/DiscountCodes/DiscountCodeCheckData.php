@@ -21,6 +21,14 @@ class DiscountCodeCheckData extends Data
          * @var array<int>|null
          */
         public ?array  $court_ids,
+
+        /**
+         * Court types the code is checked for, for purchases that have no court to derive them from.
+         * Takes precedence over `court_ids`.
+         *
+         * @var array<int>|null
+         */
+        public ?array  $court_type_ids,
     )
     {
     }
@@ -29,6 +37,7 @@ class DiscountCodeCheckData extends Data
     {
         return [
             'court_ids.*' => ['required', new Exists('courts', 'id', withoutTrashed: true)],
+            'court_type_ids.*' => ['required', new Exists('court_types', 'id', withoutTrashed: true)],
         ];
     }
 }

@@ -82,7 +82,7 @@ $appUrl = env('APP_FRONTEND_URL');
                   </div>
                   <div role="separator" style="line-height: 24px">&zwj;</div>
                   <p style="margin: 0; font-size: 16px; line-height: 24px; color: #2f5c7e">
-                    Ačiū, kad naudojatės mūsų paslaugomis,<br>
+                    {{ __('emails.signature') }}<br>
                     <span style="font-weight: 600">WIDEN arena</span>
                   </p>
                 </td>

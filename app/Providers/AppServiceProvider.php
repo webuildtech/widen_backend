@@ -10,6 +10,9 @@ use App\Models\DiscountCode;
 use App\Models\Downtime;
 use App\Models\Forms\BeginnerForm;
 use App\Models\FutureMember;
+use App\Models\Game;
+use App\Models\GameLevel;
+use App\Models\GameParticipant;
 use App\Models\Group;
 use App\Models\Guest;
 use App\Models\Interval;
@@ -33,6 +36,7 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,12 +51,20 @@ class AppServiceProvider extends ServiceProvider
     {
         JsonResource::withoutWrapping();
 
+        Translatable::fallback(
+            fallbackLocale: FrontendUrl::DEFAULT_LOCALE->value,
+            fallbackAny: true,
+        );
+
         Relation::enforceMorphMap([
             'advertisement' => Advertisement::class,
             'futureMember' => FutureMember::class,
             'admin' => Admin::class,
             'courtType' => CourtType::class,
             'court' => Court::class,
+            'game' => Game::class,
+            'gameParticipant' => GameParticipant::class,
+            'gameLevel' => GameLevel::class,
             'group' => Group::class,
             'interval' => Interval::class,
             'intervalPrice' => IntervalPrice::class,

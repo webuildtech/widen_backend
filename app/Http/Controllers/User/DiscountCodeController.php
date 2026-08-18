@@ -21,9 +21,11 @@ class DiscountCodeController extends Controller
     {
         $result = $this->discountCodeService->validateCode(
             $data->code,
-            $data->court_ids !== null
-                ? Court::whereIn('id', $data->court_ids)->pluck('court_type_id')->all()
-                : null
+            match (true) {
+                $data->court_type_ids !== null => $data->court_type_ids,
+                $data->court_ids !== null => Court::whereIn('id', $data->court_ids)->pluck('court_type_id')->all(),
+                default => null,
+            }
         );
 
         return $result['valid']

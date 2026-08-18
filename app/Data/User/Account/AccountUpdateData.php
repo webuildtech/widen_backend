@@ -47,6 +47,8 @@ class AccountUpdateData extends Data
 
         #[Rule(['max:255'])]
         public null|string|Optional $company_phone,
+
+        public bool|Optional        $notify_about_games,
     )
     {
         if (!$this->is_company) {

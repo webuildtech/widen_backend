@@ -41,7 +41,9 @@ class AccountData extends Data
 
         public ?string $company_phone,
 
-        public bool    $has_subscription
+        public bool    $has_subscription,
+
+        public ?bool   $notify_about_games,
     )
     {
     }

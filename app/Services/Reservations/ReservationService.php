@@ -138,6 +138,12 @@ class ReservationService
 
     public function cancel(Reservation $reservation)
     {
+        // A game owns its blocking reservation. Cancelling it here would free the court while the
+        // game stays published with paid participants, so it is only cancelable through GameService.
+        if ($reservation->owner_type === 'game') {
+            return;
+        }
+
         if (!$reservation->canceled_at) {
             $data = ['canceled_at' => now()];
 
@@ -171,6 +177,10 @@ class ReservationService
 
     public function delete(Reservation $reservation)
     {
+        if ($reservation->owner_type === 'game') {
+            return;
+        }
+
         if ($reservation->is_paid && $reservation->owner instanceof User && $reservation->refunded_amount !== $reservation->price_with_vat) {
             $refundAmount = $reservation->price_with_vat - $reservation->refunded_amount;
 

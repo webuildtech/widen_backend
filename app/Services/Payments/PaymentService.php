@@ -5,12 +5,15 @@ namespace App\Services\Payments;
 use App\Enums\DiscountCodeType;
 use App\Enums\PaymentStatus;
 use App\Models\DiscountCode;
+use App\Models\Game;
+use App\Models\GameParticipant;
 use App\Models\Guest;
 use App\Models\Payment;
 use App\Models\PlanPrice;
 use App\Models\Reservation;
 use App\Models\ReservationGroup;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class PaymentService
 {
@@ -124,6 +127,46 @@ class PaymentService
         return $payment;
     }
 
+    /**
+     * One game can receive many separate payments, so the spots this particular payment covers are
+     * linked through game_participants.payment_id.
+     *
+     * @param Collection<int, GameParticipant> $participants
+     */
+    public function createFromGameParticipants(
+        Game          $game,
+        User          $user,
+        Collection    $participants,
+        ?DiscountCode $discountCode = null,
+    ): Payment
+    {
+        $priceWithVat = (float)$participants->sum('price_with_vat');
+
+        $paidAmountFromBalance = $user->getDeductedAmount($priceWithVat);
+        $user->deductBalance($paidAmountFromBalance);
+
+        if ($discountCode) {
+            $discountCode->increment('used');
+        }
+
+        $payment = new Payment([
+            'discount_code_id' => $discountCode?->id,
+            'discount' => $participants->sum('discount'),
+            'price' => $participants->sum('price'),
+            'vat' => $participants->sum('vat'),
+            'price_with_vat' => $priceWithVat,
+            'paid_amount' => $priceWithVat - $paidAmountFromBalance,
+            'paid_amount_from_balance' => $paidAmountFromBalance,
+        ]);
+
+        $payment->paymentable()->associate($game);
+        $user->payments()->save($payment);
+
+        GameParticipant::whereIn('id', $participants->pluck('id'))->update(['payment_id' => $payment->id]);
+
+        return $payment;
+    }
+
     public function createFromAmount(float $amount, User $user): Payment
     {
         $vat = round($amount - ($amount / 1.21), 2);
@@ -163,6 +206,10 @@ class PaymentService
 
         if ($payment->discountCode) {
             $payment->discountCode->decrement('used');
+        }
+
+        if ($payment->paymentable_type === 'game') {
+            GameParticipant::wherePaymentId($payment->id)->pending()->delete();
         }
 
         if ($payment->paymentable_type === 'reservationGroup') {

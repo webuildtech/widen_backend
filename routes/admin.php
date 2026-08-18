@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\Admin\DowntimeController;
 use App\Http\Controllers\Admin\Forms\BeginnerFormController;
 use App\Http\Controllers\Admin\FutureMemberController;
+use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IntervalController;
 use App\Http\Controllers\Admin\InvoiceController;
@@ -72,6 +73,10 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
         Route::apiResource('courts', CourtController::class);
 
         Route::get('court-slots', CourtSlotController::class);
+
+        Route::post('games/{game}/cancel', [GameController::class, 'cancel']);
+        Route::delete('games/{game}/participants/{participant}', [GameController::class, 'removeParticipant']);
+        Route::apiResource('games', GameController::class);
 
         Route::apiResource('downtimes', DowntimeController::class);
 

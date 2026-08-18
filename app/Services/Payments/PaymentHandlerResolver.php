@@ -2,8 +2,11 @@
 
 namespace App\Services\Payments;
 
+use App\Enums\GameParticipantStatus;
 use App\Jobs\CheckRefundSlots;
 use App\Mail\BalanceTopUpMail;
+use App\Mail\GameJoinedMail;
+use App\Models\GameParticipant;
 use App\Mail\PlanSubscribeMail;
 use App\Mail\ReservationPaidMail;
 use App\Models\Payment;
@@ -16,8 +19,22 @@ class PaymentHandlerResolver
         match ($payment->paymentable_type) {
             'planPrice' => $this->handlePlanPrice($payment),
             'reservationGroup' => $this->handleReservationGroup($payment),
+            'game' => $this->handleGame($payment),
             default => $this->handleDefault($payment)
         };
+    }
+
+    private function handleGame(Payment $payment): void
+    {
+        GameParticipant::wherePaymentId($payment->id)->update([
+            'status' => GameParticipantStatus::CONFIRMED,
+            'joined_at' => $payment->paid_at,
+        ]);
+
+        GameParticipant::wherePaymentId($payment->id)
+            ->with(['game.courtType', 'game.court', 'user', 'addedBy'])
+            ->get()
+            ->each(fn(GameParticipant $participant) => Mail::queue(new GameJoinedMail($participant)));
     }
 
     private function handlePlanPrice(Payment $payment): void

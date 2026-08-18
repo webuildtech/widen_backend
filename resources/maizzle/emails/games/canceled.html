@@ -1,0 +1,25 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-blumine-900 font-semibold">
+      @{{ $greetingName ? __('games.mail.greeting', ['name' => $greetingName]) : __('games.mail.greeting_no_name') }}
+    </h1>
+
+    <p class="m-0 text-base/6 text-blumine-600">
+      @{{ __('games.mail.canceled_intro') }}
+    </p>
+
+    @if ($reason)
+      <p class="m-0 text-base/6 text-blumine-600">
+        @{{ __('games.mail.reason') }}: @{{ $reason }}
+      </p>
+    @endif
+
+    <x-game-details />
+
+    @if ($refundedAmount > 0)
+      <p class="m-0 text-base/6 text-blumine-600">
+        💰 @{{ __('games.mail.canceled_refund', ['amount' => number_format($refundedAmount, 2, ',', ' ')]) }}
+      </p>
+    @endif
+  </div>
+</x-main>
