@@ -36,6 +36,8 @@ class UserListData extends Data
 
         public bool    $agreed_newsletter,
 
+        public ?bool   $notify_about_games,
+
         public ?string $plan,
 
         public Carbon  $updated_at,
@@ -58,6 +60,7 @@ class UserListData extends Data
             $user->is_company,
             $user->company_name,
             $user->agreed_newsletter,
+            $user->notify_about_games,
             $user->subscription?->plan?->plan->name,
             $user->updated_at,
         );

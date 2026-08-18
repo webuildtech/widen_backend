@@ -40,6 +40,7 @@ class UserController extends Controller
                 'is_company',
                 'company_name',
                 'agreed_newsletter',
+                'notify_about_games',
                 'updated_at'
             ])
             ->allowedFilters([

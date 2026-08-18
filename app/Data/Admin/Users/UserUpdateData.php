@@ -62,6 +62,8 @@ class UserUpdateData extends Data
 
         public bool|Optional        $agreed_newsletter,
 
+        public null|bool|Optional   $notify_about_games,
+
         #[Min(6), Max(32), Confirmed]
         public string|Optional      $password,
     )
