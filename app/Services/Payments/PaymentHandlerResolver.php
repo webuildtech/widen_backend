@@ -7,6 +7,7 @@ use App\Jobs\CheckRefundSlots;
 use App\Mail\BalanceTopUpMail;
 use App\Mail\GameJoinedMail;
 use App\Models\GameParticipant;
+use App\Mail\PlanSubscribeAdminMail;
 use App\Mail\PlanSubscribeMail;
 use App\Mail\ReservationPaidMail;
 use App\Models\Payment;
@@ -42,16 +43,25 @@ class PaymentHandlerResolver
         $user = $payment->owner;
 
         $subscription = $user->subscription;
+        $previousPlanName = $subscription?->plan?->plan?->name;
 
         if (!$subscription) {
+            $action = PlanSubscribeAdminMail::ACTION_NEW;
             $user->subscribeTo($payment->paymentable);
         } elseif ($payment->paymentable_id === $subscription->plan_id) {
+            $action = PlanSubscribeAdminMail::ACTION_RENEW;
             $subscription->renew();
         } else {
+            $action = PlanSubscribeAdminMail::ACTION_SWITCH;
             $user->switchTo($payment->paymentable);
         }
 
         Mail::queue(new PlanSubscribeMail($payment, $payment->renew));
+
+        // The free plan needs no staff attention, so only paid plans are announced.
+        if ($payment->paymentable->price > 0 && ($adminEmail = config('mail.to_address'))) {
+            Mail::to($adminEmail)->queue(new PlanSubscribeAdminMail($payment, $action, $previousPlanName));
+        }
     }
 
     private function handleReservationGroup(Payment $payment): void

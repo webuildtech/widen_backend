@@ -113,4 +113,17 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Internal Notification Address
+    |--------------------------------------------------------------------------
+    |
+    | Notifications meant for the arena staff (contact forms, new plan
+    | purchases) are delivered to this address. Leave it empty to turn
+    | those notifications off.
+    |
+    */
+
+    'to_address' => env('MAIL_TO_ADDRESS'),
+
 ];

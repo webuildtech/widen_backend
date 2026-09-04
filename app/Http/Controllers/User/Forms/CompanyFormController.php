@@ -12,8 +12,8 @@ class CompanyFormController extends Controller
 {
     public function __invoke(CompanyFormStoreData $data): JsonResponse
     {
-        if (env('MAIL_TO_ADDRESS')) {
-            Mail::to(env('MAIL_TO_ADDRESS'))->send(new CompanyFormMail($data));
+        if ($adminEmail = config('mail.to_address')) {
+            Mail::to($adminEmail)->send(new CompanyFormMail($data));
         }
 
         return response()->json();

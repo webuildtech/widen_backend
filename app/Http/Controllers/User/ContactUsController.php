@@ -12,8 +12,8 @@ class ContactUsController extends Controller
 {
     public function store(ContactUsData $data): JsonResponse
     {
-        if (env('MAIL_TO_ADDRESS')) {
-            Mail::to(env('MAIL_TO_ADDRESS'))->send(new ContactUsMail($data));
+        if ($adminEmail = config('mail.to_address')) {
+            Mail::to($adminEmail)->send(new ContactUsMail($data));
         }
 
         return response()->json();
