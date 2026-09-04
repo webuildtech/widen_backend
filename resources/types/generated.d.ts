@@ -189,6 +189,14 @@ declare namespace App.Data.Admin.Dashboard {
         date_from: string;
         date_to?: string;
     };
+    export type PlanSubscriptionMetricData = {
+        plan_id: number;
+        name: string;
+        type: string;
+        total: number;
+        monthly: number;
+        yearly: number;
+    };
 }
 declare namespace App.Data.Admin.DiscountCodes {
     export type DiscountCodeData = {

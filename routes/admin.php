@@ -95,6 +95,7 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
 
         Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
             Route::get('metrics', 'metrics');
+            Route::get('subscriptions-by-plan', 'subscriptionsByPlan');
             Route::get('incomes', 'incomes');
             Route::get('incomes-by-interval', 'incomesByInterval');
         });
