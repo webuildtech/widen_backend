@@ -12,6 +12,7 @@ use App\Models\GameParticipant;
 use App\Models\User;
 use App\Responders\Games\GameJoinPaymentResponder;
 use App\Services\DiscountCodeService;
+use App\Data\Core\DiscountCodes\DiscountLineData;
 use App\Support\ServiceResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -186,7 +187,10 @@ class GameJoinService
             return null;
         }
 
-        $result = $this->discountCodeService->validateCode($data->discount_code, [$game->court_type_id]);
+        $result = $this->discountCodeService->validateCode(
+            $data->discount_code,
+            [new DiscountLineData($game->court_type_id, $game->start_time)]
+        );
 
         if (!$result['valid']) {
             throw ValidationException::withMessages(['discount_code' => $result['message']]);

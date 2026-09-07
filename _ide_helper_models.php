@@ -281,6 +281,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CourtType> $courtTypes
  * @property-read int|null $court_types_count
  * @property-read mixed $court_types_ids
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DiscountCodeWindow> $windows
+ * @property-read int|null $windows_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateFromBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode dateToBetween(string $start, ?string $end = null)
@@ -308,6 +310,44 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperDiscountCode {}
+}
+
+namespace App\Models{
+/**
+ * One day and time range a discount code is valid in. The admin enters a window per set of days, and
+ * it is stored as one row per day, so matching stays a plain day and time comparison.
+ *
+ * @property int $id
+ * @property int $discount_code_id
+ * @property \App\Enums\Day $day
+ * @property string $start_time
+ * @property string $end_time
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\DiscountCode $discountCode
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereDiscountCodeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCodeWindow withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperDiscountCodeWindow {}
 }
 
 namespace App\Models{

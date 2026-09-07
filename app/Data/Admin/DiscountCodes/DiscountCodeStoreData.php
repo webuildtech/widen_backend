@@ -2,9 +2,11 @@
 
 namespace App\Data\Admin\DiscountCodes;
 
+use App\Data\Core\DiscountCodes\DiscountCodeWindowData;
 use App\Enums\DiscountCodeType;
 use App\Models\DiscountCode;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MergeValidationRules;
 use Spatie\LaravelData\Attributes\Validation\AfterOrEqual;
@@ -48,10 +50,17 @@ class DiscountCodeStoreData extends Data
 
         /** @var array<int> */
         public array|Optional|null  $court_types_ids,
+
+        /** @var Collection<int, DiscountCodeWindowData> */
+        public Collection|Optional|null $windows,
     )
     {
         if ($this->court_types_ids === null) {
             $this->court_types_ids = [];
+        }
+
+        if ($this->windows === null) {
+            $this->windows = collect();
         }
     }
 

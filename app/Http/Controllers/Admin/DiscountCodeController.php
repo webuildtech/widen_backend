@@ -24,7 +24,7 @@ class DiscountCodeController extends Controller
     public function index()
     {
         $discountCodes = QueryBuilder::for(DiscountCode::class)
-            ->with('courtTypes')
+            ->with(['courtTypes', 'windows'])
             ->allowedSorts([
                 'name',
                 'is_active',
@@ -43,6 +43,7 @@ class DiscountCodeController extends Controller
                 AllowedFilter::operator('value_from', FilterOperator::GREATER_THAN_OR_EQUAL, 'and', 'value'),
                 AllowedFilter::operator('value_to', FilterOperator::LESS_THAN_OR_EQUAL, 'and', 'value'),
                 AllowedFilter::exact('court_type_id', 'courtTypes.id'),
+                AllowedFilter::exact('day', 'windows.day'),
                 AllowedFilter::scope('date_from_between'),
                 AllowedFilter::scope('date_to_between'),
                 AllowedFilter::scope('updated_at_between'),

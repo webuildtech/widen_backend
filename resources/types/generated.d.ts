@@ -210,6 +210,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_from: string | null;
         date_to: string | null;
         court_types_ids: Array<number>;
+        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData>;
     };
     export type DiscountCodeListData = {
         id: number;
@@ -223,6 +224,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_from: string | null;
         date_to: string | null;
         court_types_ids: Array<number>;
+        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData>;
         updated_at: string;
     };
     export type DiscountCodeStoreData = {
@@ -235,6 +237,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_to?: string | null;
         is_active?: boolean;
         court_types_ids?: Array<number> | null;
+        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData> | null;
     };
     export type DiscountCodeUpdateData = {
         name: string;
@@ -246,6 +249,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_to?: string | null;
         is_active?: boolean;
         court_types_ids?: Array<number> | null;
+        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData> | null;
     };
 }
 declare namespace App.Data.Admin.Downtimes {
@@ -868,6 +872,17 @@ declare namespace App.Data.Core.CourtTypes {
         color: string | null;
     };
 }
+declare namespace App.Data.Core.DiscountCodes {
+    export type DiscountCodeWindowData = {
+        day: App.Enums.Day;
+        start_time: string;
+        end_time: string;
+    };
+    export type DiscountLineData = {
+        court_type_id: number | null;
+        starts_at: string | null;
+    };
+}
 declare namespace App.Data.Core.Games {
     export type GameLevelSelectOptionData = {
         id: number;
@@ -1017,14 +1032,19 @@ declare namespace App.Data.User.Courts {
 declare namespace App.Data.User.DiscountCodes {
     export type DiscountCodeCheckData = {
         code: string;
-        court_ids: Array<number> | null;
-        court_type_ids: Array<number> | null;
+        lines: Array<App.Data.User.DiscountCodes.DiscountCodeCheckLineData> | null;
+    };
+    export type DiscountCodeCheckLineData = {
+        court_id: number | null;
+        court_type_id: number | null;
+        starts_at: string | null;
     };
     export type DiscountCodeData = {
         code: string;
         type: App.Enums.DiscountCodeType;
         value: number;
         court_types_ids: Array<number>;
+        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData>;
     };
 }
 declare namespace App.Data.User.Forms {

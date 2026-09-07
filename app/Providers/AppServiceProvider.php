@@ -7,6 +7,7 @@ use App\Models\Advertisement;
 use App\Models\Court;
 use App\Models\CourtType;
 use App\Models\DiscountCode;
+use App\Models\DiscountCodeWindow;
 use App\Models\Downtime;
 use App\Models\Forms\BeginnerForm;
 use App\Models\FutureMember;
@@ -83,6 +84,7 @@ class AppServiceProvider extends ServiceProvider
             'guest' => Guest::class,
             'downtime' => Downtime::class,
             'discountCode' => DiscountCode::class,
+            'discountCodeWindow' => DiscountCodeWindow::class,
             'invoice' => Invoice::class,
             'litecomZone' => LitecomZone::class,
             'beginnerForm' => BeginnerForm::class,

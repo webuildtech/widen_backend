@@ -10,6 +10,7 @@ use App\Models\Reservation;
 use App\Models\ReservationSlot;
 use App\Models\User;
 use App\Services\PlanCourtTypeRuleService;
+use App\Data\Core\DiscountCodes\DiscountLineData;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
@@ -39,7 +40,10 @@ class ReservationService
                 $totalDiscount += $discount;
             }
 
-            if ($discountCode && $discountCode->appliesToCourtType($this->getCourtTypeId($slot['court_id']))) {
+            $slotStart = Carbon::parse($slot['date'] . ' ' . $slot['start_time']);
+            $slotEnd = Carbon::parse($slot['date'] . ' ' . $slot['end_time']);
+
+            if ($discountCode && $discountCode->appliesTo(new DiscountLineData($this->getCourtTypeId($slot['court_id']), $slotStart))) {
                 $discount = 0;
 
                 if ($discountCode->type === DiscountCodeType::FIXED) {
@@ -55,8 +59,8 @@ class ReservationService
             $price = applyDiscountAndCalculatePriceDetails($price);
 
             $reservation->slots()->create([
-                'slot_start' => Carbon::parse($slot['date'] . ' ' . $slot['start_time']),
-                'slot_end' => Carbon::parse($slot['date'] . ' ' . $slot['end_time']),
+                'slot_start' => $slotStart,
+                'slot_end' => $slotEnd,
                 'court_id' => $slot['court_id'],
                 'price' => $price->price,
                 'vat' => $price->vat,
