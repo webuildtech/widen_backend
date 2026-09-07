@@ -8,15 +8,46 @@
       @{{ __('games.mail.new_games_intro') }}
     </p>
 
-    @foreach ($games as $game)
-      @php($gameUrl = $gameUrls[$game->id])
+    @foreach ($groups as $group)
+      <div class="space-y-2">
+        <h2 class="m-0 font-semibold text-blumine-800 text-lg/7">
+          @if ($group['url'])
+            <a href="@{{ $group['url'] }}" class="text-blumine-800 no-underline">@{{ $group['name'] }}</a>
+          @else
+            @{{ $group['name'] }}
+          @endif
+        </h2>
 
-      <x-game-details />
+        <table class="w-full border border-gray-200">
+          <tbody>
+            @foreach ($group['games'] as $game)
+              <tr>
+                <td class="p-2 border-b border-gray-200 text-blumine-900">
+                  <span class="font-semibold text-blumine-800">@{{ $game->start_time->format('Y-m-d') }}</span>
+                  <span class="text-slate-500">@{{ $game->start_time->format('H:i') }} - @{{ $game->end_time->format('H:i') }}</span>
+                </td>
 
-      <x-button href="@{{ $gameUrl }}" class="bg-blumine-700 hover:bg-blumine-800">
-        @{{ __('games.mail.new_games_button') }}
-      </x-button>
+                <td class="p-2 border-b border-gray-200 text-slate-500">
+                  @{{ $game->courtType->name }}@if ($game->court) · @{{ $game->court->name }}@endif
+                </td>
+
+                <td class="p-2 border-b border-gray-200 text-slate-500">@{{ number_format($game->price_with_vat, 2, ',', ' ') }} €</td>
+
+                <td class="p-2 border-b border-gray-200 text-blumine-900">
+                  <a href="@{{ $gameUrls[$game->id] }}" class="font-semibold text-blumine-700">
+                    @{{ __('games.mail.new_games_button') }}
+                  </a>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
     @endforeach
+
+    <x-button href="@{{ $gamesUrl }}" class="bg-blumine-700 hover:bg-blumine-800">
+      @{{ __('games.mail.new_games_all_button') }}
+    </x-button>
 
     <p class="m-0 text-sm/5 text-slate-400">
       @{{ __('games.mail.new_games_unsubscribe') }}

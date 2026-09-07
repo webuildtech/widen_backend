@@ -17,6 +17,11 @@ trait HasGameScopes
         return $query->where('end_time', '>', now());
     }
 
+    public function scopeNotAnnounced(Builder $query): Builder
+    {
+        return $query->whereNull('announced_at');
+    }
+
     public function scopeStartTimeFrom(Builder $query, string $start): Builder
     {
         return $query->where('start_time', '>=', $start);

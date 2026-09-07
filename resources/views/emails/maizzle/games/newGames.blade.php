@@ -40,16 +40,16 @@ $appUrl = env('APP_FRONTEND_URL');
     }
   </style>
 </head>
-<body style="margin: 0; width: 100%; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
+<body style="margin: 0; width: 100%; background-color: #f8fafc; padding: 0; color: #264054; -webkit-font-smoothing: antialiased; word-break: break-word">
   <div role="article" aria-roledescription="email" aria-label lang="en">
-    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; color: #264054">
       <table align="center" style="margin: 0 auto" cellpadding="0" cellspacing="0" role="none">
         <tr>
           <td style="width: 700px; max-width: 100%">
             <div role="separator" style="line-height: 24px">&zwj;</div>
             <table style="width: 100%" cellpadding="0" cellspacing="0" role="none">
               <tr>
-                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; border: 1px solid #e2e8f0">
+                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; color: #264054; border: 1px solid #e2e8f0">
                   <a href="{{ $appUrl }}">
                     <img src="{{asset('logo.png')}}" width="110" alt style="max-width: 100%; vertical-align: middle">
                   </a>
@@ -61,45 +61,44 @@ $appUrl = env('APP_FRONTEND_URL');
                     <p style="font-size: 16px; line-height: 24px; color: #366c93; margin: 24px 0 0">
                       {{ __('games.mail.new_games_intro') }}
                     </p>
-                    @foreach ($games as $game)
-                    @php($gameUrl = $gameUrls[$game->id])
-                    <h2 style="font-size: 18px; line-height: 28px; font-weight: 600; color: #284a64; margin-top: 24px; margin-bottom: 0">
-                      {{ __('games.mail.details') }}
-                    </h2>
-                    <table style="width: 100%; border-width: 1px; border-color: #e5e7eb; margin-top: 24px; margin-bottom: 0" cellpadding="0" cellspacing="0" role="none">
-                      <tbody>
-                        <tr>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.sport') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->courtType->name }}</td>
-                        </tr>
-                        <tr>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.date') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->start_time->format('Y-m-d') }}</td>
-                        </tr>
-                        <tr>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.time') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->start_time->format('H:i') }} - {{ $game->end_time->format('H:i') }}</td>
-                        </tr>
-                        @if ($game->court)
-                        <tr>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.court') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->court->name }}</td>
-                        </tr>
-                        @endif
-                        <tr>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.price') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->price_with_vat }} €</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    @foreach ($groups as $group)
                     <div style="margin-top: 24px; margin-bottom: 0">
-                      <a href="{{ $gameUrl }}" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #2f5c7e" class="hover-bg-blumine-800">
+                      <h2 style="margin: 0; font-size: 18px; line-height: 28px; font-weight: 600; color: #284a64">
+                        @if ($group['url'])
+                        <a href="{{ $group['url'] }}" style="color: #284a64; text-decoration: none">{{ $group['name'] }}</a>
+                        @else
+                        {{ $group['name'] }}
+                        @endif
+                      </h2>
+                      <table style="width: 100%; border-width: 1px; border-color: #e5e7eb; margin-top: 8px; margin-bottom: 0" cellpadding="0" cellspacing="0" role="none">
+                        <tbody>
+                          @foreach ($group['games'] as $game)
+                          <tr>
+                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
+                              <span style="font-weight: 600; color: #284a64">{{ $game->start_time->format('Y-m-d') }}</span>
+                              <span style="color: #64748b">{{ $game->start_time->format('H:i') }} - {{ $game->end_time->format('H:i') }}</span>
+                            </td>
+                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">
+                              {{ $game->courtType->name }}@if ($game->court) · {{ $game->court->name }}@endif
+                            </td>
+                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ number_format($game->price_with_vat, 2, ',', ' ') }} €</td>
+                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
+                              <a href="{{ $gameUrls[$game->id] }}" style="font-weight: 600; color: #2f5c7e">
+                                {{ __('games.mail.new_games_button') }}
+                              </a>
+                            </td>
+                          </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                    @endforeach<div style="margin-top: 24px; margin-bottom: 0">
+                      <a href="{{ $gamesUrl }}" style="display: inline-block; text-decoration: none; padding: 16px 24px; font-size: 16px; line-height: 1; border-radius: 4px; color: #fffffe; background-color: #2f5c7e" class="hover-bg-blumine-800">
                         <!--[if mso]><i style="mso-font-width: 150%; mso-text-raise: 31px" hidden>&emsp;</i><![endif]-->
-                        <span style="mso-text-raise: 16px">{{ __('games.mail.new_games_button') }}</span>
+                        <span style="mso-text-raise: 16px">{{ __('games.mail.new_games_all_button') }}</span>
                         <!--[if mso]><i hidden style="mso-font-width: 150%">&emsp;&#8203;</i><![endif]-->
                       </a>
                     </div>
-                    @endforeach
                     <p style="font-size: 14px; line-height: 20px; color: #94a3b8; margin: 24px 0 0">
                       {{ __('games.mail.new_games_unsubscribe') }}
                     </p>

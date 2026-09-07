@@ -3,6 +3,7 @@
 namespace App\Data\User\Games;
 
 use App\Data\Core\CourtTypes\CourtTypeSelectOptionData;
+use App\Data\User\GameGroups\GameGroupSelectOptionData;
 use App\Data\Core\Games\GameLevelSelectOptionData;
 use App\Enums\GameStatus;
 use App\Models\Game;
@@ -15,49 +16,51 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class GameDetailData extends Data
 {
     public function __construct(
-        public string                    $uuid,
+        public string                     $uuid,
 
-        public ?string                   $title,
+        public ?string                    $title,
 
-        public ?string                   $description,
+        public ?string                    $description,
 
-        public CourtTypeSelectOptionData $courtType,
+        public CourtTypeSelectOptionData  $courtType,
 
-        public ?string                   $court_name,
+        public ?GameGroupSelectOptionData $gameGroup,
 
-        public Carbon                    $start_time,
+        public ?string                    $court_name,
 
-        public Carbon                    $end_time,
+        public Carbon                     $start_time,
 
-        public int                       $capacity,
+        public Carbon                     $end_time,
 
-        public int                       $taken_spots,
+        public int                        $capacity,
 
-        public int                       $free_spots,
+        public int                        $taken_spots,
 
-        public bool                      $is_full,
+        public int                        $free_spots,
 
-        public bool                      $is_joinable,
+        public bool                       $is_full,
 
-        public GameStatus                $status,
+        public bool                       $is_joinable,
 
-        public float                     $price_with_vat,
+        public GameStatus                 $status,
 
-        public ?string                   $photo_url,
+        public float                      $price_with_vat,
+
+        public ?string                    $photo_url,
 
         /** @var Collection<int, GameParticipantPublicData> */
-        public Collection                $participants,
+        public Collection                 $participants,
 
-        public Collection                $levels,
+        public Collection                 $levels,
 
-        public int                       $max_guests,
+        public int                        $max_guests,
     )
     {
     }
 
     public static function fromModel(Game $game): self
     {
-        $game->loadMissing(['courtType.gameLevels', 'court']);
+        $game->loadMissing(['courtType.gameLevels', 'court', 'gameGroup']);
 
         $participants = $game->activeParticipants()->with('level')->get();
         $takenSpots = $participants->count();
@@ -68,6 +71,7 @@ class GameDetailData extends Data
             $game->title,
             $game->description,
             CourtTypeSelectOptionData::from($game->courtType),
+            $game->gameGroup ? GameGroupSelectOptionData::from($game->gameGroup) : null,
             $game->court?->name,
             $game->start_time,
             $game->end_time,

@@ -2,6 +2,7 @@
 
 namespace App\Data\Admin\Games;
 
+use App\Data\Admin\GameGroups\GameGroupSelectOptionData;
 use App\Data\Core\Media\MediaData;
 use App\Enums\GameStatus;
 use App\Models\Game;
@@ -17,9 +18,11 @@ class GameData extends Data
     public function __construct(
         public int         $id,
 
-        public string      $uuid,
-
         public int         $court_type_id,
+
+        public ?int        $game_group_id,
+
+        public ?GameGroupSelectOptionData $gameGroup,
 
         public ?int        $court_id,
 
@@ -56,12 +59,13 @@ class GameData extends Data
 
     public static function fromModel(Game $game): self
     {
-        $game->loadMissing(['participants.level', 'participants.addedBy']);
+        $game->loadMissing(['participants.level', 'participants.addedBy', 'gameGroup']);
 
         return new self(
             $game->id,
-            $game->uuid,
             $game->court_type_id,
+            $game->game_group_id,
+            $game->gameGroup ? GameGroupSelectOptionData::from($game->gameGroup) : null,
             $game->court_id,
             $game->getTranslations('title') ?: null,
             $game->getTranslations('description') ?: null,

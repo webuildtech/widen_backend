@@ -3,6 +3,7 @@
 namespace App\Data\User\Games;
 
 use App\Data\Core\CourtTypes\CourtTypeSelectOptionData;
+use App\Data\User\GameGroups\GameGroupSelectOptionData;
 use App\Models\Game;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
@@ -12,29 +13,31 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class GameListData extends Data
 {
     public function __construct(
-        public string                    $uuid,
+        public string                     $uuid,
 
-        public ?string                   $title,
+        public ?string                    $title,
 
-        public CourtTypeSelectOptionData $courtType,
+        public CourtTypeSelectOptionData  $courtType,
 
-        public ?string                   $court_name,
+        public ?GameGroupSelectOptionData $gameGroup,
 
-        public Carbon                    $start_time,
+        public ?string                    $court_name,
 
-        public Carbon                    $end_time,
+        public Carbon                     $start_time,
 
-        public int                       $capacity,
+        public Carbon                     $end_time,
 
-        public int                       $taken_spots,
+        public int                        $capacity,
 
-        public int                       $free_spots,
+        public int                        $taken_spots,
 
-        public bool                      $is_full,
+        public int                        $free_spots,
 
-        public float                     $price_with_vat,
+        public bool                       $is_full,
 
-        public ?string                   $photo_url,
+        public float                      $price_with_vat,
+
+        public ?string                    $photo_url,
     )
     {
     }
@@ -47,6 +50,7 @@ class GameListData extends Data
             $game->uuid,
             $game->title,
             CourtTypeSelectOptionData::from($game->courtType),
+            $game->gameGroup ? GameGroupSelectOptionData::from($game->gameGroup) : null,
             $game->court?->name,
             $game->start_time,
             $game->end_time,

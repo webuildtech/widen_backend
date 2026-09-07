@@ -6,29 +6,36 @@
   <tbody>
     <tr>
       <td class="p-2 border-b border-gray-200 text-slate-500">@{{ __('games.mail.sport') }}</td>
-      <td class="p-2 border-b border-gray-200">@{{ $game->courtType->name }}</td>
+      <td class="p-2 border-b border-gray-200 text-blumine-900">@{{ $game->courtType->name }}</td>
     </tr>
+
+    @if ($game->gameGroup)
+      <tr>
+        <td class="p-2 border-b border-gray-200 text-slate-500">@{{ __('games.mail.group') }}</td>
+        <td class="p-2 border-b border-gray-200 text-blumine-900">@{{ $game->gameGroup->name }}</td>
+      </tr>
+    @endif
 
     <tr>
       <td class="p-2 border-b border-gray-200 text-slate-500">@{{ __('games.mail.date') }}</td>
-      <td class="p-2 border-b border-gray-200">@{{ $game->start_time->format('Y-m-d') }}</td>
+      <td class="p-2 border-b border-gray-200 text-blumine-900">@{{ $game->start_time->format('Y-m-d') }}</td>
     </tr>
 
     <tr>
       <td class="p-2 border-b border-gray-200 text-slate-500">@{{ __('games.mail.time') }}</td>
-      <td class="p-2 border-b border-gray-200">@{{ $game->start_time->format('H:i') }} - @{{ $game->end_time->format('H:i') }}</td>
+      <td class="p-2 border-b border-gray-200 text-blumine-900">@{{ $game->start_time->format('H:i') }} - @{{ $game->end_time->format('H:i') }}</td>
     </tr>
 
     @if ($game->court)
       <tr>
         <td class="p-2 border-b border-gray-200 text-slate-500">@{{ __('games.mail.court') }}</td>
-        <td class="p-2 border-b border-gray-200">@{{ $game->court->name }}</td>
+        <td class="p-2 border-b border-gray-200 text-blumine-900">@{{ $game->court->name }}</td>
       </tr>
     @endif
 
     <tr>
       <td class="p-2 border-b border-gray-200 text-slate-500">@{{ __('games.mail.price') }}</td>
-      <td class="p-2 border-b border-gray-200">@{{ $game->price_with_vat }} €</td>
+      <td class="p-2 border-b border-gray-200 text-blumine-900">@{{ $game->price_with_vat }} €</td>
     </tr>
   </tbody>
 </table>

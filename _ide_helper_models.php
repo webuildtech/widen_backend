@@ -489,6 +489,7 @@ namespace App\Models{
  * @property int $id
  * @property string $uuid
  * @property int $court_type_id
+ * @property int|null $game_group_id
  * @property int|null $court_id
  * @property int|null $admin_id
  * @property \Illuminate\Support\Carbon $start_time
@@ -500,6 +501,7 @@ namespace App\Models{
  * @property \App\Enums\GameStatus $status
  * @property \Illuminate\Support\Carbon|null $canceled_at
  * @property string|null $cancellation_reason
+ * @property \Illuminate\Support\Carbon|null $announced_at
  * @property array<array-key, mixed>|null $title
  * @property array<array-key, mixed>|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -514,6 +516,7 @@ namespace App\Models{
  * @property-read \App\Models\CourtType $courtType
  * @property-read mixed $email
  * @property-read mixed $full_name
+ * @property-read \App\Models\GameGroup|null $gameGroup
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GameParticipant> $participants
@@ -526,6 +529,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game endTimeTo(string $end)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game notAnnounced()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game published()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game query()
@@ -533,6 +537,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game upcoming()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAnnouncedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCancellationReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCapacity($value)
@@ -542,6 +547,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereGameGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
@@ -561,6 +567,56 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	class IdeHelperGame {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property array<array-key, mixed> $name
+ * @property array<array-key, mixed>|null $description
+ * @property int $sort_order
+ * @property bool $active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Game> $games
+ * @property-read int|null $games_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read mixed $photo
+ * @property-read mixed $translations
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup dateBetween(string $column, string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup ordered()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereLocale(string $column, string $locale)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereLocales(string $column, array $locales)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereSortOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGameGroup {}
 }
 
 namespace App\Models{

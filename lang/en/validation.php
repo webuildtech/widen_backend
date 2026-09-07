@@ -189,7 +189,11 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Name',
+        'title' => 'Title',
+        'description' => 'Description',
+    ],
 
     'availability' => [
         'start_time' => [
@@ -223,5 +227,9 @@ return [
     'games' => [
         'courts_court_type' => 'The selected courts do not belong to the selected sport.',
         'capacity_below_taken_spots' => 'The number of players cannot be lower than the spots already taken (:taken).',
+    ],
+
+    'game_groups' => [
+        'has_games' => 'The group cannot be deleted because it still has games (:count).',
     ],
 ];

@@ -33,13 +33,17 @@ class ReservationCalendarData extends Data
 
         public ?string               $comment,
 
-        public ?string               $game_uuid = null,
+        public ?int                  $game_id = null,
+
+        public ?string               $game_group = null,
     )
     {
     }
 
     public static function fromModel(Reservation $reservation): self
     {
+        $isGame = $reservation->owner_type === 'game';
+
         return new self(
             $reservation->id,
             $reservation->start_time,
@@ -51,7 +55,8 @@ class ReservationCalendarData extends Data
             $reservation->is_paid,
             $reservation->canceled_at,
             $reservation->comment,
-            $reservation->owner_type === 'game' ? $reservation->owner?->uuid : null,
+            $isGame ? $reservation->owner?->id : null,
+            $isGame ? $reservation->owner?->gameGroup?->name : null,
         );
     }
 }

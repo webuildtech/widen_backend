@@ -5,13 +5,13 @@ namespace App\Services;
 use App\Data\Admin\Courts\CourtStoreData;
 use App\Data\Admin\Courts\CourtUpdateData;
 use App\Models\Court;
-use App\Services\Media\LogoManager;
+use App\Services\Media\MediaManager;
 use Illuminate\Database\Eloquent\Model;
 
 class CourtService
 {
     public function __construct(
-        protected LogoManager $logoManager
+        protected MediaManager $mediaManager
     )
     {
     }
@@ -20,7 +20,7 @@ class CourtService
     {
         $court = Court::create($data->except('logoFile', 'intervals_ids', 'litecom_zones_ids')->all());
 
-        $this->logoManager->handle($court, $data);
+        $this->mediaManager->sync($court, Court::LOGO_COLLECTION, $data->logoFile);
 
         $this->syncIntervals($court, $data->intervals_ids);
         $this->syncLitecomZones($court, $data->litecom_zones_ids);
@@ -32,7 +32,7 @@ class CourtService
     {
         $court->update($data->except('logoFile', 'deleteLogo', 'intervals_ids', 'litecom_zones_ids')->all());
 
-        $this->logoManager->handle($court, $data);
+        $this->mediaManager->sync($court, Court::LOGO_COLLECTION, $data->logoFile, $data->deleteLogo);
 
         $this->syncIntervals($court, $data->intervals_ids);
         $this->syncLitecomZones($court, $data->litecom_zones_ids);

@@ -27,13 +27,14 @@ class GameController extends Controller
     public function index()
     {
         $games = QueryBuilder::for(Game::class)
-            ->with(['court', 'courtType'])
+            ->with(['court', 'courtType', 'gameGroup'])
             ->withCount('activeParticipants')
             ->defaultSort('-start_time')
             ->allowedSorts([
                 'start_time',
                 'end_time',
                 'court_id',
+                'game_group_id',
                 'capacity',
                 'price_with_vat',
                 'status',
@@ -42,6 +43,7 @@ class GameController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('court_id'),
                 AllowedFilter::exact('court_type_id'),
+                AllowedFilter::exact('game_group_id'),
                 AllowedFilter::exact('capacity'),
                 AllowedFilter::exact('status'),
                 AllowedFilter::scope('start_time_from'),

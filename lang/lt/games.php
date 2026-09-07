@@ -22,8 +22,9 @@ return [
         'signature' => 'Ačiū, kad naudojatės mūsų paslaugomis,',
 
         'new_games_subject' => 'Nauji pasižaidimai',
-        'new_games_intro' => 'Paskelbėme naujų pasižaidimų. Norėdami prisijungti, spustelėkite pasižaidimą.',
-        'new_games_button' => 'Peržiūrėti pasižaidimą',
+        'new_games_intro' => 'Nuo paskutinio laiško paskelbėme šiuos pasižaidimus. Norėdami užsiregistruoti, spustelėkite pasižaidimą.',
+        'new_games_button' => 'Peržiūrėti',
+        'new_games_all_button' => 'Visi pasižaidimai',
         'new_games_unsubscribe' => 'Šiuos pranešimus galite išjungti savo profilyje.',
 
         'joined_subject' => 'Registracija į pasižaidimą patvirtinta',
@@ -37,6 +38,8 @@ return [
 
         'details' => 'Pasižaidimo informacija',
         'sport' => 'Sporto šaka',
+        'group' => 'Grupė',
+        'no_group' => 'Kiti pasižaidimai',
         'date' => 'Data',
         'time' => 'Laikas',
         'court' => 'Aikštelė',

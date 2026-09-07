@@ -3,6 +3,10 @@
 return [
     'frontend_path' => env('GAMES_FRONTEND_PATH', '/games/{uuid}'),
 
+    'group_frontend_path' => env('GAME_GROUPS_FRONTEND_PATH', '/games/group/{uuid}'),
+
+    'list_frontend_path' => env('GAMES_LIST_FRONTEND_PATH', '/games'),
+
     /*
      * How many extra players one user may bring along and pay for.
      */

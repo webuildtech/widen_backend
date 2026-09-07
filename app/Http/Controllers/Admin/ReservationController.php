@@ -9,7 +9,9 @@ use App\Data\Admin\Reservations\ReservationFilterData;
 use App\Data\Admin\Reservations\MultiReservationStoreData;
 use App\Data\Admin\Reservations\ReservationListData;
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use App\Models\Reservation;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Models\User;
 use App\Services\Reservations\MultiReservationService;
 use App\Services\Reservations\ReservationService;
@@ -79,7 +81,10 @@ class ReservationController extends Controller
 
     public function calendar(ReservationFilterData $data)
     {
-        $reservationTimes = Reservation::with(['court', 'owner'])
+        $reservationTimes = Reservation::with([
+            'court',
+            'owner' => fn(MorphTo $owner) => $owner->morphWith([Game::class => ['gameGroup']]),
+        ])
             ->orderBy('court_id')
             ->whereCanceledAt(null)
             ->whereDate('start_time', '>=', $data->date_from)

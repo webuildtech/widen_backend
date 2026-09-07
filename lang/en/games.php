@@ -22,8 +22,9 @@ return [
         'signature' => 'Thank you for using our services,',
 
         'new_games_subject' => 'New open games',
-        'new_games_intro' => 'We have published new open games. Click a game to join it.',
-        'new_games_button' => 'View the game',
+        'new_games_intro' => 'These are the games we have published since the last email. Click a game to join it.',
+        'new_games_button' => 'View',
+        'new_games_all_button' => 'All open games',
         'new_games_unsubscribe' => 'You can turn these notifications off in your profile.',
 
         'joined_subject' => 'Your spot is confirmed',
@@ -37,6 +38,8 @@ return [
 
         'details' => 'Game details',
         'sport' => 'Sport',
+        'group' => 'Group',
+        'no_group' => 'Other games',
         'date' => 'Date',
         'time' => 'Time',
         'court' => 'Court',

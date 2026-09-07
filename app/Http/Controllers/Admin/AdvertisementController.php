@@ -6,12 +6,12 @@ use App\Data\Admin\Advertisements\AdvertisementData;
 use App\Data\Admin\Advertisements\AdvertisementUpdateData;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
-use App\Services\Media\LogoManager;
+use App\Services\Media\MediaManager;
 
 class AdvertisementController extends Controller
 {
     public function __construct(
-        protected LogoManager $logoManager
+        protected MediaManager $mediaManager
     )
     {
     }
@@ -27,7 +27,7 @@ class AdvertisementController extends Controller
 
         $advertisement->update($data->except('logoFile', 'deleteLogo')->all());
 
-        $this->logoManager->handle($advertisement, $data);
+        $this->mediaManager->sync($advertisement, Advertisement::LOGO_COLLECTION, $data->logoFile, $data->deleteLogo);
 
         $advertisement->refresh();
 

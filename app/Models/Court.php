@@ -18,9 +18,11 @@ class Court extends BaseModel implements HasMedia
     use InteractsWithMedia;
     use HasCourtScopes;
 
+    public const LOGO_COLLECTION = 'logo';
+
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('logo')->singleFile();
+        $this->addMediaCollection(self::LOGO_COLLECTION)->singleFile();
     }
 
     public function courtType(): BelongsTo

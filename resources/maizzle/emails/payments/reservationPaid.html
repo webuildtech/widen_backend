@@ -15,24 +15,24 @@
     <table class="w-full border border-gray-200">
       <thead>
         <tr class="bg-gray-100">
-          <th class="text-left p-2 border-b border-gray-200">Data</th>
-          <th class="text-left p-2 border-b border-gray-200">Laikas</th>
-          <th class="text-left p-2 border-b border-gray-200">Aikštelė</th>
+          <th class="text-left p-2 border-b border-gray-200 text-blumine-900">Data</th>
+          <th class="text-left p-2 border-b border-gray-200 text-blumine-900">Laikas</th>
+          <th class="text-left p-2 border-b border-gray-200 text-blumine-900">Aikštelė</th>
         </tr>
       </thead>
 
       <tbody>
         @foreach ($payment->paymentable->reservations as $reservation)
           <tr>
-            <td class="p-2 border-b border-gray-200">
+            <td class="p-2 border-b border-gray-200 text-blumine-900">
               @{{ $reservation->start_time->format('Y-m-d') }}
             </td>
 
-            <td class="p-2 border-b border-gray-200">
+            <td class="p-2 border-b border-gray-200 text-blumine-900">
               @{{ $reservation->start_time->format('H:i') }} - @{{ $reservation->end_time->format('H:i') }}
             </td>
 
-            <td class="p-2 border-b border-gray-200">
+            <td class="p-2 border-b border-gray-200 text-blumine-900">
               @{{ $reservation->court->name }}
             </td>
           </tr>
@@ -40,7 +40,7 @@
       </tbody>
     </table>
 
-    <p class="mt-4">
+    <p class="mt-4 text-blumine-900">
       💰 <strong>Suma:</strong> @{{ $payment->price_with_vat }} €
     </p>
 

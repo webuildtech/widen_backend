@@ -40,16 +40,16 @@ $appUrl = env('APP_FRONTEND_URL');
     }
   </style>
 </head>
-<body style="margin: 0; width: 100%; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
+<body style="margin: 0; width: 100%; background-color: #f8fafc; padding: 0; color: #264054; -webkit-font-smoothing: antialiased; word-break: break-word">
   <div role="article" aria-roledescription="email" aria-label lang="en">
-    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; color: #264054">
       <table align="center" style="margin: 0 auto" cellpadding="0" cellspacing="0" role="none">
         <tr>
           <td style="width: 700px; max-width: 100%">
             <div role="separator" style="line-height: 24px">&zwj;</div>
             <table style="width: 100%" cellpadding="0" cellspacing="0" role="none">
               <tr>
-                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; border: 1px solid #e2e8f0">
+                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; color: #264054; border: 1px solid #e2e8f0">
                   <a href="{{ $appUrl }}">
                     <img src="{{asset('logo.png')}}" width="110" alt style="max-width: 100%; vertical-align: middle">
                   </a>
@@ -67,28 +67,28 @@ $appUrl = env('APP_FRONTEND_URL');
                     <table style="width: 100%; border-width: 1px; border-color: #e5e7eb; margin-top: 24px; margin-bottom: 0" cellpadding="0" cellspacing="0" role="none">
                       <thead>
                         <tr style="background-color: #f3f4f6">
-                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Data</th>
-                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Laikas</th>
-                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left">Aikštelė</th>
+                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left; color: #264054">Data</th>
+                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left; color: #264054">Laikas</th>
+                          <th style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; text-align: left; color: #264054">Aikštelė</th>
                         </tr>
                       </thead>
                       <tbody>
                         @foreach ($payment->paymentable->reservations as $reservation)
                         <tr>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
                             {{ $reservation->start_time->format('Y-m-d') }}
                           </td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
                             {{ $reservation->start_time->format('H:i') }} - {{ $reservation->end_time->format('H:i') }}
                           </td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
                             {{ $reservation->court->name }}
                           </td>
                         </tr>
                         @endforeach
                       </tbody>
                     </table>
-                    <p style="margin-top: 24px; margin-bottom: 0">
+                    <p style="color: #264054; margin-top: 24px; margin-bottom: 0">
                       💰 <strong>Suma:</strong> {{ $payment->price_with_vat }} €
                     </p>
                     @if ($payment->owner_type === 'user')<div style="margin-top: 24px; margin-bottom: 0">

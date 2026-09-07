@@ -33,6 +33,7 @@ class Game extends BaseModel implements HasMedia
         'start_time' => 'datetime',
         'end_time' => 'datetime',
         'canceled_at' => 'datetime',
+        'announced_at' => 'datetime',
         'capacity' => 'integer',
         'price' => 'decimal:2',
         'vat' => 'decimal:2',
@@ -45,19 +46,21 @@ class Game extends BaseModel implements HasMedia
         return ['uuid'];
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
-    }
+    public const PHOTO_COLLECTION = 'photo';
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('photo')->singleFile();
+        $this->addMediaCollection(self::PHOTO_COLLECTION)->singleFile();
     }
 
     public function courtType(): BelongsTo
     {
         return $this->belongsTo(CourtType::class);
+    }
+
+    public function gameGroup(): BelongsTo
+    {
+        return $this->belongsTo(GameGroup::class);
     }
 
     public function court(): BelongsTo

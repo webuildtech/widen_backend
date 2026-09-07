@@ -40,16 +40,16 @@ $appUrl = env('APP_FRONTEND_URL');
     }
   </style>
 </head>
-<body style="margin: 0; width: 100%; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
+<body style="margin: 0; width: 100%; background-color: #f8fafc; padding: 0; color: #264054; -webkit-font-smoothing: antialiased; word-break: break-word">
   <div role="article" aria-roledescription="email" aria-label lang="en">
-    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; color: #264054">
       <table align="center" style="margin: 0 auto" cellpadding="0" cellspacing="0" role="none">
         <tr>
           <td style="width: 700px; max-width: 100%">
             <div role="separator" style="line-height: 24px">&zwj;</div>
             <table style="width: 100%" cellpadding="0" cellspacing="0" role="none">
               <tr>
-                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; border: 1px solid #e2e8f0">
+                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; color: #264054; border: 1px solid #e2e8f0">
                   <a href="{{ $appUrl }}">
                     <img src="{{asset('logo.png')}}" width="110" alt style="max-width: 100%; vertical-align: middle">
                   </a>
@@ -68,25 +68,31 @@ $appUrl = env('APP_FRONTEND_URL');
                       <tbody>
                         <tr>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.sport') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->courtType->name }}</td>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">{{ $game->courtType->name }}</td>
                         </tr>
+                        @if ($game->gameGroup)
+                        <tr>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.group') }}</td>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">{{ $game->gameGroup->name }}</td>
+                        </tr>
+                        @endif
                         <tr>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.date') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->start_time->format('Y-m-d') }}</td>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">{{ $game->start_time->format('Y-m-d') }}</td>
                         </tr>
                         <tr>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.time') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->start_time->format('H:i') }} - {{ $game->end_time->format('H:i') }}</td>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">{{ $game->start_time->format('H:i') }} - {{ $game->end_time->format('H:i') }}</td>
                         </tr>
                         @if ($game->court)
                         <tr>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.court') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->court->name }}</td>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">{{ $game->court->name }}</td>
                         </tr>
                         @endif
                         <tr>
                           <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ __('games.mail.price') }}</td>
-                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px">{{ $game->price_with_vat }} €</td>
+                          <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">{{ $game->price_with_vat }} €</td>
                         </tr>
                       </tbody>
                     </table>

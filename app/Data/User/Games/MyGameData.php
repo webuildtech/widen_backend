@@ -3,6 +3,7 @@
 namespace App\Data\User\Games;
 
 use App\Data\Core\CourtTypes\CourtTypeSelectOptionData;
+use App\Data\User\GameGroups\GameGroupSelectOptionData;
 use App\Enums\GameParticipantStatus;
 use App\Enums\GameStatus;
 use App\Models\GameParticipant;
@@ -15,37 +16,39 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class MyGameData extends Data
 {
     public function __construct(
-        public string                    $uuid,
+        public string                     $uuid,
 
-        public ?string                   $title,
+        public ?string                    $title,
 
-        public CourtTypeSelectOptionData $courtType,
+        public CourtTypeSelectOptionData  $courtType,
 
-        public ?string                   $court_name,
+        public ?GameGroupSelectOptionData $gameGroup,
 
-        public Carbon                    $start_time,
+        public ?string                    $court_name,
 
-        public Carbon                    $end_time,
+        public Carbon                     $start_time,
 
-        public GameStatus                $game_status,
+        public Carbon                     $end_time,
 
-        public GameParticipantStatus     $status,
+        public GameStatus                 $game_status,
 
-        public float                     $price_with_vat,
+        public GameParticipantStatus      $status,
 
-        public float                     $refunded_amount,
+        public float                      $price_with_vat,
 
-        public ?string                   $level,
+        public float                      $refunded_amount,
 
-        public bool                      $is_past,
+        public ?string                    $level,
 
-        public Collection                $guests,
+        public bool                       $is_past,
 
-        public float                     $total_price_with_vat,
+        public Collection                 $guests,
 
-        public float                     $total_refunded_amount,
+        public float                      $total_price_with_vat,
 
-        public ?string                   $paid_by,
+        public float                      $total_refunded_amount,
+
+        public ?string                    $paid_by,
     )
     {
     }
@@ -69,6 +72,7 @@ class MyGameData extends Data
             $game->uuid,
             $game->title,
             CourtTypeSelectOptionData::from($game->courtType),
+            $game->gameGroup ? GameGroupSelectOptionData::from($game->gameGroup) : null,
             $game->court?->name,
             $game->start_time,
             $game->end_time,

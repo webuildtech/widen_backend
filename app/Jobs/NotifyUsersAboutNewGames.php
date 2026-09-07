@@ -24,7 +24,10 @@ class NotifyUsersAboutNewGames implements ShouldQueue
 
     public function handle(): void
     {
-        $games = Game::with(['courtType', 'court'])->whereIn('id', $this->gameIds)->get();
+        $games = Game::with(['courtType', 'court', 'gameGroup'])
+            ->whereIn('id', $this->gameIds)
+            ->orderBy('start_time')
+            ->get();
 
         if ($games->isEmpty()) {
             return;

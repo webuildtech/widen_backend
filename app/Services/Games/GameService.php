@@ -8,18 +8,16 @@ use App\Data\Admin\Games\GameStoreData;
 use App\Data\Admin\Games\GameUpdateData;
 use App\Data\Core\Pricing\PriceDetailsData;
 use App\Enums\GameStatus;
-use App\Jobs\NotifyUsersAboutNewGames;
 use App\Models\Court;
 use App\Models\Game;
 use App\Models\Reservation;
+use App\Services\Media\MediaManager;
 use App\Services\Reservations\ReservationService;
 use App\Services\Slots\SlotService;
 use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Spatie\LaravelData\Optional;
 
 class GameService
 {
@@ -28,6 +26,7 @@ class GameService
         protected GameRefundService       $refundService,
         protected SlotService             $slotService,
         protected ReservationService      $reservationService,
+        protected MediaManager            $mediaManager,
     )
     {
     }
@@ -46,8 +45,6 @@ class GameService
             $price = applyDiscountAndCalculatePriceDetails($data->price_with_vat);
 
             $games = $courts->map(fn(Court $court) => $this->createForCourt($court, $data, $price));
-
-            NotifyUsersAboutNewGames::dispatch($games->pluck('id')->all());
 
             return GameResultData::success($games);
         });
@@ -89,6 +86,7 @@ class GameService
 
             $game->update([
                 'court_type_id' => $data->court_type_id,
+                'game_group_id' => $data->game_group_id,
                 'court_id' => $court->id,
                 'start_time' => $this->dateTime($data->date, $data->start_time),
                 'end_time' => $this->dateTime($data->date, $data->end_time),
@@ -96,10 +94,10 @@ class GameService
                 'price' => $price->price,
                 'vat' => $price->vat,
                 'price_with_vat' => $price->price_with_vat,
-                ...$this->translations($data),
+                ...$data->only('title', 'description')->all(),
             ]);
 
-            $this->syncPhoto($game, $data->photoFile, $data->deletePhoto);
+            $this->mediaManager->sync($game, Game::PHOTO_COLLECTION, $data->photoFile, $data->deletePhoto);
 
             $reservation?->slots()->delete();
             $reservation?->delete();
@@ -146,6 +144,7 @@ class GameService
     {
         $game = Game::create([
             'court_type_id' => $data->court_type_id,
+            'game_group_id' => $data->game_group_id,
             'court_id' => $court->id,
             'admin_id' => auth('admin')->id(),
             'start_time' => $this->dateTime($data->date, $data->start_time),
@@ -154,10 +153,10 @@ class GameService
             'price' => $price->price,
             'vat' => $price->vat,
             'price_with_vat' => $price->price_with_vat,
-            ...$this->translations($data),
+            ...$data->only('title', 'description')->all(),
         ]);
 
-        $this->syncPhoto($game, $data->photoFile);
+        $this->mediaManager->sync($game, Game::PHOTO_COLLECTION, $data->photoFile);
 
         $this->createReservation($game, $court);
 
@@ -211,26 +210,6 @@ class GameService
             })
             ->filter()
             ->values();
-    }
-
-    private function translations(GameStoreData|GameUpdateData $data): array
-    {
-        return collect(['title' => $data->title, 'description' => $data->description])
-            ->reject(fn($value) => $value instanceof Optional)
-            ->all();
-    }
-
-    private function syncPhoto(Game $game, UploadedFile|Optional|null $photoFile, mixed $deletePhoto = null): void
-    {
-        if ($photoFile instanceof UploadedFile) {
-            $game->addMedia($photoFile)->preservingOriginal()->toMediaCollection('photo');
-
-            return;
-        }
-
-        if ($deletePhoto) {
-            $game->clearMediaCollection('photo');
-        }
     }
 
     private function dateTime(Carbon $date, string $time): Carbon

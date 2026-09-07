@@ -11,6 +11,7 @@ use App\Models\Downtime;
 use App\Models\Forms\BeginnerForm;
 use App\Models\FutureMember;
 use App\Models\Game;
+use App\Models\GameGroup;
 use App\Models\GameLevel;
 use App\Models\GameParticipant;
 use App\Models\Group;
@@ -63,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
             'courtType' => CourtType::class,
             'court' => Court::class,
             'game' => Game::class,
+            'gameGroup' => GameGroup::class,
             'gameParticipant' => GameParticipant::class,
             'gameLevel' => GameLevel::class,
             'group' => Group::class,

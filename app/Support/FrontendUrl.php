@@ -26,6 +26,16 @@ class FrontendUrl
         return self::to(str_replace('{uuid}', $uuid, config('games.frontend_path')), $locale);
     }
 
+    public static function gameGroup(string $uuid, Locale|string|null $locale = null): string
+    {
+        return self::to(str_replace('{uuid}', $uuid, config('games.group_frontend_path')), $locale);
+    }
+
+    public static function games(Locale|string|null $locale = null): string
+    {
+        return self::to(config('games.list_frontend_path'), $locale);
+    }
+
     public static function locale(Locale|string|null $locale = null): Locale
     {
         if ($locale instanceof Locale) {

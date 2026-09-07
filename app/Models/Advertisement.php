@@ -13,9 +13,11 @@ class Advertisement extends BaseModel implements HasMedia
 {
     use InteractsWithMedia;
 
+    public const LOGO_COLLECTION = 'logo';
+
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('logo')->useDisk('public')->singleFile();
+        $this->addMediaCollection(self::LOGO_COLLECTION)->useDisk('public')->singleFile();
     }
 
     public function logo(): Attribute

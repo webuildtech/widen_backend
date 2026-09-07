@@ -171,7 +171,11 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Pavadinimas',
+        'title' => 'Pavadinimas',
+        'description' => 'Aprašymas',
+    ],
 
     'availability' => [
         'start_time' => [
@@ -205,5 +209,9 @@ return [
     'games' => [
         'courts_court_type' => 'Pasirinktos aikštelės nepriklauso pasirinktai sporto šakai.',
         'capacity_below_taken_spots' => 'Dalyvių skaičius negali būti mažesnis nei jau užimtų vietų (:taken).',
+    ],
+
+    'game_groups' => [
+        'has_games' => 'Grupės ištrinti negalima, nes jai priskirta pasižaidimų (:count).',
     ],
 ];

@@ -28,12 +28,16 @@ class GameController extends Controller
         $games = Game::query()
             ->published()
             ->upcoming()
-            ->with(['courtType', 'court'])
+            ->with(['courtType', 'court', 'gameGroup'])
             ->withCount('activeParticipants')
             ->orderBy('start_time');
 
         if (!$data->court_type_id instanceof Optional) {
             $games->where('court_type_id', $data->court_type_id);
+        }
+
+        if (!$data->game_group_uuid instanceof Optional) {
+            $games->whereHas('gameGroup', fn($query) => $query->where('uuid', $data->game_group_uuid));
         }
 
         if (!$data->date_from instanceof Optional) {
@@ -66,6 +70,7 @@ class GameController extends Controller
             ->with([
                 'game.courtType',
                 'game.court',
+                'game.gameGroup',
                 'game.participants' => fn($query) => $query->where('added_by_user_id', $userId)->with('level'),
                 'level',
                 'addedBy',

@@ -302,6 +302,138 @@ declare namespace App.Data.Admin.FutureMembers {
         updated_at: string;
     };
 }
+declare namespace App.Data.Admin.GameGroups {
+    export type GameGroupData = {
+        id: number;
+        name: Array<any>;
+        description: Array<any> | null;
+        sort_order: number;
+        active: boolean;
+        photo: App.Data.Core.Media.MediaData | null;
+    };
+    export type GameGroupListData = {
+        id: number;
+        name: string;
+        sort_order: number;
+        active: boolean;
+        games_count: number;
+        photo_url: string | null;
+        updated_at: string;
+    };
+    export type GameGroupSelectOptionData = {
+        id: number;
+        name: string;
+    };
+    export type GameGroupStoreData = {
+        name: Array<any>;
+        description?: Array<any> | null;
+        sort_order?: number;
+        active?: boolean;
+        photoFile?: any;
+    };
+    export type GameGroupUpdateData = {
+        name: Array<any>;
+        description?: Array<any> | null;
+        sort_order?: number;
+        active?: boolean;
+        photoFile?: any;
+        deletePhoto?: boolean;
+    };
+}
+declare namespace App.Data.Admin.Games {
+    export type GameCancelData = {
+        reason: string | null;
+    };
+    export type GameCourtConflictData = {
+        court_id: number;
+        court_name: string;
+        date: string;
+        slots: Array<App.Data.Admin.Games.GameSlotConflictData>;
+    };
+    export type GameData = {
+        id: number;
+        court_type_id: number;
+        game_group_id: number | null;
+        gameGroup: App.Data.Admin.GameGroups.GameGroupSelectOptionData | null;
+        court_id: number | null;
+        title: Array<any> | null;
+        description: Array<any> | null;
+        date: string;
+        start_time: string;
+        end_time: string;
+        capacity: number;
+        taken_spots: number;
+        price_with_vat: number;
+        status: App.Enums.GameStatus;
+        canceled_at: string | null;
+        photo: App.Data.Core.Media.MediaData | null;
+        url: string;
+        participants: Array<App.Data.Admin.Games.GameParticipantListData>;
+    };
+    export type GameListData = {
+        id: number;
+        title: string | null;
+        court: App.Data.Admin.Courts.CourtSelectOptionData | null;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
+        gameGroup: App.Data.Admin.GameGroups.GameGroupSelectOptionData | null;
+        start_time: string;
+        end_time: string;
+        capacity: number;
+        taken_spots: number;
+        price_with_vat: number;
+        status: App.Enums.GameStatus;
+        updated_at: string;
+    };
+    export type GameParticipantListData = {
+        id: number;
+        user_id: number | null;
+        full_name: string;
+        email: string;
+        level: string | null;
+        status: App.Enums.GameParticipantStatus;
+        price_with_vat: number;
+        discount: number;
+        refunded_amount: number;
+        added_by: string | null;
+        joined_at: string | null;
+    };
+    export type GameResultData = {
+        games: { [key: number]: any };
+        conflicts: Array<App.Data.Admin.Games.GameCourtConflictData>;
+    };
+    export type GameSlotConflictData = {
+        start_time: string;
+        end_time: string;
+        reason: App.Enums.GameConflictReason;
+    };
+    export type GameStoreData = {
+        court_type_id: number;
+        game_group_id: number;
+        courts_ids: Array<number>;
+        date: string;
+        start_time: string;
+        end_time: string;
+        capacity: number;
+        price_with_vat: number;
+        title?: Array<any> | null;
+        description?: Array<any> | null;
+        photoFile?: any;
+    };
+    export type GameUpdateData = {
+        court_type_id: number;
+        game_group_id: number;
+        court_id: number;
+        date: string;
+        start_time: string;
+        end_time: string;
+        capacity: number;
+        price_with_vat: number;
+        title?: Array<any> | null;
+        description?: Array<any> | null;
+        photoFile?: any;
+        deletePhoto?: boolean;
+    };
+}
 declare namespace App.Data.Admin.Groups {
     export type GroupData = {
         id: number;
@@ -586,6 +718,8 @@ declare namespace App.Data.Admin.Reservations {
         is_paid: boolean;
         canceled_at: string | null;
         comment: string | null;
+        game_id: number | null;
+        game_group: string | null;
     };
     export type ReservationCommentData = {
         comment: string | null;
@@ -666,6 +800,7 @@ declare namespace App.Data.Admin.Users {
         company_address: string | null;
         company_phone: string | null;
         agreed_newsletter: boolean;
+        notify_about_games: boolean | null;
     };
     export type UserListData = {
         id: number;
@@ -680,6 +815,7 @@ declare namespace App.Data.Admin.Users {
         is_company: boolean;
         company_name: string | null;
         agreed_newsletter: boolean;
+        notify_about_games: boolean | null;
         plan: string | null;
         updated_at: string;
     };
@@ -702,6 +838,7 @@ declare namespace App.Data.Admin.Users {
         company_address?: string | null;
         company_phone?: string | null;
         agreed_newsletter?: boolean;
+        notify_about_games?: boolean | null;
         password: string;
     };
     export type UserUpdateData = {
@@ -719,6 +856,7 @@ declare namespace App.Data.Admin.Users {
         company_address?: string | null;
         company_phone?: string | null;
         agreed_newsletter?: boolean;
+        notify_about_games?: boolean | null;
         password?: string;
     };
 }
@@ -728,6 +866,14 @@ declare namespace App.Data.Core.CourtTypes {
         name: string;
         note: string | null;
         color: string | null;
+    };
+}
+declare namespace App.Data.Core.Games {
+    export type GameLevelSelectOptionData = {
+        id: number;
+        name: string;
+        description: string | null;
+        sort_order: number;
     };
 }
 declare namespace App.Data.Core.Media {
@@ -781,6 +927,7 @@ declare namespace App.Data.User.Account {
         company_address: string | null;
         company_phone: string | null;
         has_subscription: boolean;
+        notify_about_games: boolean | null;
     };
     export type AccountLocaleUpdateData = {
         locale: App.Enums.Locale;
@@ -801,6 +948,7 @@ declare namespace App.Data.User.Account {
         company_vat_code?: string | null;
         company_address?: string | null;
         company_phone?: string | null;
+        notify_about_games?: boolean;
     };
 }
 declare namespace App.Data.User.Advertisements {
@@ -870,6 +1018,7 @@ declare namespace App.Data.User.DiscountCodes {
     export type DiscountCodeCheckData = {
         code: string;
         court_ids: Array<number> | null;
+        court_type_ids: Array<number> | null;
     };
     export type DiscountCodeData = {
         code: string;
@@ -910,6 +1059,107 @@ declare namespace App.Data.User.FutureMembers {
         plan?: string;
     };
 }
+declare namespace App.Data.User.GameGroups {
+    export type GameGroupListData = {
+        uuid: string;
+        name: string;
+        description: string | null;
+        photo_url: string | null;
+        games_count: number;
+    };
+    export type GameGroupSelectOptionData = {
+        uuid: string;
+        name: string;
+    };
+}
+declare namespace App.Data.User.Games {
+    export type GameDetailData = {
+        uuid: string;
+        title: string | null;
+        description: string | null;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
+        gameGroup: App.Data.User.GameGroups.GameGroupSelectOptionData | null;
+        court_name: string | null;
+        start_time: string;
+        end_time: string;
+        capacity: number;
+        taken_spots: number;
+        free_spots: number;
+        is_full: boolean;
+        is_joinable: boolean;
+        status: App.Enums.GameStatus;
+        price_with_vat: number;
+        photo_url: string | null;
+        participants: Array<App.Data.User.Games.GameParticipantPublicData>;
+        levels: any;
+        max_guests: number;
+    };
+    export type GameFilterData = {
+        court_type_id?: number;
+        game_group_uuid?: string;
+        date_from?: string;
+        date_to?: string;
+        only_available?: boolean;
+    };
+    export type GameGuestData = {
+        email: string;
+        first_name?: string;
+        last_name?: string;
+        game_level_id?: number;
+    };
+    export type GameJoinData = {
+        game_level_id?: number;
+        discount_code?: string;
+        guests?: Array<App.Data.User.Games.GameGuestData>;
+    };
+    export type GameListData = {
+        uuid: string;
+        title: string | null;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
+        gameGroup: App.Data.User.GameGroups.GameGroupSelectOptionData | null;
+        court_name: string | null;
+        start_time: string;
+        end_time: string;
+        capacity: number;
+        taken_spots: number;
+        free_spots: number;
+        is_full: boolean;
+        price_with_vat: number;
+        photo_url: string | null;
+    };
+    export type GameParticipantPublicData = {
+        name: string;
+        level: string | null;
+    };
+    export type MyGameData = {
+        uuid: string;
+        title: string | null;
+        courtType: App.Data.Core.CourtTypes.CourtTypeSelectOptionData;
+        gameGroup: App.Data.User.GameGroups.GameGroupSelectOptionData | null;
+        court_name: string | null;
+        start_time: string;
+        end_time: string;
+        game_status: App.Enums.GameStatus;
+        status: App.Enums.GameParticipantStatus;
+        price_with_vat: number;
+        refunded_amount: number;
+        level: string | null;
+        is_past: boolean;
+        guests: any;
+        total_price_with_vat: number;
+        total_refunded_amount: number;
+        paid_by: string | null;
+    };
+    export type MyGameFilterData = {
+        type: string;
+    };
+    export type MyGameGuestData = {
+        name: string;
+        level: string | null;
+        status: App.Enums.GameParticipantStatus;
+        refunded_amount: number;
+    };
+}
 declare namespace App.Data.User.Guests {
     export type GuestStoreData = {
         email: string;
@@ -938,6 +1188,7 @@ declare namespace App.Data.User.Payments {
         type: string | null;
         owner: App.Data.Core.Owners.OwnerData;
         balance: number | null;
+        game_uuid: string | null;
     };
     export type PaymentListData = {
         id: number;
@@ -1042,9 +1293,13 @@ declare namespace App.Data.User.Subscriptions {
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
     export type AvailabilitySlotType =
-        "spot" | "season" | "academy" | "tournament";
+        "spot" | "season" | "academy" | "tournament" | "game";
     export type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
     export type DiscountCodeType = "percent" | "fixed";
+    export type GameConflictReason =
+        "in_past" | "court_closed" | "downtime" | "reserved";
+    export type GameParticipantStatus = "pending" | "confirmed" | "canceled";
+    export type GameStatus = "published" | "canceled";
     export type Locale = "lt" | "en";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";

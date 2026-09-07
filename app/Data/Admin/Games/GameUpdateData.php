@@ -4,6 +4,7 @@ namespace App\Data\Admin\Games;
 
 use App\Models\Court;
 use App\Support\RegexPatterns;
+use App\Support\Validation\Translatable;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
@@ -24,6 +25,9 @@ class GameUpdateData extends Data
         #[Exists('court_types', 'id', withoutTrashed: true)]
         public int                   $court_type_id,
 
+        #[Exists('game_groups', 'id', withoutTrashed: true)]
+        public int                   $game_group_id,
+
         #[Exists('courts', 'id', withoutTrashed: true)]
         public int                   $court_id,
 
@@ -40,8 +44,10 @@ class GameUpdateData extends Data
 
         public float                 $price_with_vat,
 
+        #[Translatable(required: false)]
         public array|Optional|null   $title,
 
+        #[Translatable(required: false, max: 5000)]
         public array|Optional|null   $description,
 
         #[Image, Max(20480)]

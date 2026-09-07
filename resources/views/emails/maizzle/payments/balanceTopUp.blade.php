@@ -40,16 +40,16 @@ $appUrl = env('APP_FRONTEND_URL');
     }
   </style>
 </head>
-<body style="margin: 0; width: 100%; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
+<body style="margin: 0; width: 100%; background-color: #f8fafc; padding: 0; color: #264054; -webkit-font-smoothing: antialiased; word-break: break-word">
   <div role="article" aria-roledescription="email" aria-label lang="en">
-    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <div class="sm-px-4" style="background-color: #f8fafc; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; color: #264054">
       <table align="center" style="margin: 0 auto" cellpadding="0" cellspacing="0" role="none">
         <tr>
           <td style="width: 700px; max-width: 100%">
             <div role="separator" style="line-height: 24px">&zwj;</div>
             <table style="width: 100%" cellpadding="0" cellspacing="0" role="none">
               <tr>
-                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; border: 1px solid #e2e8f0">
+                <td class="sm-p-6" style="border-radius: 8px; background-color: #fffffe; padding: 24px 36px; color: #264054; border: 1px solid #e2e8f0">
                   <a href="{{ $appUrl }}">
                     <img src="{{asset('logo.png')}}" width="110" alt style="max-width: 100%; vertical-align: middle">
                   </a>
@@ -61,7 +61,7 @@ $appUrl = env('APP_FRONTEND_URL');
                     <p style="font-size: 16px; line-height: 24px; color: #366c93; margin: 24px 0 0">
                       Informuojame, kad jūsų paskyros balansas buvo sėkmingai papildytas.
                     </p>
-                    <ul style="list-style-type: disc; margin-top: 24px; margin-bottom: 0">
+                    <ul style="list-style-type: disc; color: #264054; margin-top: 24px; margin-bottom: 0">
                       <li>
                         <strong>Suma:</strong> {{ $payment->price_with_vat }} €
                       </li>

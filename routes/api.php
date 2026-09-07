@@ -11,6 +11,7 @@ use App\Http\Controllers\User\Forms\BeginnerFormController;
 use App\Http\Controllers\User\Forms\CompanyFormController;
 use App\Http\Controllers\User\FutureMemberController;
 use App\Http\Controllers\User\GameController;
+use App\Http\Controllers\User\GameGroupController;
 use App\Http\Controllers\User\GameLevelController;
 use App\Http\Controllers\User\InvoiceController;
 use App\Http\Controllers\User\NewsletterController;
@@ -33,9 +34,14 @@ Route::middleware('set_locale')->group(function () {
         Route::get('', [CourtController::class, 'index']);
     });
 
+    Route::prefix('game-groups')->group(function () {
+        Route::get('', [GameGroupController::class, 'index']);
+        Route::get('{gameGroup:uuid}', [GameGroupController::class, 'show'])->whereUuid('gameGroup');
+    });
+
     Route::prefix('games')->group(function () {
         Route::get('', [GameController::class, 'index']);
-        Route::get('{game}', [GameController::class, 'show'])->whereUuid('game');
+        Route::get('{game:uuid}', [GameController::class, 'show'])->whereUuid('game');
     });
 
     Route::get('court-types/{courtType}/game-levels', GameLevelController::class);
@@ -83,7 +89,7 @@ Route::middleware('set_locale')->group(function () {
 
         Route::prefix('games')->group(function () {
             Route::get('my', [GameController::class, 'my']);
-            Route::post('{game}/join', [GameController::class, 'join'])->whereUuid('game');
+            Route::post('{game:uuid}/join', [GameController::class, 'join'])->whereUuid('game');
         });
 
         Route::prefix('reservation-slots')->group(function () {

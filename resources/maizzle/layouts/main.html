@@ -40,7 +40,7 @@ $appUrl = env('APP_FRONTEND_URL');
   </style>
   <stack name="head" />
 </head>
-<body class="m-0 p-0 w-full [word-break:break-word] [-webkit-font-smoothing:antialiased] {{ page.bodyClass || '' }}">
+<body class="m-0 p-0 w-full bg-slate-50 text-blumine-900 [word-break:break-word] [-webkit-font-smoothing:antialiased] {{ page.bodyClass || '' }}">
   <if condition="page.preheader">
     <div class="hidden">
       {{{ page.preheader }}}
@@ -48,7 +48,7 @@ $appUrl = env('APP_FRONTEND_URL');
     </div>
   </if>
   <div role="article" aria-roledescription="email" aria-label="{{{ page.title || '' }}}" lang="{{ page.language || 'en' }}">
-    <div class="bg-slate-50 sm:px-4 font-inter">
+    <div class="bg-slate-50 text-blumine-900 sm:px-4 font-inter">
       <table align="center" class="m-0 mx-auto">
         <tr>
           <td class="w-[700px] max-w-full">
@@ -56,7 +56,7 @@ $appUrl = env('APP_FRONTEND_URL');
 
             <table class="w-full">
               <tr>
-                <td class="py-6 px-9 sm:p-6 bg-white [border:1px_solid_theme(colors.slate.200)] rounded-lg">
+                <td class="py-6 px-9 sm:p-6 bg-white text-blumine-900 [border:1px_solid_theme(colors.slate.200)] rounded-lg">
                   <a href="@{{ $appUrl }}">
                     <img src="@{{asset('logo.png')}}" width="110" alt="WIDEN arena">
                   </a>

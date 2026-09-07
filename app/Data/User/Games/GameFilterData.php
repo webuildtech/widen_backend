@@ -16,6 +16,9 @@ class GameFilterData extends Data
         #[Exists('court_types', 'id', withoutTrashed: true)]
         public int|Optional     $court_type_id,
 
+        #[Exists('game_groups', 'uuid', withoutTrashed: true)]
+        public string|Optional  $game_group_uuid,
+
         #[Date]
         public Carbon|Optional  $date_from,
 

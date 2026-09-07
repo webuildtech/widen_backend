@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\AnnounceNewGamesCommand;
 use App\Console\Commands\AutoPlansRenewCommand;
 use App\Console\Commands\CancelUnfilledGamesCommand;
 use App\Console\Commands\DetachIntervalsFromCourtsCommand;
@@ -31,3 +32,5 @@ Schedule::command(RebuildAvailabilitySlots::class)->everyFifteenMinutes();
 Schedule::command(ProcessUnsoldReservationsCommand::class)->everyTenMinutes();
 
 Schedule::command(CancelUnfilledGamesCommand::class)->everyFiveMinutes();
+
+Schedule::command(AnnounceNewGamesCommand::class)->daily()->at('18:00');

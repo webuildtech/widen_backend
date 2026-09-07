@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Game;
 use App\Models\User;
 use App\Support\FrontendUrl;
 use Illuminate\Bus\Queueable;
@@ -17,7 +18,7 @@ class NewGamesAnnouncementMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     /**
-     * @param Collection<int, \App\Models\Game> $games
+     * @param Collection<int, Game> $games
      */
     public function __construct(
         public User       $user,
@@ -37,15 +38,44 @@ class NewGamesAnnouncementMail extends Mailable implements ShouldQueue
 
     public function content(): Content
     {
+        $locale = $this->user->locale;
+
         return new Content(
             view: 'emails.maizzle.games.newGames',
             with: [
-                'games' => $this->games,
                 'greetingName' => $this->user->first_name,
+                'groups' => $this->groups($locale),
                 'gameUrls' => $this->games
-                    ->mapWithKeys(fn($game) => [$game->id => FrontendUrl::game($game->uuid, $this->user->locale)])
+                    ->mapWithKeys(fn(Game $game) => [$game->id => FrontendUrl::game($game->uuid, $locale)])
                     ->all(),
+                'gamesUrl' => FrontendUrl::games($locale),
             ],
         );
+    }
+
+    private function groups(?string $locale): Collection
+    {
+        [$grouped, $ungrouped] = $this->games
+            ->sortBy('start_time')
+            ->partition(fn(Game $game) => $game->gameGroup !== null);
+
+        $buckets = $grouped
+            ->sortBy(fn(Game $game) => $game->gameGroup->sort_order)
+            ->groupBy(fn(Game $game) => $game->game_group_id)
+            ->values();
+
+        if ($ungrouped->isNotEmpty()) {
+            $buckets->push($ungrouped);
+        }
+
+        return $buckets->map(function (Collection $games) use ($locale) {
+            $group = $games->first()->gameGroup;
+
+            return [
+                'name' => $group?->name ?? __('games.mail.no_group'),
+                'url' => $group ? FrontendUrl::gameGroup($group->uuid, $locale) : null,
+                'games' => $games,
+            ];
+        });
     }
 }
