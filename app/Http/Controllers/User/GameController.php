@@ -28,7 +28,7 @@ class GameController extends Controller
         $games = Game::query()
             ->published()
             ->upcoming()
-            ->with(['courtType', 'court', 'gameGroup'])
+            ->with(['courtType.gameLevels', 'court', 'gameGroup', 'activeParticipants.level'])
             ->withCount('activeParticipants')
             ->orderBy('start_time');
 

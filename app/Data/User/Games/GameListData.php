@@ -3,9 +3,12 @@
 namespace App\Data\User\Games;
 
 use App\Data\Core\CourtTypes\CourtTypeSelectOptionData;
+use App\Data\Core\Games\GameLevelSelectOptionData;
 use App\Data\User\GameGroups\GameGroupSelectOptionData;
+use App\Enums\GameStatus;
 use App\Models\Game;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -35,16 +38,30 @@ class GameListData extends Data
 
         public bool                       $is_full,
 
+        public bool                       $is_joinable,
+
         public float                      $price_with_vat,
 
         public ?string                    $photo_url,
+
+        /** @var Collection<int, GameParticipantPublicData> */
+        public Collection                 $participants,
+
+        public Collection                 $levels,
+
+        public int                        $max_guests,
     )
     {
     }
 
     public static function fromModel(Game $game): self
     {
-        $takenSpots = $game->active_participants_count ?? $game->activeParticipants()->count();
+        $participants = $game->relationLoaded('activeParticipants')
+            ? $game->activeParticipants
+            : $game->activeParticipants()->with('level')->get();
+
+        $takenSpots = $participants->count();
+        $freeSpots = max(0, $game->capacity - $takenSpots);
 
         return new self(
             $game->uuid,
@@ -56,10 +73,14 @@ class GameListData extends Data
             $game->end_time,
             $game->capacity,
             $takenSpots,
-            max(0, $game->capacity - $takenSpots),
-            $takenSpots >= $game->capacity,
+            $freeSpots,
+            $freeSpots === 0,
+            $game->status === GameStatus::PUBLISHED && $game->start_time->isFuture() && $freeSpots > 0,
             $game->price_with_vat,
             $game->photo?->getUrl(),
+            GameParticipantPublicData::collect($participants),
+            GameLevelSelectOptionData::collect($game->courtType->gameLevels->where('active', true)->values()),
+            config('games.max_guests_per_join'),
         );
     }
 }
