@@ -30,12 +30,37 @@ $appUrl = env('APP_FRONTEND_URL');
       background-color: #284a64 !important
     }
     @media (max-width: 600px) {
+      .sm-block {
+        display: block !important
+      }
+      .sm-w-full {
+        width: 100% !important
+      }
+      .sm-border-b-0 {
+        border-bottom-width: 0px !important
+      }
       .sm-p-6 {
         padding: 24px !important
       }
       .sm-px-4 {
         padding-left: 16px !important;
         padding-right: 16px !important
+      }
+      .sm-py-0 {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important
+      }
+      .sm-pb-0 {
+        padding-bottom: 0 !important
+      }
+      .sm-pb-3 {
+        padding-bottom: 12px !important
+      }
+      .sm-pt-0 {
+        padding-top: 0 !important
+      }
+      .sm-pt-3 {
+        padding-top: 12px !important
       }
     }
   </style>
@@ -70,21 +95,21 @@ $appUrl = env('APP_FRONTEND_URL');
                         {{ $group['name'] }}
                         @endif
                       </h2>
-                      <table style="width: 100%; border-width: 1px; border-color: #e5e7eb; margin-top: 8px; margin-bottom: 0" cellpadding="0" cellspacing="0" role="none">
+                      <table style="width: 100%; margin-top: 8px; margin-bottom: 0" cellpadding="0" cellspacing="0" role="none">
                         <tbody>
                           @foreach ($group['games'] as $game)
                           <tr>
-                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
+                            <td class="sm-block sm-w-full sm-pt-3 sm-pb-0 sm-border-b-0" style="white-space: nowrap; padding: 8px; color: #264054; border-bottom: 1px solid #e5e7eb">
                               <span style="font-weight: 600; color: #284a64">{{ $game->start_time->format('Y-m-d') }}</span>
                               <span style="color: #64748b">{{ $game->start_time->format('H:i') }} - {{ $game->end_time->format('H:i') }}</span>
                             </td>
-                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">
+                            <td class="sm-block sm-w-full sm-py-0 sm-border-b-0" style="overflow-wrap: normal; word-break: normal; padding: 8px; color: #64748b; border-bottom: 1px solid #e5e7eb">
                               {{ $game->courtType->name }}@if ($game->court) · {{ $game->court->name }}@endif
                             </td>
-                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #64748b">{{ number_format($game->price_with_vat, 2, ',', ' ') }} €</td>
-                            <td style="border-bottom-width: 1px; border-color: #e5e7eb; padding: 8px; color: #264054">
-                              <a href="{{ $gameUrls[$game->id] }}" style="font-weight: 600; color: #2f5c7e">
-                                {{ __('games.mail.new_games_button') }}
+                            <td class="sm-block sm-w-full sm-py-0 sm-border-b-0" style="white-space: nowrap; padding: 8px; color: #64748b; border-bottom: 1px solid #e5e7eb">{{ number_format($game->price_with_vat, 2, ',', ' ') }} €</td>
+                            <td class="sm-block sm-w-full sm-pt-0 sm-pb-3" style="white-space: nowrap; padding: 8px; color: #264054; border-bottom: 1px solid #e5e7eb">
+                              <a href="{{ $gameUrls[$game->id] }}" style="font-weight: 600; color: #2f5c7e; text-decoration: none">
+                                {{ __('games.mail.new_games_button') }} &rarr;
                               </a>
                             </td>
                           </tr>

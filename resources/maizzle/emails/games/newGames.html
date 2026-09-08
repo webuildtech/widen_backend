@@ -18,24 +18,24 @@
           @endif
         </h2>
 
-        <table class="w-full border border-gray-200">
+        <table class="w-full">
           <tbody>
             @foreach ($group['games'] as $game)
               <tr>
-                <td class="p-2 border-b border-gray-200 text-blumine-900">
+                <td class="p-2 [border-bottom:1px_solid_theme(colors.gray.200)] text-blumine-900 whitespace-nowrap sm:block sm:w-full sm:pt-3 sm:pb-0 sm:border-b-0">
                   <span class="font-semibold text-blumine-800">@{{ $game->start_time->format('Y-m-d') }}</span>
                   <span class="text-slate-500">@{{ $game->start_time->format('H:i') }} - @{{ $game->end_time->format('H:i') }}</span>
                 </td>
 
-                <td class="p-2 border-b border-gray-200 text-slate-500">
+                <td class="p-2 [border-bottom:1px_solid_theme(colors.gray.200)] text-slate-500 break-normal sm:block sm:w-full sm:py-0 sm:border-b-0">
                   @{{ $game->courtType->name }}@if ($game->court) · @{{ $game->court->name }}@endif
                 </td>
 
-                <td class="p-2 border-b border-gray-200 text-slate-500">@{{ number_format($game->price_with_vat, 2, ',', ' ') }} €</td>
+                <td class="p-2 [border-bottom:1px_solid_theme(colors.gray.200)] text-slate-500 whitespace-nowrap sm:block sm:w-full sm:py-0 sm:border-b-0">@{{ number_format($game->price_with_vat, 2, ',', ' ') }} €</td>
 
-                <td class="p-2 border-b border-gray-200 text-blumine-900">
-                  <a href="@{{ $gameUrls[$game->id] }}" class="font-semibold text-blumine-700">
-                    @{{ __('games.mail.new_games_button') }}
+                <td class="p-2 [border-bottom:1px_solid_theme(colors.gray.200)] text-blumine-900 whitespace-nowrap sm:block sm:w-full sm:pt-0 sm:pb-3">
+                  <a href="@{{ $gameUrls[$game->id] }}" class="font-semibold text-blumine-700 no-underline">
+                    @{{ __('games.mail.new_games_button') }} &rarr;
                   </a>
                 </td>
               </tr>
