@@ -78,7 +78,7 @@ class GameListData extends Data
             $game->status === GameStatus::PUBLISHED && $game->start_time->isFuture() && $freeSpots > 0,
             $game->price_with_vat,
             $game->photo?->getUrl(),
-            GameParticipantPublicData::collect($participants),
+            GameParticipantPublicData::collectForGame($participants),
             GameLevelSelectOptionData::collect($game->courtType->gameLevels->where('active', true)->values()),
             config('games.max_guests_per_join'),
         );

@@ -83,7 +83,7 @@ class GameDetailData extends Data
             $game->status,
             $game->price_with_vat,
             $game->photo?->getUrl(),
-            GameParticipantPublicData::collect($participants),
+            GameParticipantPublicData::collectForGame($participants),
             GameLevelSelectOptionData::collect($game->courtType->gameLevels->where('active', true)->values()),
             config('games.max_guests_per_join'),
         );
