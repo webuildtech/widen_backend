@@ -1086,6 +1086,7 @@ declare namespace App.Data.User.GameGroups {
         description: string | null;
         photo_url: string | null;
         games_count: number;
+        free_spots: number;
     };
     export type GameGroupSelectOptionData = {
         uuid: string;
