@@ -14,6 +14,7 @@ return [
     'removed_by_admin' => 'Dalyvį pašalino administracija.',
     'edit_from_games_page' => 'Pasižaidimą redaguokite pasižaidimų skiltyje.',
     'cannot_edit_past' => 'Praėjusio pasižaidimo redaguoti negalima.',
+    'cannot_cancel_finished' => 'Pasibaigusio pasižaidimo atšaukti negalima.',
     'manage_from_games_page' => 'Pasižaidimą valdykite pasižaidimų skiltyje.',
 
     'mail' => [

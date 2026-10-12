@@ -84,6 +84,11 @@ class GameController extends Controller
         return GameData::from($this->gameService->cancel($game, $data->reason));
     }
 
+    public function cancelWithoutRefund(GameCancelData $data, Game $game): GameData
+    {
+        return GameData::from($this->gameService->cancel($game, $data->reason, refund: false));
+    }
+
     public function destroy(Game $game): array
     {
         $this->gameService->delete($game);

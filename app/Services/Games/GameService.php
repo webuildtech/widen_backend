@@ -94,7 +94,7 @@ class GameService
                 'price' => $price->price,
                 'vat' => $price->vat,
                 'price_with_vat' => $price->price_with_vat,
-                ...$data->only('title', 'description')->all(),
+                ...$data->only('title', 'description', 'auto_cancel')->all(),
             ]);
 
             $this->mediaManager->sync($game, Game::PHOTO_COLLECTION, $data->photoFile, $data->deletePhoto);
@@ -108,24 +108,28 @@ class GameService
         });
     }
 
-    public function cancel(Game $game, ?string $reason = null): Game
+    public function cancel(Game $game, ?string $reason = null, bool $refund = true): Game
     {
-        return DB::transaction(function () use ($game, $reason) {
-            if ($game->status === GameStatus::CANCELED) {
+        return DB::transaction(function () use ($game, $reason, $refund) {
+            if ($game->status->isCanceled()) {
                 return $game;
             }
 
-            $this->refundService->refundAll($game, $reason);
+            if ($game->end_time->isPast()) {
+                throw ValidationException::withMessages([
+                    'game' => __('games.cannot_cancel_finished'),
+                ]);
+            }
+
+            $this->refundService->cancelAll($game, $reason, $refund);
 
             $game->update([
-                'status' => GameStatus::CANCELED,
+                'status' => $refund ? GameStatus::CANCELED : GameStatus::CANCELED_WITHOUT_REFUND,
                 'canceled_at' => now(),
                 'cancellation_reason' => $reason,
             ]);
 
-            $reservation = $game->reservation;
-            $reservation?->slots()->delete();
-            $reservation?->delete();
+            $this->deleteReservation($game);
 
             return $game->fresh();
         });
@@ -134,10 +138,19 @@ class GameService
     public function delete(Game $game): void
     {
         DB::transaction(function () use ($game) {
-            $this->cancel($game, __('games.canceled_by_admin'));
+            $game->end_time->isPast()
+                ? $this->deleteReservation($game)
+                : $this->cancel($game, __('games.canceled_by_admin'));
 
             $game->delete();
         });
+    }
+
+    private function deleteReservation(Game $game): void
+    {
+        $reservation = $game->reservation;
+        $reservation?->slots()->delete();
+        $reservation?->delete();
     }
 
     private function createForCourt(Court $court, GameStoreData $data, PriceDetailsData $price): Game
@@ -153,7 +166,7 @@ class GameService
             'price' => $price->price,
             'vat' => $price->vat,
             'price_with_vat' => $price->price_with_vat,
-            ...$data->only('title', 'description')->all(),
+            ...$data->only('title', 'description', 'auto_cancel')->all(),
         ]);
 
         $this->mediaManager->sync($game, Game::PHOTO_COLLECTION, $data->photoFile);

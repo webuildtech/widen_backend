@@ -23,7 +23,8 @@ return [
     'per_page' => 20,
 
     /*
-     * A game that has not filled up this many minutes before its start is canceled and refunded.
+     * A game with auto-cancel turned on that has not filled up this many minutes before its start
+     * is canceled and refunded.
      */
     'cancel_unfilled_minutes_before' => 30,
 ];

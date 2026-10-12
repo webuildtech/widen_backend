@@ -79,6 +79,7 @@ Route::prefix('admin')->middleware('set_locale')->group(function () {
         Route::apiResource('game-groups', GameGroupController::class);
 
         Route::post('games/{game}/cancel', [GameController::class, 'cancel']);
+        Route::post('games/{game}/cancel-without-refund', [GameController::class, 'cancelWithoutRefund']);
         Route::delete('games/{game}/participants/{participant}', [GameController::class, 'removeParticipant']);
         Route::apiResource('games', GameController::class);
 

@@ -4,6 +4,7 @@ use App\Console\Commands\AnnounceNewGamesCommand;
 use App\Console\Commands\AutoPlansRenewCommand;
 use App\Console\Commands\CancelUnfilledGamesCommand;
 use App\Console\Commands\DetachIntervalsFromCourtsCommand;
+use App\Console\Commands\FinishGamesCommand;
 use App\Console\Commands\GenerateInvoicesCommand;
 use App\Console\Commands\LitecomAutoRunCommand;
 use App\Console\Commands\ProcessUnsoldReservationsCommand;
@@ -32,5 +33,7 @@ Schedule::command(RebuildAvailabilitySlots::class)->everyFifteenMinutes();
 Schedule::command(ProcessUnsoldReservationsCommand::class)->everyTenMinutes();
 
 Schedule::command(CancelUnfilledGamesCommand::class)->everyFiveMinutes();
+
+Schedule::command(FinishGamesCommand::class)->everyMinute();
 
 Schedule::command(AnnounceNewGamesCommand::class)->daily()->at('18:00');

@@ -9,7 +9,6 @@ use App\Data\User\Games\GameListData;
 use App\Data\User\Games\MyGameData;
 use App\Data\User\Games\MyGameFilterData;
 use App\Enums\GameParticipantStatus;
-use App\Enums\GameStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
 use App\Services\Games\GameJoinService;
@@ -79,11 +78,11 @@ class GameController extends Controller
         match ($data->type) {
             'past' => $participations
                 ->confirmed()
-                ->whereHas('game', fn($query) => $query->where('end_time', '<=', now())->published()),
+                ->whereHas('game', fn($query) => $query->where('end_time', '<=', now())->notCanceled()),
             'canceled' => $participations
                 ->where(fn($query) => $query
                     ->where('status', GameParticipantStatus::CANCELED)
-                    ->orWhereHas('game', fn($game) => $game->where('status', GameStatus::CANCELED))),
+                    ->orWhereHas('game', fn($game) => $game->canceled())),
             default => $participations
                 ->confirmed()
                 ->whereHas('game', fn($query) => $query->where('end_time', '>', now())->published()),

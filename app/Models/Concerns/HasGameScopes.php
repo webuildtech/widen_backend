@@ -17,6 +17,16 @@ trait HasGameScopes
         return $query->where('end_time', '>', now());
     }
 
+    public function scopeCanceled(Builder $query): Builder
+    {
+        return $query->whereIn('status', [GameStatus::CANCELED, GameStatus::CANCELED_WITHOUT_REFUND]);
+    }
+
+    public function scopeNotCanceled(Builder $query): Builder
+    {
+        return $query->whereIn('status', [GameStatus::PUBLISHED, GameStatus::FINISHED]);
+    }
+
     public function scopeNotAnnounced(Builder $query): Builder
     {
         return $query->whereNull('announced_at');

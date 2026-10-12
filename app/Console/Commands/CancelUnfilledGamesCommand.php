@@ -11,7 +11,7 @@ class CancelUnfilledGamesCommand extends Command
 {
     protected $signature = 'app:cancel-unfilled-games-command';
 
-    protected $description = 'Cancels games that have not filled up shortly before their start';
+    protected $description = 'Cancels auto-cancel games that have not filled up shortly before their start';
 
     public function __construct(
         protected GameService $gameService,
@@ -26,7 +26,8 @@ class CancelUnfilledGamesCommand extends Command
 
         Game::query()
             ->published()
-            ->where('start_time', '<=', now()->addMinutes($minutes))
+            ->where('auto_cancel', true)
+            ->whereBetween('start_time', [now(), now()->addMinutes($minutes)])
             ->withCount(['participants as confirmed_participants_count' => fn($query) => $query->confirmed()])
             ->get()
             ->filter(fn(Game $game) => $game->confirmed_participants_count < $game->capacity)

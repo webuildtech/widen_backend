@@ -19,7 +19,7 @@ class GameRefundService
     {
     }
 
-    public function refundAll(Game $game, ?string $reason = null, bool $notify = true): void
+    public function cancelAll(Game $game, ?string $reason = null, bool $refund = true, bool $notify = true): void
     {
         $participants = $game->participants()
             ->holdingSpot()
@@ -35,10 +35,14 @@ class GameRefundService
 
         $participants
             ->where('status', GameParticipantStatus::CONFIRMED)
-            ->each(function (GameParticipant $participant) use ($game, $reason, $notify) {
-                $refunded = round((float)$participant->price_with_vat - (float)$participant->refunded_amount, 2);
+            ->each(function (GameParticipant $participant) use ($game, $reason, $refund, $notify) {
+                $refunded = 0;
 
-                $this->refund($participant, $reason);
+                if ($refund) {
+                    $refunded = round((float)$participant->price_with_vat - (float)$participant->refunded_amount, 2);
+
+                    $this->refund($participant, $reason);
+                }
 
                 if ($notify) {
                     Mail::queue(new GameCanceledMail($game, $participant, $refunded, $reason));

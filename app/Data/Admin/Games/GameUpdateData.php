@@ -42,6 +42,8 @@ class GameUpdateData extends Data
 
         public int                   $capacity,
 
+        public bool|Optional         $auto_cancel,
+
         public float                 $price_with_vat,
 
         #[Translatable(required: false)]

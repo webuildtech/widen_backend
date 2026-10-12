@@ -370,6 +370,7 @@ declare namespace App.Data.Admin.Games {
         capacity: number;
         taken_spots: number;
         price_with_vat: number;
+        auto_cancel: boolean;
         status: App.Enums.GameStatus;
         canceled_at: string | null;
         photo: App.Data.Core.Media.MediaData | null;
@@ -420,6 +421,7 @@ declare namespace App.Data.Admin.Games {
         start_time: string;
         end_time: string;
         capacity: number;
+        auto_cancel?: boolean;
         price_with_vat: number;
         title?: Array<any> | null;
         description?: Array<any> | null;
@@ -433,6 +435,7 @@ declare namespace App.Data.Admin.Games {
         start_time: string;
         end_time: string;
         capacity: number;
+        auto_cancel?: boolean;
         price_with_vat: number;
         title?: Array<any> | null;
         description?: Array<any> | null;
@@ -1322,7 +1325,7 @@ declare namespace App.Enums {
     export type GameConflictReason =
         "in_past" | "court_closed" | "downtime" | "reserved";
     export type GameParticipantStatus = "pending" | "confirmed" | "canceled";
-    export type GameStatus = "published" | "canceled";
+    export type GameStatus = "published" | "finished" | "canceled" | "canceled_without_refund";
     export type Locale = "lt" | "en";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";

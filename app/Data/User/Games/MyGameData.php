@@ -76,7 +76,7 @@ class MyGameData extends Data
             $game->court?->name,
             $game->start_time,
             $game->end_time,
-            $game->status,
+            $game->status->forUser(),
             $participant->status,
             $participant->price_with_vat,
             $participant->refunded_amount,

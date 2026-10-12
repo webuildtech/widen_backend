@@ -536,6 +536,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $start_time
  * @property \Illuminate\Support\Carbon $end_time
  * @property int $capacity
+ * @property bool $auto_cancel
  * @property numeric $price
  * @property numeric $vat
  * @property numeric $price_with_vat
@@ -566,11 +567,13 @@ namespace App\Models{
  * @property-read mixed $photo
  * @property-read \App\Models\Reservation|null $reservation
  * @property-read mixed $translations
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game canceled()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game dateBetween(string $column, string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game endTimeTo(string $end)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game notAnnounced()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game notCanceled()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game published()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game query()
@@ -579,6 +582,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game updatedAtBetween(string $start, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAnnouncedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAutoCancel($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCancellationReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereCapacity($value)

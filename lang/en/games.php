@@ -14,6 +14,7 @@ return [
     'removed_by_admin' => 'The participant was removed by the administration.',
     'edit_from_games_page' => 'Edit the game from the games section.',
     'cannot_edit_past' => 'A game that has already started cannot be edited.',
+    'cannot_cancel_finished' => 'A game that has already finished cannot be canceled.',
     'manage_from_games_page' => 'Manage the game from the games section.',
 
     'mail' => [

@@ -80,7 +80,7 @@ class GameDetailData extends Data
             $freeSpots,
             $freeSpots === 0,
             $game->status === GameStatus::PUBLISHED && $game->start_time->isFuture() && $freeSpots > 0,
-            $game->status,
+            $game->status->forUser(),
             $game->price_with_vat,
             $game->photo?->getUrl(),
             GameParticipantPublicData::collectForGame($participants),
