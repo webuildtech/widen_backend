@@ -25,6 +25,7 @@ class DiscountCodeController extends Controller
     {
         $discountCodes = QueryBuilder::for(DiscountCode::class)
             ->with(['courtTypes', 'windows'])
+            ->withPurchaseTotals()
             ->allowedSorts([
                 'name',
                 'is_active',
@@ -33,6 +34,8 @@ class DiscountCodeController extends Controller
                 'value',
                 'usage_limit',
                 'used',
+                'purchases_value',
+                'purchases_discount',
                 'date_from',
                 'date_to',
                 'updated_at'

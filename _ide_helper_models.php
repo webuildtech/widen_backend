@@ -304,6 +304,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereUsageLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereUsed($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode whereValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode withPurchaseTotals()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DiscountCode withoutTrashed()
  * @mixin \Eloquent

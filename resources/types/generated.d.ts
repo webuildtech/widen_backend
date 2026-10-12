@@ -221,6 +221,8 @@ declare namespace App.Data.Admin.DiscountCodes {
         value: number;
         usage_limit: number | null;
         used: number;
+        purchases_value: number;
+        purchases_discount: number;
         date_from: string | null;
         date_to: string | null;
         court_types_ids: Array<number>;

@@ -30,6 +30,10 @@ class DiscountCodeListData extends Data
 
         public int              $used,
 
+        public float            $purchases_value,
+
+        public float            $purchases_discount,
+
         public ?string          $date_from,
 
         public ?string          $date_to,

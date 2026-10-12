@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Day;
 use App\Enums\DiscountCodeType;
 use App\Models\Concerns\HasDateRangeScopes;
+use App\Models\Concerns\HasDiscountCodeScopes;
 use App\Data\Core\DiscountCodes\DiscountLineData;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class DiscountCode extends BaseModel
 {
     use HasDateRangeScopes;
+    use HasDiscountCodeScopes;
 
     protected $casts = [
         'value' => 'decimal:2',
