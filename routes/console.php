@@ -11,10 +11,13 @@ use App\Console\Commands\ProcessUnsoldReservationsCommand;
 use App\Console\Commands\RebuildAvailabilitySlots;
 use App\Console\Commands\ReservationDeleteCommand;
 use App\Console\Commands\ReservationUnpaidReminderCommand;
+use App\Console\Commands\SubscriptionRenewalLinkCommand;
 
 Schedule::command(DetachIntervalsFromCourtsCommand::class)->daily();
 
 Schedule::command(AutoPlansRenewCommand::class)->daily();
+
+Schedule::command(SubscriptionRenewalLinkCommand::class)->daily()->at('09:00');
 
 Schedule::command(ReservationDeleteCommand::class)->everyThirtyMinutes();
 

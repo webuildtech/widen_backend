@@ -778,6 +778,7 @@ declare namespace App.Data.Admin.Subscriptions {
         expired_at: string;
         canceled_at: string | null;
         is_overdue: boolean;
+        renewal_method: App.Enums.SubscriptionRenewalMethod;
     };
 }
 declare namespace App.Data.Admin.Users {
@@ -810,6 +811,7 @@ declare namespace App.Data.Admin.Users {
         company_phone: string | null;
         agreed_newsletter: boolean;
         notify_about_games: boolean | null;
+        subscription_renewal_method: App.Enums.SubscriptionRenewalMethod;
     };
     export type UserListData = {
         id: number;
@@ -848,6 +850,7 @@ declare namespace App.Data.Admin.Users {
         company_phone?: string | null;
         agreed_newsletter?: boolean;
         notify_about_games?: boolean | null;
+        subscription_renewal_method?: App.Enums.SubscriptionRenewalMethod;
         password: string;
     };
     export type UserUpdateData = {
@@ -866,6 +869,7 @@ declare namespace App.Data.Admin.Users {
         company_phone?: string | null;
         agreed_newsletter?: boolean;
         notify_about_games?: boolean | null;
+        subscription_renewal_method?: App.Enums.SubscriptionRenewalMethod;
         password?: string;
     };
 }
@@ -948,6 +952,7 @@ declare namespace App.Data.User.Account {
         company_phone: string | null;
         has_subscription: boolean;
         notify_about_games: boolean | null;
+        subscription_renewal_method: App.Enums.SubscriptionRenewalMethod;
     };
     export type AccountLocaleUpdateData = {
         locale: App.Enums.Locale;
@@ -969,6 +974,7 @@ declare namespace App.Data.User.Account {
         company_address?: string | null;
         company_phone?: string | null;
         notify_about_games?: boolean;
+        subscription_renewal_method?: App.Enums.SubscriptionRenewalMethod;
     };
 }
 declare namespace App.Data.User.Advertisements {
@@ -1315,6 +1321,14 @@ declare namespace App.Data.User.Subscriptions {
         expired_at: string;
         cancelled_at: string | null;
     };
+    export type SubscriptionRenewalData = {
+        plan_name: string;
+        periodicity_type: string;
+        expired_at: string;
+        price: number;
+        paid_from_balance: number;
+        amount_to_pay: number;
+    };
 }
 declare namespace App.Enums {
     export type AdminRole = "superAdmin" | "employee";
@@ -1329,4 +1343,5 @@ declare namespace App.Enums {
     export type Locale = "lt" | "en";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";
+    export type SubscriptionRenewalMethod = "auto" | "link";
 }

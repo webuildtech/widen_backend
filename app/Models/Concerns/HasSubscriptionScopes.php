@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Enums\SubscriptionRenewalMethod;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -28,6 +29,20 @@ trait HasSubscriptionScopes
             'active' => $query->whereNull('canceled_at')->where(fn(Builder $query) => $query
                 ->where('expired_at', '>=', now())
                 ->orWhere('grace_days_ended_at', '>=', now())),
+            default => $query,
+        };
+    }
+
+    public function scopeRenewalMethod(Builder $query, string $method): Builder
+    {
+        $paysByLink = fn(Builder $query) => $query
+            ->whereHas('plan', fn(Builder $query) => $query->where('price', '>', 0))
+            ->whereHasMorph('subscriber', User::class, fn(Builder $query) => $query
+                ->where('subscription_renewal_method', SubscriptionRenewalMethod::LINK));
+
+        return match (SubscriptionRenewalMethod::tryFrom($method)) {
+            SubscriptionRenewalMethod::LINK => $query->where($paysByLink),
+            SubscriptionRenewalMethod::AUTO => $query->whereNot($paysByLink),
             default => $query,
         };
     }

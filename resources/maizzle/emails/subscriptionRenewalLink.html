@@ -1,0 +1,23 @@
+<x-main>
+  <div class="space-y-6">
+    <h1 class="m-0 text-2xl/8 text-blumine-900 font-semibold">
+      @{{ __('subscriptions.mail.greeting', ['name' => $subscription->subscriber->first_name]) }}
+    </h1>
+
+    <p class="m-0 text-base/6 text-blumine-600">
+      @{{ __('subscriptions.mail.renewal_link_intro', [
+        'plan' => $subscription->plan->plan->name,
+        'date' => $subscription->expired_at->format('Y-m-d'),
+        'price' => number_format($price, 2, '.', ''),
+      ]) }}
+    </p>
+
+    <x-button href="@{{ $renewalUrl }}" class="bg-blumine-700 hover:bg-blumine-800">
+      @{{ __('subscriptions.mail.renewal_link_button') }}
+    </x-button>
+
+    <p class="m-0 text-sm/6 text-slate-500">
+      @{{ __('subscriptions.mail.renewal_link_hint') }}
+    </p>
+  </div>
+</x-main>

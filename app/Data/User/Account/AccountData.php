@@ -3,6 +3,7 @@
 namespace App\Data\User\Account;
 
 use App\Enums\Locale;
+use App\Enums\SubscriptionRenewalMethod;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -44,6 +45,8 @@ class AccountData extends Data
         public bool    $has_subscription,
 
         public ?bool   $notify_about_games,
+
+        public SubscriptionRenewalMethod $subscription_renewal_method,
     )
     {
     }

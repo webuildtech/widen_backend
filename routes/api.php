@@ -22,6 +22,7 @@ use App\Http\Controllers\User\ReservationController;
 use App\Http\Controllers\User\ReservationSlotController;
 use App\Http\Controllers\User\SocialAuthController;
 use App\Http\Controllers\User\SubscriptionController;
+use App\Http\Controllers\User\SubscriptionRenewalController;
 
 Route::middleware('set_locale')->group(function () {
     Route::get('advertisements', AdvertisementController::class);
@@ -57,6 +58,11 @@ Route::middleware('set_locale')->group(function () {
     Route::prefix('payments')->group(function () {
         Route::post('validate', [PaymentController::class, 'validate']);
         Route::post('callback', [PaymentController::class, 'callback']);
+    });
+
+    Route::prefix('subscriptions/{subscription}/renewal')->middleware('signed:relative')->group(function () {
+        Route::get('', [SubscriptionRenewalController::class, 'show'])->name('subscriptions.renewal');
+        Route::post('', [SubscriptionRenewalController::class, 'store']);
     });
 
     Route::controller(AuthController::class)->group(function () {

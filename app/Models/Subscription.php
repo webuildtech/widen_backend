@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SubscriptionRenewalMethod;
 use App\Models\Concerns\HasDateScopes;
 use App\Models\Concerns\HasSubscriptionScopes;
 use LucasDotVin\Soulbscription\Models\Subscription as SubscriptionBase;
@@ -23,5 +24,11 @@ class Subscription extends SubscriptionBase
         return [
             'canceled_at' => 'datetime',
         ];
+    }
+
+    public function paysByLink(): bool
+    {
+        return $this->plan?->price > 0
+            && $this->subscriber?->subscription_renewal_method === SubscriptionRenewalMethod::LINK;
     }
 }

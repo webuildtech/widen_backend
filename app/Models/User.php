@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SubscriptionRenewalMethod;
 use App\Models\Concerns\HasBalance;
 use App\Models\Concerns\HasDateScopes;
 use App\Models\Concerns\HasUserScopes;
@@ -45,6 +46,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'notify_about_games' => 'boolean',
+            'subscription_renewal_method' => SubscriptionRenewalMethod::class,
         ];
     }
 

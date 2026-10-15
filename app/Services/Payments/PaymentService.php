@@ -23,15 +23,8 @@ class PaymentService
 
     public function createFromPlanPrice(PlanPrice $planPrice, User $user, bool $renew = false, DiscountCode $discountCode = null): Payment
     {
-        $price = $planPrice->price;
-        $totalDiscount = 0;
-
-        if ($user->discount_on_everything > 0) {
-            $discount = round($price * ($user->discount_on_everything / 100), 2);
-
-            $price -= $discount;
-            $totalDiscount += $discount;
-        }
+        $totalDiscount = $this->personalPlanDiscount($planPrice, $user);
+        $price = $planPrice->price - $totalDiscount;
 
         if ($discountCode) {
             $discount = 0;
@@ -68,6 +61,22 @@ class PaymentService
         $user->payments()->save($payment);
 
         return $payment;
+    }
+
+    public function planPriceForUser(PlanPrice $planPrice, User $user): float
+    {
+        $price = $planPrice->price - $this->personalPlanDiscount($planPrice, $user);
+
+        return applyDiscountAndCalculatePriceDetails($price)->price_with_vat;
+    }
+
+    private function personalPlanDiscount(PlanPrice $planPrice, User $user): float
+    {
+        if ($user->discount_on_everything <= 0) {
+            return 0;
+        }
+
+        return round($planPrice->price * ($user->discount_on_everything / 100), 2);
     }
 
     public function createFromReservationGroup(ReservationGroup $reservationGroup, User|Guest $owner, bool $allowMinus = false, DiscountCode $discountCode = null): Payment

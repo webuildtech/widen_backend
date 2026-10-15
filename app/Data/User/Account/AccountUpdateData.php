@@ -2,6 +2,7 @@
 
 namespace App\Data\User\Account;
 
+use App\Enums\SubscriptionRenewalMethod;
 use App\Models\User;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Validation\Email;
@@ -49,6 +50,8 @@ class AccountUpdateData extends Data
         public null|string|Optional $company_phone,
 
         public bool|Optional        $notify_about_games,
+
+        public SubscriptionRenewalMethod|Optional $subscription_renewal_method,
     )
     {
         if (!$this->is_company) {

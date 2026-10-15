@@ -2,6 +2,7 @@
 
 namespace App\Data\Admin\Users;
 
+use App\Enums\SubscriptionRenewalMethod;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -42,7 +43,9 @@ class UserData extends Data
 
         public bool    $agreed_newsletter,
 
-        public ?bool   $notify_about_games
+        public ?bool   $notify_about_games,
+
+        public SubscriptionRenewalMethod $subscription_renewal_method,
     )
     {
     }

@@ -35,6 +35,7 @@ class SubscriptionController extends Controller
                 AllowedFilter::scope('expired_at_between'),
                 AllowedFilter::scope('canceled_at_between'),
                 AllowedFilter::scope('status'),
+                AllowedFilter::scope('renewal_method'),
             ])
             ->paginate(request()->get('rowsPerPage') ?? 15)
             ->appends(request()->query());

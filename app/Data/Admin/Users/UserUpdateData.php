@@ -2,6 +2,7 @@
 
 namespace App\Data\Admin\Users;
 
+use App\Enums\SubscriptionRenewalMethod;
 use App\Models\User;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Validation\Confirmed;
@@ -63,6 +64,8 @@ class UserUpdateData extends Data
         public bool|Optional        $agreed_newsletter,
 
         public null|bool|Optional   $notify_about_games,
+
+        public SubscriptionRenewalMethod|Optional $subscription_renewal_method,
 
         #[Min(6), Max(32), Confirmed]
         public string|Optional      $password,

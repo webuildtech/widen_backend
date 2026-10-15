@@ -4,6 +4,7 @@ namespace App\Data\Admin\Subscriptions;
 
 use App\Data\Admin\Plans\PlanSelectOptionData;
 use App\Data\Admin\Users\UserSelectOptionData;
+use App\Enums\SubscriptionRenewalMethod;
 use App\Models\Subscription;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\LoadRelation;
@@ -31,6 +32,8 @@ class SubscriptionListData extends Data
         public ?Carbon               $canceled_at,
 
         public bool                  $is_overdue,
+
+        public SubscriptionRenewalMethod $renewal_method,
     )
     {
     }
@@ -46,6 +49,7 @@ class SubscriptionListData extends Data
             $subscription->expired_at,
             $subscription->canceled_at,
             $subscription->is_overdue,
+            $subscription->paysByLink() ? SubscriptionRenewalMethod::LINK : SubscriptionRenewalMethod::AUTO,
         );
     }
 }

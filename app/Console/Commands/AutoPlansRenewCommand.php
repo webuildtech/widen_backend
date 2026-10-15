@@ -26,6 +26,10 @@ class AutoPlansRenewCommand extends Command
             ->whereDate('expired_at', now()->subDay())
             ->get()
             ->each(function (Subscription $subscription) {
+                if ($subscription->paysByLink()) {
+                    return;
+                }
+
                 $user = $subscription->subscriber;
 
                 $priceDetails = applyDiscountAndCalculatePriceDetails($subscription->plan->price, $user->discount_on_everything);
