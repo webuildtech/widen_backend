@@ -239,7 +239,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_to?: string | null;
         is_active?: boolean;
         court_types_ids?: Array<number> | null;
-        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData> | null;
+        windows?: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData> | null;
     };
     export type DiscountCodeUpdateData = {
         name: string;
@@ -251,7 +251,7 @@ declare namespace App.Data.Admin.DiscountCodes {
         date_to?: string | null;
         is_active?: boolean;
         court_types_ids?: Array<number> | null;
-        windows: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData> | null;
+        windows?: Array<App.Data.Core.DiscountCodes.DiscountCodeWindowData> | null;
     };
 }
 declare namespace App.Data.Admin.Downtimes {
@@ -887,10 +887,6 @@ declare namespace App.Data.Core.DiscountCodes {
         start_time: string;
         end_time: string;
     };
-    export type DiscountLineData = {
-        court_type_id: number | null;
-        starts_at: string | null;
-    };
 }
 declare namespace App.Data.Core.Games {
     export type GameLevelSelectOptionData = {
@@ -1098,6 +1094,8 @@ declare namespace App.Data.User.GameGroups {
         photo_url: string | null;
         games_count: number;
         free_spots: number;
+        courtTypes: Array<App.Data.Core.CourtTypes.CourtTypeSelectOptionData>;
+        capacities: Array<number>;
     };
     export type GameGroupSelectOptionData = {
         uuid: string;
@@ -1132,6 +1130,7 @@ declare namespace App.Data.User.Games {
         date_from?: string;
         date_to?: string;
         only_available?: boolean;
+        capacity?: number;
     };
     export type GameGuestData = {
         email: string;
@@ -1156,12 +1155,17 @@ declare namespace App.Data.User.Games {
         taken_spots: number;
         free_spots: number;
         is_full: boolean;
+        is_joinable: boolean;
         price_with_vat: number;
         photo_url: string | null;
+        participants: Array<App.Data.User.Games.GameParticipantPublicData>;
+        levels: any;
+        max_guests: number;
     };
     export type GameParticipantPublicData = {
         name: string;
         level: string | null;
+        party: number;
     };
     export type MyGameData = {
         uuid: string;
@@ -1339,7 +1343,8 @@ declare namespace App.Enums {
     export type GameConflictReason =
         "in_past" | "court_closed" | "downtime" | "reserved";
     export type GameParticipantStatus = "pending" | "confirmed" | "canceled";
-    export type GameStatus = "published" | "finished" | "canceled" | "canceled_without_refund";
+    export type GameStatus =
+        "published" | "finished" | "canceled" | "canceled_without_refund";
     export type Locale = "lt" | "en";
     export type PaymentStatus = "pending" | "paid" | "cancelled" | "expired";
     export type Social = "google";

@@ -3,6 +3,7 @@
 namespace App\Data\User\Games;
 
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\Validation\Date;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Data;
@@ -26,7 +27,16 @@ class GameFilterData extends Data
         public Carbon|Optional  $date_to,
 
         public bool|Optional    $only_available,
+
+        public int|Optional     $capacity,
     )
     {
+    }
+
+    public static function rules(): array
+    {
+        return [
+            'capacity' => [Rule::in(config('games.capacities'))],
+        ];
     }
 }

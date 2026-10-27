@@ -35,6 +35,10 @@ class GameController extends Controller
             $games->where('court_type_id', $data->court_type_id);
         }
 
+        if (!$data->capacity instanceof Optional) {
+            $games->where('capacity', $data->capacity);
+        }
+
         if (!$data->game_group_uuid instanceof Optional) {
             $games->whereHas('gameGroup', fn($query) => $query->where('uuid', $data->game_group_uuid));
         }
