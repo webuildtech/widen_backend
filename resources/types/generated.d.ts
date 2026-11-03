@@ -1330,6 +1330,7 @@ declare namespace App.Data.User.Subscriptions {
         periodicity_type: string;
         expired_at: string;
         price: number;
+        previous_price: number | null;
         paid_from_balance: number;
         amount_to_pay: number;
     };

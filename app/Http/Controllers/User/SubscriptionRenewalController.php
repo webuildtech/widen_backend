@@ -40,6 +40,7 @@ class SubscriptionRenewalController extends Controller
             $subscription->plan->periodicity_type,
             $subscription->expired_at,
             $price,
+            $subscription->plan->previous_price,
             $paidFromBalance,
             round($price - $paidFromBalance, 2),
         );

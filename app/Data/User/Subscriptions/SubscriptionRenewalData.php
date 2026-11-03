@@ -18,6 +18,8 @@ class SubscriptionRenewalData extends Data
 
         public float  $price,
 
+        public ?float $previous_price,
+
         public float  $paid_from_balance,
 
         public float  $amount_to_pay,
