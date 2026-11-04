@@ -16,4 +16,14 @@ class IntervalRepository
             ->orderByPivot('order')
             ->first();
     }
+
+    public function getUnderlyingForCourt(Court $court, Interval $interval): ?Interval
+    {
+        return $court->intervals()
+            ->whereKeyNot($interval->id)
+            ->whereDate('date_from', '<=', $interval->date_from)
+            ->whereDate('date_to', '>=', $interval->date_to)
+            ->orderByPivot('order')
+            ->first();
+    }
 }

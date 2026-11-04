@@ -3,6 +3,7 @@
 namespace App\Services\Slots;
 
 use App\Models\Court;
+use App\Models\Interval;
 use App\Models\IntervalPrice;
 use App\Models\User;
 use App\Repositories\IntervalRepository;
@@ -35,16 +36,39 @@ class CourtSlotService
         }
 
         $intervalPrices = $this->intervalService->getPricesByDay($interval, $date);
+        $regularPrices = $this->getRegularPrices($court, $interval, $date, $user);
         $reservedSlots = $this->reservationRepository->getReservedSlotsForCourtAndDate($court, $date, $skipReservation);
         $downtimeSlots = $this->downtimeSlotService->getForCourtAndDate($court, $date);
         $planSlots = $checkByPlan ? $this->planSlotService->getForDateUserAndCourtType($court->courtType, $date, $user) : null;
         $slotsForSale = $this->reservationRepository->getSlotForSaleByCourtAndDate($court, $date);
 
-        return $this->calculateAvailableSlots($intervalPrices, $court, $date, $reservedSlots, $downtimeSlots, $planSlots, $user, $slotsForSale);
+        return $this->calculateAvailableSlots($intervalPrices, $regularPrices, $court, $date, $reservedSlots, $downtimeSlots, $planSlots, $user, $slotsForSale);
+    }
+
+    private function getRegularPrices(Court $court, Interval $interval, Carbon $date, ?User $user): Collection
+    {
+        if (!$underlying = $this->intervalRepository->getUnderlyingForCourt($court, $interval)) {
+            return collect();
+        }
+
+        return $this->intervalService->getPricesByDay($underlying, $date)
+            ->map(fn(IntervalPrice $price) => [
+                'start_time' => $price->start_time,
+                'end_time' => $price->end_time,
+                'price' => $this->getUserPrice($price, $user),
+            ]);
+    }
+
+    private function getUserPrice(IntervalPrice $price, ?User $user): float
+    {
+        return $user
+            ? $this->intervalPriceService->getPriceForUser($user, $price)
+            : floatval($price->price);
     }
 
     private function calculateAvailableSlots(
         Collection $intervalPrices,
+        Collection $regularPrices,
         Court      $court,
         Carbon     $date,
         array      $reservedSlots,
@@ -57,9 +81,7 @@ class CourtSlotService
         $slots = collect();
 
         foreach ($intervalPrices as $intervalPrice) {
-            $specialPrice = $user
-                ? $this->intervalPriceService->getPriceForUser($user, $intervalPrice)
-                : floatval($intervalPrice->price);
+            $specialPrice = $this->getUserPrice($intervalPrice, $user);
 
             $generatedSlots = $this->slotService->generate($intervalPrice->start_time, $intervalPrice->end_time);
 
@@ -69,6 +91,7 @@ class CourtSlotService
 
                 if ($this->courtSlotAvailabilityChecker->isAvailable($slotDateTime, $slotEndDateTime, $reservedSlots, $downtimeSlots, $planSlots)) {
                     $key = $slotDateTime->format('H:i');
+                    $regularPrice = $regularPrices->first(fn(array $price) => $price['start_time'] <= $slot['start_time'] && $slot['start_time'] < $price['end_time']);
 
                     $slots->push(
                         $this->createSlot(
@@ -77,6 +100,7 @@ class CourtSlotService
                             $slotDateTime,
                             $slot,
                             $specialPrice,
+                            $regularPrice ? max($specialPrice, $regularPrice['price']) : $specialPrice,
                             isset($slotsForSale[$key]) ? 'sale' : 'standard'
                         )
                     );
@@ -87,7 +111,7 @@ class CourtSlotService
         return $slots;
     }
 
-    private function createSlot(Court $court, IntervalPrice $price, Carbon $slotDateTime, array $slot, float $userPrice, string $type): array
+    private function createSlot(Court $court, IntervalPrice $price, Carbon $slotDateTime, array $slot, float $userPrice, float $originalPrice, string $type): array
     {
         return [
             'court_id' => $court->id,
@@ -96,7 +120,7 @@ class CourtSlotService
             'start_time' => $slot['start_time'],
             'end_time' => $slot['end_time'],
             'price' => $userPrice,
-            'original_price' => floatval($price->price),
+            'original_price' => $originalPrice,
             'type' => $type,
         ];
     }
