@@ -36,6 +36,7 @@ class Game extends BaseModel implements HasMedia
         'announced_at' => 'datetime',
         'capacity' => 'integer',
         'auto_cancel' => 'boolean',
+        'hidden' => 'boolean',
         'price' => 'decimal:2',
         'vat' => 'decimal:2',
         'price_with_vat' => 'decimal:2',

@@ -18,6 +18,7 @@ class AnnounceNewGamesCommand extends Command
     {
         $games = Game::query()
             ->published()
+            ->visible()
             ->upcoming()
             ->notAnnounced()
             ->withCount('activeParticipants')

@@ -45,6 +45,8 @@ class GameData extends Data
 
         public bool        $auto_cancel,
 
+        public bool        $hidden,
+
         public GameStatus  $status,
 
         public ?Carbon     $canceled_at,
@@ -78,6 +80,7 @@ class GameData extends Data
             $game->activeParticipants()->count(),
             $game->price_with_vat,
             $game->auto_cancel,
+            $game->hidden,
             $game->status,
             $game->canceled_at,
             $game->photo ? MediaData::from($game->photo) : null,

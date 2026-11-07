@@ -12,6 +12,11 @@ trait HasGameScopes
         return $query->where('status', GameStatus::PUBLISHED);
     }
 
+    public function scopeVisible(Builder $query): Builder
+    {
+        return $query->where('hidden', false);
+    }
+
     public function scopeUpcoming(Builder $query): Builder
     {
         return $query->where('end_time', '>', now());

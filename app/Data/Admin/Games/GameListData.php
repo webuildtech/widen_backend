@@ -37,6 +37,8 @@ class GameListData extends Data
 
         public GameStatus                 $status,
 
+        public bool                       $hidden,
+
         public Carbon                     $updated_at,
     )
     {
@@ -56,6 +58,7 @@ class GameListData extends Data
             $game->active_participants_count ?? $game->activeParticipants()->count(),
             $game->price_with_vat,
             $game->status,
+            $game->hidden,
             $game->updated_at,
         );
     }

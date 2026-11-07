@@ -26,6 +26,7 @@ class GameController extends Controller
     {
         $games = Game::query()
             ->published()
+            ->visible()
             ->upcoming()
             ->with(['courtType.gameLevels', 'court', 'gameGroup', 'activeParticipants.level'])
             ->withCount('activeParticipants')

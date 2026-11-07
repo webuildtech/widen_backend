@@ -537,6 +537,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $end_time
  * @property int $capacity
  * @property bool $auto_cancel
+ * @property bool $hidden
  * @property numeric $price
  * @property numeric $vat
  * @property numeric $price_with_vat
@@ -580,6 +581,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game startTimeFrom(string $start)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game upcoming()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game visible()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAnnouncedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereAutoCancel($value)
@@ -593,6 +595,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereEndTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereGameGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereHidden($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
@@ -1491,6 +1494,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notCanceled()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription renewalMethod(string $method)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription startedAtBetween(?string $start = null, ?string $end = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription status(string $status)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription subscriberEmail(string $value)
@@ -1543,6 +1547,7 @@ namespace App\Models{
  * @property int $agreed_terms
  * @property int $agreed_newsletter
  * @property bool|null $notify_about_games
+ * @property \App\Enums\SubscriptionRenewalMethod $subscription_renewal_method
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
@@ -1610,6 +1615,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSubscriptionRenewalMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
