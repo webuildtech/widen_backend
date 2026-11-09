@@ -50,8 +50,6 @@ class GameStoreData extends Data
 
         public bool|Optional         $auto_cancel,
 
-        public bool|Optional         $hidden,
-
         public float                 $price_with_vat,
 
         #[Translatable(required: false)]

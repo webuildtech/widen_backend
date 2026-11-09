@@ -26,7 +26,6 @@ class GameController extends Controller
     {
         $games = Game::query()
             ->published()
-            ->visible()
             ->upcoming()
             ->with(['courtType.gameLevels', 'court', 'gameGroup', 'activeParticipants.level'])
             ->withCount('activeParticipants')
@@ -42,6 +41,8 @@ class GameController extends Controller
 
         if (!$data->game_group_uuid instanceof Optional) {
             $games->whereHas('gameGroup', fn($query) => $query->where('uuid', $data->game_group_uuid));
+        } else {
+            $games->visible();
         }
 
         if (!$data->date_from instanceof Optional) {

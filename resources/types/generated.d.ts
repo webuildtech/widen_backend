@@ -315,13 +315,16 @@ declare namespace App.Data.Admin.GameGroups {
         description: Array<any> | null;
         sort_order: number;
         active: boolean;
+        hidden: boolean;
         photo: App.Data.Core.Media.MediaData | null;
+        url: string;
     };
     export type GameGroupListData = {
         id: number;
         name: string;
         sort_order: number;
         active: boolean;
+        hidden: boolean;
         games_count: number;
         photo_url: string | null;
         updated_at: string;
@@ -329,12 +332,14 @@ declare namespace App.Data.Admin.GameGroups {
     export type GameGroupSelectOptionData = {
         id: number;
         name: string;
+        hidden: boolean;
     };
     export type GameGroupStoreData = {
         name: Array<any>;
         description?: Array<any> | null;
         sort_order?: number;
         active?: boolean;
+        hidden?: boolean;
         photoFile?: any;
     };
     export type GameGroupUpdateData = {
@@ -342,6 +347,7 @@ declare namespace App.Data.Admin.GameGroups {
         description?: Array<any> | null;
         sort_order?: number;
         active?: boolean;
+        hidden?: boolean;
         photoFile?: any;
         deletePhoto?: boolean;
     };
@@ -371,7 +377,6 @@ declare namespace App.Data.Admin.Games {
         taken_spots: number;
         price_with_vat: number;
         auto_cancel: boolean;
-        hidden: boolean;
         status: App.Enums.GameStatus;
         canceled_at: string | null;
         photo: App.Data.Core.Media.MediaData | null;
@@ -424,7 +429,6 @@ declare namespace App.Data.Admin.Games {
         end_time: string;
         capacity: number;
         auto_cancel?: boolean;
-        hidden?: boolean;
         price_with_vat: number;
         title?: Array<any> | null;
         description?: Array<any> | null;
@@ -439,7 +443,6 @@ declare namespace App.Data.Admin.Games {
         end_time: string;
         capacity: number;
         auto_cancel?: boolean;
-        hidden?: boolean;
         price_with_vat: number;
         title?: Array<any> | null;
         description?: Array<any> | null;

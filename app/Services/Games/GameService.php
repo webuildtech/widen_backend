@@ -94,7 +94,7 @@ class GameService
                 'price' => $price->price,
                 'vat' => $price->vat,
                 'price_with_vat' => $price->price_with_vat,
-                ...$data->only('title', 'description', 'auto_cancel', 'hidden')->all(),
+                ...$data->only('title', 'description', 'auto_cancel')->all(),
             ]);
 
             $this->mediaManager->sync($game, Game::PHOTO_COLLECTION, $data->photoFile, $data->deletePhoto);
@@ -166,7 +166,7 @@ class GameService
             'price' => $price->price,
             'vat' => $price->vat,
             'price_with_vat' => $price->price_with_vat,
-            ...$data->only('title', 'description', 'auto_cancel', 'hidden')->all(),
+            ...$data->only('title', 'description', 'auto_cancel')->all(),
         ]);
 
         $this->mediaManager->sync($game, Game::PHOTO_COLLECTION, $data->photoFile);

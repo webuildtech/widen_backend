@@ -537,7 +537,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $end_time
  * @property int $capacity
  * @property bool $auto_cancel
- * @property bool $hidden
  * @property numeric $price
  * @property numeric $vat
  * @property numeric $price_with_vat
@@ -595,7 +594,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereEndTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereGameGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereHidden($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Game whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
@@ -627,6 +625,7 @@ namespace App\Models{
  * @property array<array-key, mixed>|null $description
  * @property int $sort_order
  * @property bool $active
+ * @property bool $hidden
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -646,10 +645,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup ordered()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup updatedAtBetween(string $start, ?string $end = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup visible()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereHidden($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GameGroup whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')

@@ -12,8 +12,9 @@ class GameGroupController extends Controller
     {
         $gameGroups = GameGroup::query()
             ->active()
+            ->visible()
             ->ordered()
-            ->with(['games' => fn($query) => $query->published()->visible()->upcoming()->with('courtType')->withCount('activeParticipants')])
+            ->with(['games' => fn($query) => $query->published()->upcoming()->with('courtType')->withCount('activeParticipants')])
             ->get();
 
         return GameGroupListData::collect($gameGroups);

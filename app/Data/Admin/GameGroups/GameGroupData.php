@@ -4,6 +4,7 @@ namespace App\Data\Admin\GameGroups;
 
 use App\Data\Core\Media\MediaData;
 use App\Models\GameGroup;
+use App\Support\FrontendUrl;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -21,7 +22,11 @@ class GameGroupData extends Data
 
         public bool       $active,
 
+        public bool       $hidden,
+
         public ?MediaData $photo,
+
+        public string     $url,
     )
     {
     }
@@ -34,7 +39,9 @@ class GameGroupData extends Data
             $gameGroup->getTranslations('description') ?: null,
             $gameGroup->sort_order,
             $gameGroup->active,
+            $gameGroup->hidden,
             $gameGroup->photo ? MediaData::from($gameGroup->photo) : null,
+            FrontendUrl::gameGroup($gameGroup->uuid),
         );
     }
 }

@@ -14,7 +14,7 @@ trait HasGameScopes
 
     public function scopeVisible(Builder $query): Builder
     {
-        return $query->where('hidden', false);
+        return $query->whereDoesntHave('gameGroup', fn(Builder $group) => $group->where('hidden', true));
     }
 
     public function scopeUpcoming(Builder $query): Builder

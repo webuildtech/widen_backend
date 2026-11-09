@@ -38,7 +38,7 @@ class GameGroupListData extends Data
     {
         $games = $gameGroup->relationLoaded('games')
             ? $gameGroup->games
-            : $gameGroup->games()->published()->visible()->upcoming()->with('courtType')->withCount('activeParticipants')->get();
+            : $gameGroup->games()->published()->upcoming()->with('courtType')->withCount('activeParticipants')->get();
 
         return new self(
             $gameGroup->uuid,

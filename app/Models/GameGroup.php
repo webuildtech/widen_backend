@@ -24,11 +24,13 @@ class GameGroup extends BaseModel implements HasMedia
     protected $attributes = [
         'sort_order' => 0,
         'active' => true,
+        'hidden' => false,
     ];
 
     protected $casts = [
         'sort_order' => 'integer',
         'active' => 'boolean',
+        'hidden' => 'boolean',
     ];
 
     public function uniqueIds(): array
@@ -56,6 +58,11 @@ class GameGroup extends BaseModel implements HasMedia
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('active', true);
+    }
+
+    public function scopeVisible(Builder $query): Builder
+    {
+        return $query->where('hidden', false);
     }
 
     public function scopeOrdered(Builder $query): Builder

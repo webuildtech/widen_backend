@@ -29,11 +29,13 @@ class GameGroupController extends Controller
             ->allowedSorts([
                 'sort_order',
                 'active',
+                'hidden',
                 'games_count',
                 'updated_at',
             ])
             ->allowedFilters([
                 AllowedFilter::exact('active'),
+                AllowedFilter::exact('hidden'),
                 AllowedFilter::scope('updated_at_between'),
             ])
             ->paginate(request()->get('rowsPerPage') ?? 15)

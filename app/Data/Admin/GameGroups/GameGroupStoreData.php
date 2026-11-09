@@ -27,6 +27,8 @@ class GameGroupStoreData extends Data
 
         public bool|Optional         $active,
 
+        public bool|Optional         $hidden,
+
         #[Image, Max(20480)]
         public UploadedFile|Optional $photoFile,
     )

@@ -19,6 +19,8 @@ class GameGroupListData extends Data
 
         public bool    $active,
 
+        public bool    $hidden,
+
         public int     $games_count,
 
         public ?string $photo_url,
@@ -35,6 +37,7 @@ class GameGroupListData extends Data
             $gameGroup->name,
             $gameGroup->sort_order,
             $gameGroup->active,
+            $gameGroup->hidden,
             $gameGroup->games_count ?? $gameGroup->games()->count(),
             $gameGroup->photo?->getUrl(),
             $gameGroup->updated_at,

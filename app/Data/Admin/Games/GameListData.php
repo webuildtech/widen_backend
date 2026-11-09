@@ -58,7 +58,7 @@ class GameListData extends Data
             $game->active_participants_count ?? $game->activeParticipants()->count(),
             $game->price_with_vat,
             $game->status,
-            $game->hidden,
+            (bool) $game->gameGroup?->hidden,
             $game->updated_at,
         );
     }
